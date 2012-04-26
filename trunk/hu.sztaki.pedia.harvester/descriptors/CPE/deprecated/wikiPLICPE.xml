@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+    Copyright 2012 Tamas Farkas, MTA SZTAKI, Hungary
+   
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+   
+           http://www.apache.org/licenses/LICENSE-2.0
+   
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+ -->
+
+<cpeDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <collectionReader>
+        <collectionIterator>
+            <descriptor>
+                <import location="../CAS/FileSystemCollectionReader.xml"/>
+            </descriptor>
+            <configurationParameterSettings>
+                <nameValuePair>
+                    <name>InputDirectory</name>
+                    <value>
+                        <string>__INPUTDIRECTORY</string>
+                    </value>
+                </nameValuePair>
+                <nameValuePair>
+                    <name>BrowseSubdirectories</name>
+                    <value>
+                        <boolean>false</boolean>
+                    </value>
+                </nameValuePair>
+                  <nameValuePair>
+                    <name>OutputSofa</name>
+                    <value>
+                        <string>rawwiki</string>
+                    </value>
+                </nameValuePair>
+            </configurationParameterSettings>
+        </collectionIterator>
+    </collectionReader>
+    <casProcessors casPoolSize="25" processingUnitThreadCount="3">
+        <casProcessor deployment="integrated" name="PLIAAE">
+            <descriptor>
+                <import location="../AAE/parser_langdet_indexerAAE.xml"/>
+            </descriptor>
+            <configurationParameterSettings>
+      		<nameValuePair>
+       			 <name>SofaNames</name>
+     		   <value>
+      		    <array>
+       	    		 <string>parsed</string>
+      	   		 </array>
+    	   	 	</value>
+   		  	 </nameValuePair>
+    		  <nameValuePair>
+     		   <name>InputSofaName</name>
+     		   <value>
+    		      <string>rawwiki</string>
+   		     	</value>
+    		  </nameValuePair>
+    		  <nameValuePair>
+     		   <name>OutputSofaName</name>
+      		  <value>
+       	 		  <string>parsed</string>
+      		  </value>
+     		 </nameValuePair>
+    		</configurationParameterSettings>
+            <deploymentParameters/>
+            <errorHandling>
+                <errorRateThreshold action="terminate" value="0/1000"/>
+                <maxConsecutiveRestarts action="terminate" value="30"/>
+                <timeout max="100000" default="-1"/>
+            </errorHandling>
+            <checkpoint batch="10000" time="1000ms"/>
+        </casProcessor>
+        <casProcessor deployment="integrated" name="CasToLuceneAE.xml">
+            <descriptor>
+                <import location="../CAS/CasToLuceneAE.xml"/>
+            </descriptor>         
+       <configurationParameterSettings>
+      <nameValuePair>
+        <name>SofaNames</name>
+        <value>
+          <array>
+            <string>parsed</string>
+          </array>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>InputSofaName</name>
+        <value>
+          <string>rawwiki</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>OutputSofaName</name>
+        <value>
+          <string>parsed</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>LocaleAbbrev</name>
+        <value>
+          <string>hu</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>LangChainID</name>
+        <value>
+          <string>hun_stem</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>LuceneIndexDir</name>
+        <value>
+          <string>__LUCENEINDEXDIR</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+                  
+<!--             <sofaNameMappings> -->
+<!--   			<sofaNameMapping cpeSofaName="parsed" -->
+<!--                    componentSofaName="parsed"/> -->
+<!--             <sofaNameMapping cpeSofaName="rawwiki" -->
+<!--                    componentSofaName="rawwiki"/> -->
+<!-- 			</sofaNameMappings> -->
+            <deploymentParameters/>
+            <errorHandling>
+                <errorRateThreshold action="terminate" value="0/1000"/>
+                <maxConsecutiveRestarts action="terminate" value="30"/>
+                <timeout max="100000" default="-1"/>
+            </errorHandling>
+            <checkpoint batch="10000" time="1000ms"/>
+        </casProcessor>
+    </casProcessors>
+    <cpeConfig>
+        <numToProcess>-1</numToProcess>
+        <deployAs>immediate</deployAs>
+        <checkpoint batch="0" time="300000ms"/>
+        <timerImpl/>
+    </cpeConfig>
+</cpeDescription>
