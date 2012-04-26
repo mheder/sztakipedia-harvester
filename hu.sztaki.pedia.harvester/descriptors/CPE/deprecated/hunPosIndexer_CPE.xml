@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+    Copyright 2012 Tamas Farkas, MTA SZTAKI, Hungary
+   
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+   
+           http://www.apache.org/licenses/LICENSE-2.0
+   
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+ -->
+
+<cpeDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <collectionReader>
+        <collectionIterator>
+            <descriptor>
+                <import location="../CAS/FileSystemCollectionReader.xml"/>
+            </descriptor>
+            <configurationParameterSettings>
+                <nameValuePair>
+                    <name>InputDirectory</name>
+                    <value>
+                        <string>__INPUTDIR</string>
+                    </value>
+                </nameValuePair>
+                <nameValuePair>
+                    <name>Language</name>
+                    <value>
+                        <string>hu</string>
+                    </value>
+                </nameValuePair>
+            </configurationParameterSettings>
+        </collectionIterator>
+    </collectionReader>
+    <casProcessors casPoolSize="3" processingUnitThreadCount="1">
+        <casProcessor deployment="integrated" name="Hun Parser Tagger POS collector">
+            <descriptor>
+                <import location="../AAE/hun_parser_tagger_indexerAAE.xml"/>
+            </descriptor>
+            <deploymentParameters/>
+            <errorHandling>
+                <errorRateThreshold action="terminate" value="0/1000"/>
+                <maxConsecutiveRestarts action="terminate" value="30"/>
+                <timeout max="100000" default="-1"/>
+            </errorHandling>
+            <checkpoint batch="10000" time="1000ms"/>
+            <configurationParameterSettings>
+                <nameValuePair>
+                    <name>FilePrefix</name>
+                    <value>
+                        <string>hun_lemma_</string>
+                    </value>
+                </nameValuePair>
+                <nameValuePair>
+                    <name>POSOutputDir</name>
+                    <value>
+                        <string>__POSOUTPUTDIR</string>
+                    </value>
+                </nameValuePair>
+            </configurationParameterSettings>
+        </casProcessor>
+        <casProcessor deployment="integrated" name="CasToLuceneAE">
+            <descriptor>
+                <import location="../CAS/CasToLuceneAE.xml"/>
+            </descriptor>
+            <deploymentParameters/>
+            <errorHandling>
+                <errorRateThreshold action="terminate" value="0/1000"/>
+                <maxConsecutiveRestarts action="terminate" value="30"/>
+                <timeout max="100000" default="-1"/>
+            </errorHandling>
+            <checkpoint batch="10000" time="1000ms"/>
+            <configurationParameterSettings>
+                <nameValuePair>
+                    <name>LuceneIndexDir</name>
+                    <value>
+                        <string>__LUCENEINDEXDIR</string>
+                    </value>
+                </nameValuePair>
+                <nameValuePair>
+                    <name>LangChainID</name>
+                    <value>
+                        <string>hun_pos</string>
+                    </value>
+                </nameValuePair>
+                <nameValuePair>
+                    <name>SofaNames</name>
+                    <value>
+                        <array>
+                            <string>plaintext</string>
+                            <string>parsed</string>
+                        </array>
+                    </value>
+                </nameValuePair>
+                <nameValuePair>
+                    <name>SkippedWordPlaceHolder</name>
+                    <value>
+                        <string>XX</string>
+                    </value>
+                </nameValuePair>
+            </configurationParameterSettings>
+        </casProcessor>
+    </casProcessors>
+    <cpeConfig>
+        <numToProcess>-1</numToProcess>
+        <deployAs>immediate</deployAs>
+        <checkpoint batch="0" time="300000ms"/>
+        <timerImpl/>
+    </cpeConfig>
+</cpeDescription>

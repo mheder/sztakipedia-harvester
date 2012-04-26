@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/textcat-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/google-collections-0.9.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/morphadorner.jar"/>
+	<classpathentry kind="lib" path="lib/lucene34/lucene-core-3.4.0.jar" sourcepath="/home/tfarkas/Dev/lucene/src/lucene-3.4.0"/>
+	<classpathentry kind="lib" path="lib/uima/uima-tools.jar"/>
+	<classpathentry kind="lib" path="lib/uima/uima-cpe.jar"/>
+	<classpathentry kind="lib" path="lib/uima/uima-core.jar" sourcepath="/home/tfarkas/Dev/UIMA/uima/uimaj-2.3.1-source-release.zip"/>
+	<classpathentry kind="lib" path="lib/uima/uimaj-bootstrap.jar"/>
+	<classpathentry kind="lib" path="lib/uima/uima-pear-ant-task.jar"/>
+	<classpathentry kind="lib" path="lib/uima/uima-document-annotation.jar"/>
+	<classpathentry kind="lib" path="lib/lucene34/analyzers/common/lucene-analyzers-3.4.0.jar" sourcepath="/home/tfarkas/Dev/lucene/src/lucene-3.4.0/contrib/analyzers"/>
+	<classpathentry kind="lib" path="lib/lucene34/queries/lucene-queries-3.4.0.jar" sourcepath="/home/tfarkas/Dev/lucene/src/lucene-3.4.0/contrib/queries/"/>
+	<classpathentry kind="lib" path="lib/uima-as/uimaj-as-core.jar"/>
+	<classpathentry kind="lib" path="lib/uima-as/uimaj-as-jms.jar"/>
+	<classpathentry kind="lib" path="lib/uima-as/uimaj-as-activemq.jar" sourcepath="/home/tfarkas/Dev/UIMA/uima/uima-as-2.3.1/uimaj-as-activemq"/>
+	<classpathentry kind="lib" path="lib/uima-as/apache-activemq-5.4.1/activemq-all-5.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/hunposchain0.6_mod.jar"/>
+	<classpathentry kind="lib" path="lib/geronimo-stax-api_1.0_spec-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/uima-an-regex.jar"/>
+	<classpathentry kind="lib" path="lib/xmlbeans-2.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/sztakipedia-parser-0.1.1b.jar" sourcepath="lib/sztakipedia-parser-0.1.1b-src.zip"/>
+	<classpathentry kind="lib" path="lib/pircbot-1.5.0/pircbot.jar"/>
+	<classpathentry kind="lib" path="log4j.properties"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,167 @@
+
+/* First created by JCasGen Mon Nov 07 11:44:19 CET 2011 */
+package org.apache.uima;
+
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.JCasRegistry;
+import org.apache.uima.cas.impl.CASImpl;
+import org.apache.uima.cas.impl.FSGenerator;
+import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.impl.TypeImpl;
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.impl.FeatureImpl;
+import org.apache.uima.cas.Feature;
+import org.apache.uima.jcas.tcas.Annotation_Type;
+
+/** Single token annotation
+ * Updated by JCasGen Thu Feb 02 10:37:48 CET 2012
+ * @generated */
+public class TokenAnnotation_Type extends Annotation_Type {
+  /** @generated */
+  protected FSGenerator getFSGenerator() {return fsGenerator;}
+  /** @generated */
+  private final FSGenerator fsGenerator = 
+    new FSGenerator() {
+      public FeatureStructure createFS(int addr, CASImpl cas) {
+  			 if (TokenAnnotation_Type.this.useExistingInstance) {
+  			   // Return eq fs instance if already created
+  		     FeatureStructure fs = TokenAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
+  		     if (null == fs) {
+  		       fs = new TokenAnnotation(addr, TokenAnnotation_Type.this);
+  			   TokenAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  			   return fs;
+  		     }
+  		     return fs;
+        } else return new TokenAnnotation(addr, TokenAnnotation_Type.this);
+  	  }
+    };
+  /** @generated */
+  public final static int typeIndexID = TokenAnnotation.typeIndexID;
+  /** @generated 
+     @modifiable */
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.TokenAnnotation");
+ 
+  /** @generated */
+  final Feature casFeat_tokenType;
+  /** @generated */
+  final int     casFeatCode_tokenType;
+  /** @generated */ 
+  public String getTokenType(int addr) {
+        if (featOkTst && casFeat_tokenType == null)
+      jcas.throwFeatMissing("tokenType", "org.apache.uima.TokenAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_tokenType);
+  }
+  /** @generated */    
+  public void setTokenType(int addr, String v) {
+        if (featOkTst && casFeat_tokenType == null)
+      jcas.throwFeatMissing("tokenType", "org.apache.uima.TokenAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_tokenType, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_posTag;
+  /** @generated */
+  final int     casFeatCode_posTag;
+  /** @generated */ 
+  public String getPosTag(int addr) {
+        if (featOkTst && casFeat_posTag == null)
+      jcas.throwFeatMissing("posTag", "org.apache.uima.TokenAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_posTag);
+  }
+  /** @generated */    
+  public void setPosTag(int addr, String v) {
+        if (featOkTst && casFeat_posTag == null)
+      jcas.throwFeatMissing("posTag", "org.apache.uima.TokenAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_posTag, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_lemma;
+  /** @generated */
+  final int     casFeatCode_lemma;
+  /** @generated */ 
+  public String getLemma(int addr) {
+        if (featOkTst && casFeat_lemma == null)
+      jcas.throwFeatMissing("lemma", "org.apache.uima.TokenAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_lemma);
+  }
+  /** @generated */    
+  public void setLemma(int addr, String v) {
+        if (featOkTst && casFeat_lemma == null)
+      jcas.throwFeatMissing("lemma", "org.apache.uima.TokenAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_lemma, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_lang;
+  /** @generated */
+  final int     casFeatCode_lang;
+  /** @generated */ 
+  public String getLang(int addr) {
+        if (featOkTst && casFeat_lang == null)
+      jcas.throwFeatMissing("lang", "org.apache.uima.TokenAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_lang);
+  }
+  /** @generated */    
+  public void setLang(int addr, String v) {
+        if (featOkTst && casFeat_lang == null)
+      jcas.throwFeatMissing("lang", "org.apache.uima.TokenAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_lang, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_tfidf;
+  /** @generated */
+  final int     casFeatCode_tfidf;
+  /** @generated */ 
+  public String getTfidf(int addr) {
+        if (featOkTst && casFeat_tfidf == null)
+      jcas.throwFeatMissing("tfidf", "org.apache.uima.TokenAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_tfidf);
+  }
+  /** @generated */    
+  public void setTfidf(int addr, String v) {
+        if (featOkTst && casFeat_tfidf == null)
+      jcas.throwFeatMissing("tfidf", "org.apache.uima.TokenAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_tfidf, v);}
+    
+  
+
+
+
+  /** initialize variables to correspond with Cas Type and Features
+	* @generated */
+  public TokenAnnotation_Type(JCas jcas, Type casType) {
+    super(jcas, casType);
+    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+
+ 
+    casFeat_tokenType = jcas.getRequiredFeatureDE(casType, "tokenType", "uima.cas.String", featOkTst);
+    casFeatCode_tokenType  = (null == casFeat_tokenType) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_tokenType).getCode();
+
+ 
+    casFeat_posTag = jcas.getRequiredFeatureDE(casType, "posTag", "uima.cas.String", featOkTst);
+    casFeatCode_posTag  = (null == casFeat_posTag) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_posTag).getCode();
+
+ 
+    casFeat_lemma = jcas.getRequiredFeatureDE(casType, "lemma", "uima.cas.String", featOkTst);
+    casFeatCode_lemma  = (null == casFeat_lemma) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_lemma).getCode();
+
+ 
+    casFeat_lang = jcas.getRequiredFeatureDE(casType, "lang", "uima.cas.String", featOkTst);
+    casFeatCode_lang  = (null == casFeat_lang) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_lang).getCode();
+
+ 
+    casFeat_tfidf = jcas.getRequiredFeatureDE(casType, "tfidf", "uima.cas.String", featOkTst);
+    casFeatCode_tfidf  = (null == casFeat_tfidf) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_tfidf).getCode();
+
+  }
+}
+
+
+
+    

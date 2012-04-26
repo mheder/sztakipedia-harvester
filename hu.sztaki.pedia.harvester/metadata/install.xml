@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COMPONENT_INSTALLATION_DESCRIPTOR>
+	<OS>
+		<NAME>Linux</NAME>
+	</OS>
+	<TOOLKITS>
+		<JDK_VERSION>1.4.0</JDK_VERSION>
+	</TOOLKITS>
+	<UIMA_FRAMEWORK>
+	</UIMA_FRAMEWORK>
+	<SUBMITTED_COMPONENT>
+		<ID>hu.sztaki.pedia.uima.engtagger</ID>
+		<NAME></NAME>
+		<DESC>$main_root/descriptors/AAE/english_tagger_AAE.xml</DESC>
+		<DEPLOYMENT>standard</DEPLOYMENT>
+	</SUBMITTED_COMPONENT>
+	<INSTALLATION>
+		<PROCESS>
+			<ACTION>set_env_variable</ACTION>
+			<PARAMETERS>
+				<COMMENTS></COMMENTS>
+				<VAR_VALUE>$main_root/bin;$main_root/lib/textcat-1.0.1.jar;$main_root/lib/commons-codec-1.4.jar;$main_root/lib/google-collections-0.9.jar;$main_root/lib/log4j-1.2.14.jar;$main_root/lib/morphadorner.jar;$main_root/lib/lucene34/lucene-core-3.4.0.jar;$main_root/lib/uima/uima-tools.jar;$main_root/lib/uima/uima-cpe.jar;$main_root/lib/uima/uima-core.jar;$main_root/lib/uima/uimaj-bootstrap.jar;$main_root/lib/uima/uima-pear-ant-task.jar;$main_root/lib/uima/uima-document-annotation.jar;$main_root/lib/lucene34/analyzers/common/lucene-analyzers-3.4.0.jar;$main_root/lib/sztakipedia-parser-0.1b.jar;$main_root/lib/lucene34/queries/lucene-queries-3.4.0.jar;$main_root/lib/uima-as/uimaj-as-core.jar;$main_root/lib/uima-as/uimaj-as-jms.jar;$main_root/lib/uima-as/uimaj-as-activemq.jar;$main_root/lib/uima-as/apache-activemq-5.4.1/activemq-all-5.4.1.jar;$main_root/lib/hunposchain0.6_mod.jar;$main_root/lib/uima-an-tagger.jar;</VAR_VALUE>
+				<VAR_NAME>CLASSPATH</VAR_NAME>
+			</PARAMETERS>
+		</PROCESS>
+	</INSTALLATION>
+</COMPONENT_INSTALLATION_DESCRIPTOR>
