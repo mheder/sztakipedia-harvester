@@ -1,0 +1,5 @@
+#summary Getting Article changes from Wiki IRC Stream.
+
+= Overview =
+
+[http://sztakipedia-harvester.googlecode.com/svn/wiki/ircupdate.png]
