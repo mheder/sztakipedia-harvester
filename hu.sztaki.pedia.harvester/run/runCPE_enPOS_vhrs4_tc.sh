@@ -22,11 +22,11 @@ INPUTFILE=enwikitest2.xml
 LUCENEINDEXDIR=/wikidata/niif-wikidata-mp/uimacpe/indexes/en_POS-$INPUTFILE-tc$THREADCOUNT
 XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/en_xcas-$INPUTFILE-tc$THREADCOUNT
 LOGFILE=cpe-enPOS-$INPUTFILE-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
-LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs
+LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs/cpe/en
 
 mkdir -p $LUCENEINDEXDIR;
 mkdir -p $XCASOUTPUTDIR;
-
+mkdir -p $LOGDIR
 sed "s#__INPUTFILE#$INPUTDIR/$INPUTFILE#; s#__LUCENEINDEXDIR#$LUCENEINDEXDIR#; s#__XCASOUTPUTDIR#$XCASOUTPUTDIR#" $WD/descriptors/CPE/en_WdCR_ParserStemmerIndexer_CPE.xml  > $WD/descriptors/CPE/cpe_current.xml
 
 sed -i "s/<casProcessors casPoolSize=\"[0-9]*\" processingUnitThreadCount=\"[0-9]*\">/<casProcessors casPoolSize=\"$THREADCOUNT\" processingUnitThreadCount=\"$THREADCOUNT\">/" $WD/descriptors/CPE/cpe_current.xml

@@ -23,9 +23,9 @@ INPUTFILE=huwiki-20120405-pages-articles.xml
 for THREADCOUNT in `seq 1 8`; do
 	echo -n "Running CPE for $THREADCOUNT ... "
 	LUCENEINDEXDIR=/wikidata/niif-wikidata-mp/uimacpe/indexes/benchmark_hunStem-$INPUTFILE-tc$THREADCOUNT
-	XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/benchmark_hu_xcas-$INPUTFILE-tc$THREADCOUNT
+	XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/benchmark_hunStem_xcas-$INPUTFILE-tc$THREADCOUNT
 	LOGFILE=benchmark_cpe-hunStem-$INPUTFILE-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
-	LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs
+	LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs/benchmark/hu
 
 	if [ -e $LUCENEINDEXDIR ]
 	then 
@@ -37,6 +37,8 @@ for THREADCOUNT in `seq 1 8`; do
 	fi
 	mkdir -p $LUCENEINDEXDIR;
 	mkdir -p $XCASOUTPUTDIR;
+	mkdir -p $LOGDIR
+
 
 	sed "s#__INPUTFILE#$INPUTDIR/$INPUTFILE#; s#__LUCENEINDEXDIR#$LUCENEINDEXDIR#; s#__XCASOUTPUTDIR#$XCASOUTPUTDIR#" $WD/descriptors/CPE/hun_WdCR_ParserStemmerIndexer_CPE_benchmark.xml  > $WD/descriptors/CPE/cpe_current.xml
 
