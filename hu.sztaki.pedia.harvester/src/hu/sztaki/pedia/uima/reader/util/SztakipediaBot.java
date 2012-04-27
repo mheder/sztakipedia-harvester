@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 
+import javax.security.auth.login.FailedLoginException;
+
 import org.apache.log4j.Logger;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
@@ -37,22 +39,26 @@ public class SztakipediaBot extends PircBot {
 	public SztakipediaBot(String ircChannel, String domainUrl,
 			ArrayBlockingQueue<WikiArticle> queue, WikiDumpArticleFilter articleFilter) {
 		// setVerbose(true);
-		// setLogin("husztakipediabot");
+		setLogin("sztakipediabot");
 		this.queue = queue;
 		this.articleFilter = articleFilter;
 		this.ircChannel = ircChannel;
 		wikiAPI = new Wiki(domainUrl);
 		wikiAPI.setLogLevel(Level.WARNING);
-
+		
 		// this.ircChannel = ircChannel;
 		setName("sztakipediabot");
 		try {
 			connect("irc.wikimedia.org");
+			char[] password = "CasToLucene".toCharArray();
+			wikiAPI.login("sztakipediabot", password);
 		} catch (NickAlreadyInUseException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (IrcException e) {
+			e.printStackTrace();
+		} catch (FailedLoginException e) {
 			e.printStackTrace();
 		}
 	}
