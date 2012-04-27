@@ -17,14 +17,14 @@ CLASSPATH=$WD/pedia.uima.harvester_lib:$WD
 
 JAVA=java
 INPUTDOMAIN=en.wikipedia
-LUCENEINDEXDIR=/wikidata/niif-wikidata-mp/uimacpe/indexes/en_POS-$INPUTDOMAIN-tc$THREADCOUNT
-XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/en_xcas-$INPUTDOMAIN-tc$THREADCOUNT
+LUCENEINDEXDIR=/wikidata/niif-wikidata-mp/uimacpe/indexes/en_POS-enwiki-20120403
+XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/en_xcas-enwiki-20120403-pages-articles.xml-tc6
 LOGFILE=update-enPOS-$INPUTDOMAIN-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
-LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs
+LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs/update/en
 
 mkdir -p $LUCENEINDEXDIR;
 mkdir -p $XCASOUTPUTDIR;
-
+mkdir -p $LOGDIR
 sed "s#__LUCENEINDEXDIR#$LUCENEINDEXDIR#; s#__XCASOUTPUTDIR#$XCASOUTPUTDIR#" $WD/descriptors/CPE/en_WIRCCR_ParserStemmerIndexer_CPE.xml  > $WD/descriptors/CPE/cpe_current.xml
 
 sed -i "s/processingUnitThreadCount=\"[0-9]*\"/processingUnitThreadCount=\"$THREADCOUNT\"/" $WD/descriptors/CPE/cpe_current.xml
