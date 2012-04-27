@@ -1,28 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
-    Copyright 2012 Tamas Farkas, MTA SZTAKI, Hungary
-   
-       Licensed under the Apache License, Version 2.0 (the "License");
-       you may not use this file except in compliance with the License.
-       You may obtain a copy of the License at
-   
-           http://www.apache.org/licenses/LICENSE-2.0
-   
-       Unless required by applicable law or agreed to in writing, software
-       distributed under the License is distributed on an "AS IS" BASIS,
-       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-       See the License for the specific language governing permissions and
-       limitations under the License.
- -->
-
+<?xml version="1.0" encoding="UTF-8"?>
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="szpparserAE">
-      <import location="../AE/szpparserAE.xml"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="posWordCollectorAE">
       <import location="../AE/posWordCollectorAE.xml"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="szpparserAE">
+      <import location="../AE/szpparserAE.xml"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="hunpostaggerAE">
       <import location="../AE/hunpostaggerAE.xml"/>
@@ -144,7 +129,6 @@ or "MSD" for MSD-code (Hungarian)</description>
         <node>szpparserAE</node>
         <node>wstAE</node>
         <node>hunpostaggerAE</node>
-        <node>posWordCollectorAE</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

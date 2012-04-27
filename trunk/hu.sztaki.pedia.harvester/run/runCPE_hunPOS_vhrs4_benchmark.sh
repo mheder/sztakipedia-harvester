@@ -16,18 +16,17 @@ CLASSPATH=$WD/pedia.uima.harvester_lib:$WD
 #export CLASSPATH
 
 JAVA=java
-INPUTDIR=/wikidata/WikidumpEnglish
-INPUTFILE=enwiki-20120403-pages-articles.xml
+INPUTDIR=/wikidata/WikidumpHungarian
+INPUTFILE=huwiki-20120405-pages-articles.xml
 #INPUTFILE=enwikitest2.xml
 
-for THREADCOUNT in `seq 1 8`; do
+for THREADCOUNT in `seq 1 1`; do
 	echo -n "Running CPE for $THREADCOUNT ... "
-	LUCENEINDEXDIR=/wikidata/niif-wikidata-mp/uimacpe/indexes/benchmark_en_POS-$INPUTFILE-tc$THREADCOUNT
-	XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/benchmark_en_xcas-$INPUTFILE-tc$THREADCOUNT
-	LOGFILE=benchmark_cpe-enPOS-$INPUTFILE-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
-	LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs/benchmark/en
-	mkdir -p $LOGDIR 	
-
+	LUCENEINDEXDIR=/wikidata/niif-wikidata-mp/uimacpe/indexes/benchmark_hunPOS-$INPUTFILE-tc$THREADCOUNT
+	XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/benchmark_hu_xcas-$INPUTFILE-tc$THREADCOUNT
+	LOGFILE=benchmark_cpe-hunPOS-$INPUTFILE-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
+	LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs/benchmark/hu
+	
 	if [ -e $LUCENEINDEXDIR ]
 	then 
 		rm -r $LUCENEINDEXDIR
@@ -38,8 +37,8 @@ for THREADCOUNT in `seq 1 8`; do
 	fi
 	mkdir -p $LUCENEINDEXDIR;
 	mkdir -p $XCASOUTPUTDIR;
-
-	sed "s#__INPUTFILE#$INPUTDIR/$INPUTFILE#; s#__LUCENEINDEXDIR#$LUCENEINDEXDIR#; s#__XCASOUTPUTDIR#$XCASOUTPUTDIR#" $WD/descriptors/CPE/en_WdCR_ParserStemmerIndexer_CPE_benchmark.xml  > $WD/descriptors/CPE/cpe_current.xml
+	mkdir -p $LOGDIR
+	sed "s#__INPUTFILE#$INPUTDIR/$INPUTFILE#; s#__LUCENEINDEXDIR#$LUCENEINDEXDIR#; s#__XCASOUTPUTDIR#$XCASOUTPUTDIR#" $WD/descriptors/CPE/hun_WdCR_ParserPOSIndexer_CPE_benchmark.xml  > $WD/descriptors/CPE/cpe_current.xml
 
 	sed -i "s/<casProcessors casPoolSize=\"[0-9]*\" processingUnitThreadCount=\"[0-9]*\">/<casProcessors casPoolSize=\"$THREADCOUNT\" processingUnitThreadCount=\"$THREADCOUNT\">/" $WD/descriptors/CPE/cpe_current.xml
 

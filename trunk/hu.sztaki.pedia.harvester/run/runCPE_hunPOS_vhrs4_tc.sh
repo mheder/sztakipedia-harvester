@@ -19,16 +19,16 @@ JAVA=java
 INPUTDIR=/wikidata/WikidumpHungarian
 INPUTFILE=huwiki-20120405-pages-articles.xml
 #INPUTFILE=enwikitest2.xml
-LUCENEINDEXDIR=/wikidata/niif-wikidata-mp/uimacpe/indexes/hunStem-$INPUTFILE-tc$THREADCOUNT
-XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/hunStem_xcas-$INPUTFILE-tc$THREADCOUNT
-LOGFILE=cpe-hunStem-$INPUTFILE-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
+LUCENEINDEXDIR=/wikidata/niif-wikidata-mp/uimacpe/indexes/hunPOS-$INPUTFILE-tc$THREADCOUNT
+XCASOUTPUTDIR=/wikidata/niif-wikidata-mp/uimacpe/output/hunPOS_xcas-$INPUTFILE-tc$THREADCOUNT
+LOGFILE=cpe-hunPOS-$INPUTFILE-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
 LOGDIR=/wikidata/niif-wikidata-mp/uimacpe/logs/cpe/hu
 
 mkdir -p $LUCENEINDEXDIR;
 mkdir -p $XCASOUTPUTDIR;
 mkdir -p $LOGDIR
 
-sed "s#__INPUTFILE#$INPUTDIR/$INPUTFILE#; s#__LUCENEINDEXDIR#$LUCENEINDEXDIR#; s#__XCASOUTPUTDIR#$XCASOUTPUTDIR#" $WD/descriptors/CPE/hun_WdCR_ParserStemmerIndexer_CPE.xml  > $WD/descriptors/CPE/cpe_current.xml
+sed "s#__INPUTFILE#$INPUTDIR/$INPUTFILE#; s#__LUCENEINDEXDIR#$LUCENEINDEXDIR#; s#__XCASOUTPUTDIR#$XCASOUTPUTDIR#" $WD/descriptors/CPE/hun_WdCR_ParserPOSIndexer_CPE.xml  > $WD/descriptors/CPE/cpe_current.xml
 
 sed -i "s/<casProcessors casPoolSize=\"[0-9]*\" processingUnitThreadCount=\"[0-9]*\">/<casProcessors casPoolSize=\"$THREADCOUNT\" processingUnitThreadCount=\"$THREADCOUNT\">/" $WD/descriptors/CPE/cpe_current.xml
 
