@@ -18,7 +18,6 @@ package hu.sztaki.pedia.uima.reader.util;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.logging.Level;
 
 import javax.security.auth.login.FailedLoginException;
 
@@ -35,7 +34,7 @@ public class SztakipediaBot extends PircBot {
 	protected ArrayBlockingQueue<WikiArticle> queue;
 	private WikiDumpArticleFilter articleFilter;
 
-	@SuppressWarnings("deprecation")
+	// @SuppressWarnings("deprecation")
 	public SztakipediaBot(String ircChannel, String domainUrl,
 			ArrayBlockingQueue<WikiArticle> queue, WikiDumpArticleFilter articleFilter) {
 		// setVerbose(true);
@@ -44,8 +43,8 @@ public class SztakipediaBot extends PircBot {
 		this.articleFilter = articleFilter;
 		this.ircChannel = ircChannel;
 		wikiAPI = new Wiki(domainUrl);
-		wikiAPI.setLogLevel(Level.WARNING);
-		
+		// wikiAPI.setLogLevel(Level.WARNING);
+
 		// this.ircChannel = ircChannel;
 		setName("sztakipediabot");
 		try {
