@@ -30,6 +30,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import org.apache.log4j.Logger;
 import org.apache.uima.SourceDocumentInformation;
+import org.apache.uima.WikiArticleAnnotation;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
@@ -66,6 +67,7 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 
 	public static final String PARAM_REDIRECT = "RedirectPage";
 	public static final String PARAM_NONARTICLETITLES = "NonArticleTitles";
+	public static final String PARAM_APPNAME = "ApplicationName";
 
 	public static Logger logger = Logger.getLogger(WikiDumpCollectionReader.class);
 
@@ -78,6 +80,8 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 
 	private Thread saxParserThread;
 
+	private String applicationName;
+
 	private WikiDumpArticleFilter articleFilter;
 
 	// private long totalArticleCount;
@@ -88,6 +92,7 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 		final File inputFile = new File(((String) getConfigParameterValue(PARAM_INPUTFILE)).trim());
 		mLanguage = (String) getConfigParameterValue(PARAM_LANGUAGE);
 		mSofaName = (String) getConfigParameterValue(PARAM_OUTPUTSOFA);
+		applicationName = (String) getConfigParameterValue(PARAM_APPNAME);
 		String redirectPage = (String) getConfigParameterValue(PARAM_REDIRECT);
 		String[] nonArticleTitles = (String[]) getConfigParameterValue(PARAM_NONARTICLETITLES);
 		articleFilter = new WikiDumpArticleFilter(nonArticleTitles, redirectPage);
@@ -144,7 +149,8 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 					fis = new FileInputStream(inputFile);
 					isr = new InputStreamReader(fis, "UTF-8");
 					XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-					SaxWikiHandler saxWikiHandler = new SaxWikiHandler(articlesQueue);
+					SaxWikiHandler saxWikiHandler = new SaxWikiHandler(articlesQueue,
+							applicationName, mLanguage);
 					xmlReader.setContentHandler(saxWikiHandler);
 					xmlReader.setErrorHandler(saxWikiHandler);
 					// start the parsing
@@ -234,11 +240,22 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 		// locate the documents that satisfy their semantic queries.
 
 		SourceDocumentInformation srcDocInfo;
+		WikiArticleAnnotation wikiArticleAnnotation;
 		if (doc2 != null) {
 			srcDocInfo = new SourceDocumentInformation(doc2);
+			wikiArticleAnnotation = new WikiArticleAnnotation(doc2);
 		} else {
 			srcDocInfo = new SourceDocumentInformation(jcas);
+			wikiArticleAnnotation = new WikiArticleAnnotation(jcas);
 		}
+		// create WikiArticleAnnotation, and copy all the metadata.
+		wikiArticleAnnotation.setId(article.getId());
+		wikiArticleAnnotation.setTitle(article.getTitle());
+		wikiArticleAnnotation.setLang(article.getLanguage());
+		wikiArticleAnnotation.setApplication(article.getApplication());
+		wikiArticleAnnotation.setRevision(article.getRevision());
+		wikiArticleAnnotation.addToIndexes();
+		// create the SourceDocumentInformation
 		srcDocInfo.setUri(article.getId() + ".xml");
 		srcDocInfo.setOffsetInSource(0);
 		srcDocInfo.setDocumentSize(article.getText().length());

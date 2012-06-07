@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Wed Dec 07 11:17:11 CET 2011 */
+/* First created by JCasGen Tue Jun 05 10:31:31 CEST 2012 */
 package org.apache.uima;
 
 import org.apache.uima.jcas.JCas;
@@ -14,32 +14,32 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Feb 02 10:37:48 CET 2012
+ * Updated by JCasGen Tue Jun 05 14:39:06 CEST 2012
  * @generated */
-public class Link_Type extends Annotation_Type {
+public class WikiLinkAnnotation_Type extends Annotation_Type {
   /** @generated */
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Link_Type.this.useExistingInstance) {
+  			 if (WikiLinkAnnotation_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Link_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = WikiLinkAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new Link(addr, Link_Type.this);
-  			   Link_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new WikiLinkAnnotation(addr, WikiLinkAnnotation_Type.this);
+  			   WikiLinkAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new Link(addr, Link_Type.this);
+        } else return new WikiLinkAnnotation(addr, WikiLinkAnnotation_Type.this);
   	  }
     };
   /** @generated */
-  public final static int typeIndexID = Link.typeIndexID;
+  public final static int typeIndexID = WikiLinkAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.Link");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.WikiLinkAnnotation");
  
   /** @generated */
   final Feature casFeat_href;
@@ -48,14 +48,32 @@ public class Link_Type extends Annotation_Type {
   /** @generated */ 
   public String getHref(int addr) {
         if (featOkTst && casFeat_href == null)
-      jcas.throwFeatMissing("href", "org.apache.uima.Link");
+      jcas.throwFeatMissing("href", "org.apache.uima.WikiLinkAnnotation");
     return ll_cas.ll_getStringValue(addr, casFeatCode_href);
   }
   /** @generated */    
   public void setHref(int addr, String v) {
         if (featOkTst && casFeat_href == null)
-      jcas.throwFeatMissing("href", "org.apache.uima.Link");
+      jcas.throwFeatMissing("href", "org.apache.uima.WikiLinkAnnotation");
     ll_cas.ll_setStringValue(addr, casFeatCode_href, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_title;
+  /** @generated */
+  final int     casFeatCode_title;
+  /** @generated */ 
+  public String getTitle(int addr) {
+        if (featOkTst && casFeat_title == null)
+      jcas.throwFeatMissing("title", "org.apache.uima.WikiLinkAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_title);
+  }
+  /** @generated */    
+  public void setTitle(int addr, String v) {
+        if (featOkTst && casFeat_title == null)
+      jcas.throwFeatMissing("title", "org.apache.uima.WikiLinkAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_title, v);}
     
   
 
@@ -63,13 +81,17 @@ public class Link_Type extends Annotation_Type {
 
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
-  public Link_Type(JCas jcas, Type casType) {
+  public WikiLinkAnnotation_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
     casFeat_href = jcas.getRequiredFeatureDE(casType, "href", "uima.cas.String", featOkTst);
     casFeatCode_href  = (null == casFeat_href) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_href).getCode();
+
+ 
+    casFeat_title = jcas.getRequiredFeatureDE(casType, "title", "uima.cas.String", featOkTst);
+    casFeatCode_title  = (null == casFeat_title) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_title).getCode();
 
   }
 }

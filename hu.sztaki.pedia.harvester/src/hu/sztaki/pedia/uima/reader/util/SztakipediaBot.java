@@ -27,26 +27,49 @@ import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
 
 public class SztakipediaBot extends PircBot {
-	// private String ircChannel;
+	private ReaderOutputModes outputMode;
 	public static Logger logger = Logger.getLogger(SztakipediaBot.class);
 	private Wiki wikiAPI;
 	private String ircChannel;
+	private String applicationName;
 	protected ArrayBlockingQueue<WikiArticle> queue;
-	private WikiDumpArticleFilter articleFilter;
+	private WikiDumpArticleFilter articleFilter = null;
 
-	// @SuppressWarnings("deprecation")
+	/**
+	 * Constructor for usage with LOG output
+	 * 
+	 * @param ircChannel
+	 * @param domainUrl
+	 * @param articleFilter
+	 */
+	public SztakipediaBot(String ircChannel, String domainUrl, WikiDumpArticleFilter articleFilter,
+			String applicationName) {
+		outputMode = ReaderOutputModes.LOG;
+		this.articleFilter = articleFilter;
+		this.ircChannel = ircChannel;
+		this.applicationName = applicationName;
+		initializeBot(domainUrl);
+	}
+
 	public SztakipediaBot(String ircChannel, String domainUrl,
-			ArrayBlockingQueue<WikiArticle> queue, WikiDumpArticleFilter articleFilter) {
+			ArrayBlockingQueue<WikiArticle> queue, WikiDumpArticleFilter articleFilter,
+			String applicationName) {
 		// setVerbose(true);
-		setLogin("sztakipediabot");
+		outputMode = ReaderOutputModes.QUEUE;
 		this.queue = queue;
 		this.articleFilter = articleFilter;
 		this.ircChannel = ircChannel;
-		wikiAPI = new Wiki(domainUrl);
-		// wikiAPI.setLogLevel(Level.WARNING);
+		this.applicationName = applicationName;
+		initializeBot(domainUrl);
+	}
 
-		// this.ircChannel = ircChannel;
-		setName("sztakipediabot");
+	@SuppressWarnings("deprecation")
+	private void initializeBot(String domainUrl) {
+		setLogin("sztakipediabot2");
+		wikiAPI = new Wiki(domainUrl);
+		wikiAPI.setLogLevel(java.util.logging.Level.WARNING);
+		// setVerbose(true);
+		setName("sztakipediabot" + applicationName);
 		try {
 			connect("irc.wikimedia.org");
 			char[] password = "CasToLucene".toCharArray();
@@ -74,25 +97,31 @@ public class SztakipediaBot extends PircBot {
 	@Override
 	protected void onMessage(String channel, String sender, String login, String hostname,
 			String message) {
-		// System.out.println(channel + ": " + message);
+		System.out.println(channel + ": " + message);
 		String title = parseTitleFromMessage(message);
 		try {
 			WikiArticle article = new WikiArticle();
 			article.setTitle(title);
 			article.setText("");
-			boolean validArticleByTitle = articleFilter.isValidArticle(article);
-			logger.debug("Queue util: " + queue.size() + " and " + queue.remainingCapacity()
-					+ " remaining");
+			boolean validArticleByTitle = true;
+			if (articleFilter != null) {
+				validArticleByTitle = articleFilter.isValidArticle(article);
+			}
 			if (validArticleByTitle) {
 				// debug
 				String text = wikiAPI.getPageText(title);
 				article.setText(text);
-				if (articleFilter.isNotRedirect(article)) {
+				boolean notRedirect = true;
+				if (articleFilter != null) {
+					notRedirect = articleFilter.isValidArticle(article);
+				}
+				if (notRedirect) {
 					HashMap<String, Object> pageinfo = wikiAPI.getPageInfo(title);
 					Long id = (Long) pageinfo.get("pageid");
-					article.setId(id.toString());
-
-					queue.put(article);
+					Long lastRevId = (Long) pageinfo.get("pageid");
+					article.setId(id);
+					article.setRevision(lastRevId);
+					writeOut(article);
 					logger.info("ACCEPTED: " + article.getTitle() + "(ID:" + article.getId() + ")");
 				} else {
 					// debug
@@ -104,8 +133,6 @@ public class SztakipediaBot extends PircBot {
 			}
 			logger.debug("EDIT: " + article.getTitle() + " (" + article.getId() + ")");
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
@@ -149,11 +176,32 @@ public class SztakipediaBot extends PircBot {
 
 	}
 
-	// public static void main(String[] args) throws Exception {
-	//
-	// // Now start our bot up.
-	// SztakipediaBot bot = new SztakipediaBot("#hu.wikipedia",
-	// "hu.wikipedia.org");
-	//
-	// }
+	private void writeOut(WikiArticle article) {
+		switch (outputMode) {
+		case QUEUE:
+			logger.debug("Queue util: " + queue.size() + " and " + queue.remainingCapacity()
+					+ " remaining");
+			try {
+				queue.put(article);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		case LOG:
+			logger.info(article);
+			break;
+		case HTTP:
+			break;
+		default:
+			break;
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		// Now start our bot up.
+		SztakipediaBot bot = new SztakipediaBot("#en.wikipedia", "en.wikipedia.org", null, "TEST");
+		bot.start();
+	}
 }

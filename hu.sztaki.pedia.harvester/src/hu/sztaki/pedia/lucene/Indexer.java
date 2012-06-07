@@ -35,37 +35,59 @@ public class Indexer {
 	public static final String SENTENCES_FIELD_NAME = "SENTENCES";
 	public static final String TOKENS_FIELD_NAME = "TOKENS";
 	public static final String LINKS_FIELD_NAME = "LINKS";
+	public static final String CATEGORY_FIELD_NAME = "CATEGORIES";
 	public static final String TEMPLATES_FIELD_NAME = "TEMPLATES";
-
+	public static final String REVISION_FIELD_NAME = "REVISION_ID";
 	public static final String ID_FIELD_NAME = "ARTICLE_ID";
+
 	private static final int COMMIT_THRESHOLD = 1000;
 	private static int countToCommit = 0;
+	private static volatile boolean writerInitialized = false;
+
+	private static volatile Indexer indexerInstance = new Indexer();
 
 	private IndexWriter writer;
+	private Searcher searcher;
+	private Directory indexDirectory;
 	private Logger logger = Logger.getLogger("Lucene Indexer");
 
-	private Directory initIndexDir(String indexDirPath) throws IOException {
-		// directory
-		File indexDir = new File(indexDirPath);
-		if (!indexDir.exists()) {
-			indexDir.mkdirs();
-		}
-		Directory dir = NIOFSDirectory.open(indexDir);
-		return dir;
-
+	public static Indexer getInstance() {
+		return indexerInstance;
 	}
 
-	/**
-	 * Creates an Indexer instance with analysers provided in IndexWriterConfig
-	 * outside
-	 * 
-	 * @param indexDirPath
-	 * @param iwc
-	 * @throws IOException
-	 */
-	public Indexer(String indexDirPath, IndexWriterConfig iwc) throws IOException {
-		Directory dir = initIndexDir(indexDirPath);
-		writer = new IndexWriter(dir, iwc);
+	public synchronized void initialize(String indexDirPath, IndexWriterConfig iwc)
+			throws IOException {
+		// directory
+		File indexDirFile = new File(indexDirPath);
+		if (!indexDirFile.exists()) {
+			indexDirFile.mkdirs();
+		}
+		indexDirectory = NIOFSDirectory.open(indexDirFile);
+		if (writer != null) {
+			close();
+		}
+
+		writer = new IndexWriter(indexDirectory, iwc);
+		searcher = new Searcher(indexDirPath, iwc.getAnalyzer());
+		setWriterInitialized(true);
+	}
+
+	// /**
+	// * Creates an Indexer instance with analysers provided in
+	// IndexWriterConfig
+	// * outside
+	// *
+	// * @param indexDirPath
+	// * @param iwc
+	// * @throws IOException
+	// */
+	// private Indexer(String indexDirPath, IndexWriterConfig iwc) throws
+	// IOException {
+	// Directory dir = initIndexDir(indexDirPath);
+	// writer = new IndexWriter(dir, iwc);
+	// }
+
+	private Indexer() {
 	}
 
 	// /**
@@ -104,6 +126,7 @@ public class Indexer {
 		// writer.optimize();
 		commit();
 		writer.close();
+		setWriterInitialized(false);
 	}
 
 	private void indexSentences(List<String> sentences, Document doc) {
@@ -128,17 +151,20 @@ public class Indexer {
 	}
 
 	public void index(String articleID, List<String> sentences, Set<String> tokens)
-			throws CorruptIndexException, IOException {
-		Document doc = new Document();
-		doc.add(new Field(ID_FIELD_NAME, articleID, Field.Store.YES, Field.Index.NOT_ANALYZED));
-		indexSentences(sentences, doc);
-		indexLemmas(tokens, doc);
-		writer.updateDocument(new Term(ID_FIELD_NAME, articleID), doc);
-		countToCommit++;
-		if (countToCommit == COMMIT_THRESHOLD) {
-			countToCommit = 0;
-			commit();
-		}
+			throws CorruptIndexException, IOException, IndexWriterNotInitializedException {
+		if (isWriterInitialized()) {
+			Document doc = new Document();
+			doc.add(new Field(ID_FIELD_NAME, articleID, Field.Store.YES, Field.Index.NOT_ANALYZED));
+			indexSentences(sentences, doc);
+			indexLemmas(tokens, doc);
+			writer.updateDocument(new Term(ID_FIELD_NAME, articleID), doc);
+			countToCommit++;
+			if (countToCommit == COMMIT_THRESHOLD) {
+				countToCommit = 0;
+				commit();
+			}
+		} else
+			throw new IndexWriterNotInitializedException();
 	}
 
 	public void index(String articleID, List<String> sentences, Set<String> tokens,
@@ -167,6 +193,14 @@ public class Indexer {
 		for (String link : links) {
 			doc.add(new Field(LINKS_FIELD_NAME, link, Field.Store.YES, Field.Index.ANALYZED));
 		}
+	}
+
+	public static boolean isWriterInitialized() {
+		return writerInitialized;
+	}
+
+	public static synchronized void setWriterInitialized(boolean writerInitialized) {
+		Indexer.writerInitialized = writerInitialized;
 	}
 
 }

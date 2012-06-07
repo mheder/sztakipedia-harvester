@@ -24,7 +24,7 @@
                 <nameValuePair>
                     <name>InputFile</name>
                     <value>
-                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.uima/input/dump/enwikitest2.xml</string>
+                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.harvester.run/input/dump/enwikitest2.xml</string>
 <!--                              <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.uima/input/test1/330.xml</string> -->
                    
                     </value>
@@ -35,6 +35,12 @@
                         <string>en</string>
                     </value>
                 </nameValuePair>
+                <nameValuePair>
+        			<name>ApplicationName</name>
+        			<value>
+          				<string>en.wikipedia.org</string>
+        			</value>
+      			</nameValuePair>
                 <nameValuePair>
         			<name>OutputSofa</name>
         			<value>
@@ -80,7 +86,7 @@
                 <nameValuePair>
                     <name>LuceneIndexDir</name>
                     <value>
-                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.uima/indexes/eng_pos</string>
+                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.harvester.run/indexes/eng_pos</string>
                     </value>
                 </nameValuePair>
                 <nameValuePair>
@@ -122,7 +128,7 @@
                 <nameValuePair>
                     <name>OutputDirectory</name>
                     <value>
-                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.uima/output/en_xcasout</string>
+                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.harvester.run/output/en_xcasout</string>
                     </value>
                 </nameValuePair>
                 <nameValuePair>

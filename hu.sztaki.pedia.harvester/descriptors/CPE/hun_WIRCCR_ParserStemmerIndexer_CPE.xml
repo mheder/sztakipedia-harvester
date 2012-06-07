@@ -34,6 +34,12 @@
                     </value>
                 </nameValuePair>
                 <nameValuePair>
+        			<name>ApplicationName</name>
+        			<value>
+          				<string>hu.wikipedia.org</string>
+        			</value>
+      			</nameValuePair>
+                <nameValuePair>
         			<name>OutputSofa</name>
         			<value>
           				<string>rawwiki</string>

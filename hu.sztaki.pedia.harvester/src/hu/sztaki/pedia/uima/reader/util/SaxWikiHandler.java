@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class SaxWikiHandler extends DefaultHandler {
-
+	private ReaderOutputModes outputMode;
 	protected int sleep = 50;
 	protected boolean showStatus = true;
 	protected StringBuilder textSB;
@@ -38,11 +38,15 @@ public class SaxWikiHandler extends DefaultHandler {
 	protected int counter;
 	protected String currentId;
 	protected String currentTitle;
+	protected String currentRevision;
 	protected String destinationDirectory = "pages";
+
+	private String applicationName;
+	private String language;
 
 	protected ArrayBlockingQueue<WikiArticle> queue;
 
-	public boolean usingQueue = true;
+	// public boolean usingQueue = true;
 
 	/**
 	 * Creates a SaxWikiHandler object, using the provided
@@ -51,16 +55,25 @@ public class SaxWikiHandler extends DefaultHandler {
 	 * @param queue
 	 *            ArrayBlockingQueue with WikiArticles for output
 	 */
-	public SaxWikiHandler(ArrayBlockingQueue<WikiArticle> queue) {
+	public SaxWikiHandler(ArrayBlockingQueue<WikiArticle> queue, String applicationName,
+			String language) {
 		this.queue = queue;
+		this.applicationName = applicationName;
+		this.language = language;
+		outputMode = ReaderOutputModes.QUEUE;
 	}
 
 	/**
 	 * Creates a SaxWikiHandler object, using a folder named "pages" as an
 	 * output source.
 	 */
-	public SaxWikiHandler() {
-		usingQueue = false;
+	public SaxWikiHandler(String destinationDirectory, String applicationName, String language) {
+		this.destinationDirectory = destinationDirectory;
+		this.applicationName = applicationName;
+		this.language = language;
+		outputMode = ReaderOutputModes.FILE;
+
+		// usingQueue = false;
 	}
 
 	protected String replaces(String s) {
@@ -71,22 +84,29 @@ public class SaxWikiHandler extends DefaultHandler {
 		return s;
 	}
 
-	// private void write(String s) {
-	// if (state == 5) {
-	// textSB.append(s);
-	// }
-	// }
-
-	protected void dumpArticleToQueue() {
+	private WikiArticle assembleArticle() {
 		WikiArticle article = new WikiArticle();
-		article.setId(currentId);
 		article.setTitle(currentTitle);
 		article.setText(textSB.toString());
-
+		article.setApplication(applicationName);
+		article.setLanguage(language);
 		try {
-			queue.put(article);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			article.setId(Long.parseLong(currentId.trim()));
+			article.setRevision(Long.parseLong(currentRevision.trim()));
+		} catch (NumberFormatException e) {
+			return null;
+		}
+		return article;
+	}
+
+	protected void dumpArticleToQueue() {
+		WikiArticle article = assembleArticle();
+		if (article != null) {
+			try {
+				queue.put(article);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -178,7 +198,10 @@ public class SaxWikiHandler extends DefaultHandler {
 		if (state == 4) {
 			currentId += s;
 		}
-		if (state == 6) {
+		if (state == 7) {
+			currentRevision += s;
+		}
+		if (state == 9) {
 			textSB.append(s);
 		}
 	}
@@ -210,21 +233,24 @@ public class SaxWikiHandler extends DefaultHandler {
 			state = 1;
 		}
 		if (state == 1 && localName.equals("title")) {
-			currentTitle = new String();
+			currentTitle = "";
 			state = 2;
 		}
 		if (state == 3 && localName.equals("id")) {
-			currentId = new String();
+			currentId = "";
 			state = 4;
 		}
-		if (state == 5 && localName.equals("text")) {
+		if (state == 5 && localName.equals("revision")) {
+			currentRevision = "";
 			state = 6;
 		}
-		// write("<" + qname);
-		// for (int i = 0; i < attrs.getLength(); i++) {
-		// write(" " + attrs.getQName(i) + "=\"" + attrs.getValue(i) + "\"");
-		// }
-		// write(">");
+		if (state == 6 && localName.equals("id")) {
+			state = 7;
+		}
+		if (state == 8 && localName.equals("text")) {
+			state = 9;
+		}
+
 	}
 
 	/*
@@ -235,21 +261,28 @@ public class SaxWikiHandler extends DefaultHandler {
 	 */
 	@Override
 	public void endElement(String uri, String localName, String qname) throws SAXException {
-		// write("</" + qname + ">");
 		if (localName.equals("page")) {
-			if (usingQueue) {
+			switch (outputMode) {
+			case QUEUE:
 				dumpArticleToQueue();
-			} else {
+				break;
+			case FILE:
 				dumpArticleToFile();
+				break;
+			default:
+				break;
 			}
 		}
-		if (localName.equals("text")) {
-			state = 7;
+		if (state == 9 && localName.equals("text")) {
+			state = 10;
 		}
-		if (localName.equals("id")) {
+		if (state == 4 && localName.equals("id")) {
 			state = 5;
 		}
-		if (localName.equals("title")) {
+		if (state == 7 && localName.equals("id")) {
+			state = 8;
+		}
+		if (state == 2 && localName.equals("title")) {
 			state = 3;
 		}
 		if (localName.equals("mediawiki")) {

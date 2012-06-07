@@ -19,12 +19,12 @@ import hu.sztaki.sztakipediaparser.wiki.tags.AnchorTag;
 import hu.sztaki.sztakipediaparser.wiki.tags.TemplateTag;
 import hu.sztaki.sztakipediaparser.wiki.visitor.html.PlainTextContentWriter;
 
-import org.apache.uima.Link;
-import org.apache.uima.WikiTemplate;
+import org.apache.uima.WikiLinkAnnotation;
+import org.apache.uima.WikiTemplateAnnotation;
 import org.apache.uima.jcas.JCas;
 
 public class UimaTagVisitor extends PlainTextContentWriter {
-	
+
 	private JCas doc;
 
 	public UimaTagVisitor() {
@@ -38,7 +38,6 @@ public class UimaTagVisitor extends PlainTextContentWriter {
 	public String getContent() {
 		return out.toString();
 	}
-	
 
 	public void setDoc(JCas doc) {
 		this.doc = doc;
@@ -47,19 +46,20 @@ public class UimaTagVisitor extends PlainTextContentWriter {
 	public JCas getDoc() {
 		return doc;
 	}
-	
+
 	@Override
 	public void visit(TemplateTag tag) {
-		WikiTemplate wt = new WikiTemplate(doc);
+		WikiTemplateAnnotation wt = new WikiTemplateAnnotation(doc);
 		wt.setName(tag.getName());
 		wt.addToIndexes();
 	}
-	
+
 	@Override
 	public void visit(AnchorTag tag) {
-		if(tag.getAttributes().containsKey("href")){
-			Link link = new Link(doc);
+		if (tag.getAttributes().containsKey("href")) {
+			WikiLinkAnnotation link = new WikiLinkAnnotation(doc);
 			link.setHref(tag.getAttributes().get("href"));
+			link.setTitle(tag.getAttributes().get("title"));
 			link.addToIndexes();
 		}
 		super.visit(tag);

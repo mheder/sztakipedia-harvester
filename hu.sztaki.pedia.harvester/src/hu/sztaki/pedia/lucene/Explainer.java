@@ -17,7 +17,6 @@ package hu.sztaki.pedia.lucene;
 
 import java.io.File;
 
-import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryParser.QueryParser;
@@ -40,8 +39,8 @@ public class Explainer {
 		String queryExpression = args[1];
 		Directory directory = FSDirectory.open(new File(indexDir));
 
-		QueryParser parser = new QueryParser(Version.LUCENE_34, "words",
-				new StandardAnalyzer(Version.LUCENE_34));
+		QueryParser parser = new QueryParser(Version.LUCENE_34, "words", new StandardAnalyzer(
+				Version.LUCENE_34));
 		Query query = parser.parse(queryExpression);
 		System.out.println("Query: " + queryExpression);
 		IndexSearcher searcher = new IndexSearcher(directory, true);
@@ -50,13 +49,13 @@ public class Explainer {
 			Explanation explanation = searcher.explain(query, match.doc);
 			System.out.println("----------");
 			Document doc = searcher.doc(match.doc);
-			System.out.println("D:"+doc.get("docID"));
-			System.out.println("Lang:"+doc.get("lang"));
-		System.out.println(explanation.toString());
-//			Explanation[] explanations =  explanation.getDetails();
-//			for (Explanation ex : explanations) {
-//				System.out.println(ex.getDescription()+" = "+ex.getValue());
-//			}
+			System.out.println("D:" + doc.get("docID"));
+			System.out.println("Lang:" + doc.get("lang"));
+			System.out.println(explanation.toString());
+			// Explanation[] explanations = explanation.getDetails();
+			// for (Explanation ex : explanations) {
+			// System.out.println(ex.getDescription()+" = "+ex.getValue());
+			// }
 
 		}
 		searcher.close();

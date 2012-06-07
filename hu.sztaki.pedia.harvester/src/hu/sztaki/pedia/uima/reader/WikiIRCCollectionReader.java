@@ -24,6 +24,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import org.apache.log4j.Logger;
 import org.apache.uima.SourceDocumentInformation;
+import org.apache.uima.WikiArticleAnnotation;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
@@ -54,6 +55,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 	public static final String PARAM_OUTPUTSOFA = "OutputSofa";
 	public static final String PARAM_REDIRECT = "RedirectPage";
 	public static final String PARAM_NONARTICLETITLES = "NonArticleTitles";
+	public static final String PARAM_APPNAME = "ApplicationName";
 
 	public static Logger logger = Logger.getLogger(WikiIRCCollectionReader.class);
 
@@ -61,6 +63,8 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 	private final int queueDepth = 500;
 
 	private String mLanguage;
+
+	private String applicationName;
 
 	private String mSofaName;
 
@@ -74,6 +78,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 	public void initialize() throws ResourceInitializationException {
 		mLanguage = (String) getConfigParameterValue(PARAM_LANGUAGE);
 		mSofaName = (String) getConfigParameterValue(PARAM_OUTPUTSOFA);
+		applicationName = (String) getConfigParameterValue(PARAM_APPNAME);
 		String redirectPage = (String) getConfigParameterValue(PARAM_REDIRECT);
 		String[] nonArticleTitles = (String[]) getConfigParameterValue(PARAM_NONARTICLETITLES);
 		articleFilter = new WikiDumpArticleFilter(nonArticleTitles, redirectPage);
@@ -88,7 +93,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 			@Override
 			public void run() {
 				sztakipediaBot = new SztakipediaBot(ircChannel, domainUrl, articlesQueue,
-						articleFilter);
+						articleFilter, applicationName);
 				sztakipediaBot.start();
 			}
 		});
@@ -161,11 +166,23 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 		// locate the documents that satisfy their semantic queries.
 
 		SourceDocumentInformation srcDocInfo;
+		WikiArticleAnnotation wikiArticleAnnotation;
 		if (doc2 != null) {
 			srcDocInfo = new SourceDocumentInformation(doc2);
+			wikiArticleAnnotation = new WikiArticleAnnotation(doc2);
 		} else {
 			srcDocInfo = new SourceDocumentInformation(jcas);
+			wikiArticleAnnotation = new WikiArticleAnnotation(jcas);
 		}
+		// create WikiArticleAnnotation, and copy all the metadata.
+		wikiArticleAnnotation.setId(article.getId());
+		wikiArticleAnnotation.setTitle(article.getTitle());
+		wikiArticleAnnotation.setLang(article.getLanguage());
+		wikiArticleAnnotation.setApplication(article.getApplication());
+		wikiArticleAnnotation.setRevision(article.getRevision());
+		wikiArticleAnnotation.addToIndexes();
+
+		// create the SourceDocumentInformation
 		srcDocInfo.setUri(article.getId() + ".xml");
 		srcDocInfo.setOffsetInSource(0);
 		srcDocInfo.setDocumentSize(article.getText().length());
