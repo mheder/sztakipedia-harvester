@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Mon Dec 05 20:32:06 CET 2011 */
+/* First created by JCasGen Tue Jun 05 10:31:31 CEST 2012 */
 package org.apache.uima;
 
 import org.apache.uima.jcas.JCas;
@@ -14,32 +14,32 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Feb 02 10:37:48 CET 2012
+ * Updated by JCasGen Tue Jun 05 14:39:06 CEST 2012
  * @generated */
-public class WikiTemplate_Type extends Annotation_Type {
+public class WikiTemplateAnnotation_Type extends Annotation_Type {
   /** @generated */
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (WikiTemplate_Type.this.useExistingInstance) {
+  			 if (WikiTemplateAnnotation_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = WikiTemplate_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = WikiTemplateAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new WikiTemplate(addr, WikiTemplate_Type.this);
-  			   WikiTemplate_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new WikiTemplateAnnotation(addr, WikiTemplateAnnotation_Type.this);
+  			   WikiTemplateAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new WikiTemplate(addr, WikiTemplate_Type.this);
+        } else return new WikiTemplateAnnotation(addr, WikiTemplateAnnotation_Type.this);
   	  }
     };
   /** @generated */
-  public final static int typeIndexID = WikiTemplate.typeIndexID;
+  public final static int typeIndexID = WikiTemplateAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.WikiTemplate");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.WikiTemplateAnnotation");
  
   /** @generated */
   final Feature casFeat_name;
@@ -48,13 +48,13 @@ public class WikiTemplate_Type extends Annotation_Type {
   /** @generated */ 
   public String getName(int addr) {
         if (featOkTst && casFeat_name == null)
-      jcas.throwFeatMissing("name", "org.apache.uima.WikiTemplate");
+      jcas.throwFeatMissing("name", "org.apache.uima.WikiTemplateAnnotation");
     return ll_cas.ll_getStringValue(addr, casFeatCode_name);
   }
   /** @generated */    
   public void setName(int addr, String v) {
         if (featOkTst && casFeat_name == null)
-      jcas.throwFeatMissing("name", "org.apache.uima.WikiTemplate");
+      jcas.throwFeatMissing("name", "org.apache.uima.WikiTemplateAnnotation");
     ll_cas.ll_setStringValue(addr, casFeatCode_name, v);}
     
   
@@ -63,7 +63,7 @@ public class WikiTemplate_Type extends Annotation_Type {
 
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
-  public WikiTemplate_Type(JCas jcas, Type casType) {
+  public WikiTemplateAnnotation_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 

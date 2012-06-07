@@ -35,12 +35,12 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.uima.Link;
 import org.apache.uima.SentenceAnnotation;
 import org.apache.uima.SourceDocumentInformation;
 import org.apache.uima.TokenAnnotation;
 import org.apache.uima.UimaContext;
-import org.apache.uima.WikiTemplate;
+import org.apache.uima.WikiLinkAnnotation;
+import org.apache.uima.WikiTemplateAnnotation;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
@@ -102,7 +102,10 @@ public class CasToLucene extends AbstractMultiSofaAnnotator {
 			} else
 				throw new ResourceInitializationException();
 			IndexWriterConfig iwc = chainIndexerUtil.getIndexWriterConfig();
-			indexer = new Indexer(indexDir, iwc);
+			indexer = Indexer.getInstance();
+			if (Indexer.isWriterInitialized()) {
+				indexer.initialize(indexDir, iwc);
+			}
 		} catch (IOException e) {
 			logger.error("Couldnt open " + indexDir, e);
 			e.printStackTrace();
@@ -153,19 +156,20 @@ public class CasToLucene extends AbstractMultiSofaAnnotator {
 			Set<String> uniqLemmas = chainIndexerUtil.getUniqLemmas(tokenIndex);
 			List<String> sentencesList = chainIndexerUtil.getSentences(sentenceIndex, tokenIndex);
 
-			AnnotationIndex<Annotation> templateIndex = doc.getAnnotationIndex(WikiTemplate.type);
-			AnnotationIndex<Annotation> linkIndex = doc.getAnnotationIndex(Link.type);
+			AnnotationIndex<Annotation> templateIndex = doc
+					.getAnnotationIndex(WikiTemplateAnnotation.type);
+			AnnotationIndex<Annotation> linkIndex = doc.getAnnotationIndex(WikiLinkAnnotation.type);
 
 			// System.out.println("Doc: "+getIdFromURI(sdocInfo.getUri()));
 			Set<String> linkList = new HashSet<String>();
 			for (Annotation annotation : linkIndex) {
-				Link link = (Link) annotation;
+				WikiLinkAnnotation link = (WikiLinkAnnotation) annotation;
 				// System.out.println("Link name: "+link.getHref());
 				linkList.add(link.getHref());
 			}
 			Set<String> templateList = new HashSet<String>();
 			for (Annotation annotation : templateIndex) {
-				WikiTemplate tmpl = (WikiTemplate) annotation;
+				WikiTemplateAnnotation tmpl = (WikiTemplateAnnotation) annotation;
 				// System.out.println("Template name: "+tmpl.getName());
 				templateList.add(tmpl.getName());
 			}

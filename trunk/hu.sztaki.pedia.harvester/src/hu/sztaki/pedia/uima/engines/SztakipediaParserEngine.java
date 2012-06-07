@@ -25,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 import org.apache.uima.SourceDocumentInformation;
+import org.apache.uima.WikiArticleAnnotation;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
@@ -75,7 +76,7 @@ public class SztakipediaParserEngine extends JCasAnnotator_ImplBase {
 			// set parsed String as the new views text
 			newdoc.setSofaDataString(plaintext, "text/plain");
 			// copy SourceDocumentInformation annotations to new document
-			copySourceDocumentAnnotationFromRawToParsed(doc, newdoc);
+			copyMetadataAnnotationsFromRawToParsed(doc, newdoc);
 			// clear interpreter
 			interpreter.clearDocument();
 
@@ -86,15 +87,17 @@ public class SztakipediaParserEngine extends JCasAnnotator_ImplBase {
 	}
 
 	/**
-	 * Copies all SourceDocumentInformation annotations from source CAS
-	 * annotation indexes to target CAS annotation indexes.
+	 * Copies all SourceDocumentInformation and WikiArticleAnnotation
+	 * annotations from source CAS annotation indexes to target CAS annotation
+	 * indexes.
 	 * 
 	 * @param sourceCAS
 	 *            JCas to copy from
 	 * @param targetCAS
 	 *            JCas to copy to
 	 */
-	private void copySourceDocumentAnnotationFromRawToParsed(JCas sourceCAS, JCas targetCAS) {
+	private void copyMetadataAnnotationsFromRawToParsed(JCas sourceCAS, JCas targetCAS) {
+		// SourceDocumentAnnotation
 		AnnotationIndex<Annotation> sourceDocumentAnnotations = sourceCAS
 				.getAnnotationIndex(SourceDocumentInformation.type);
 		for (Annotation annotation : sourceDocumentAnnotations) {
@@ -105,6 +108,19 @@ public class SztakipediaParserEngine extends JCasAnnotator_ImplBase {
 			newSDIAnnotation.setDocumentSize(sdiAnnotation.getDocumentSize());
 			newSDIAnnotation.setLastSegment(sdiAnnotation.getLastSegment());
 			newSDIAnnotation.addToIndexes();
+		}
+		// WikiArticleAnnotation
+		AnnotationIndex<Annotation> wikiArticleAnnotations = sourceCAS
+				.getAnnotationIndex(WikiArticleAnnotation.type);
+		for (Annotation annotation : wikiArticleAnnotations) {
+			WikiArticleAnnotation waAnnotation = (WikiArticleAnnotation) annotation;
+			WikiArticleAnnotation newWAAnnotation = new WikiArticleAnnotation(targetCAS);
+			newWAAnnotation.setApplication(waAnnotation.getApplication());
+			newWAAnnotation.setId(waAnnotation.getId());
+			newWAAnnotation.setLang(waAnnotation.getLang());
+			newWAAnnotation.setTitle(waAnnotation.getTitle());
+			newWAAnnotation.setRevision(waAnnotation.getRevision());
+			newWAAnnotation.addToIndexes();
 		}
 
 	}

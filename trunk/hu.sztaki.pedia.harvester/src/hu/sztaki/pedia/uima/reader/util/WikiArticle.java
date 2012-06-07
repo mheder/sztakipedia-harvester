@@ -16,15 +16,33 @@
 package hu.sztaki.pedia.uima.reader.util;
 
 public class WikiArticle {
-	private String id;
+	private Long id;
 	private String title;
 	private String text;
+	private Long revision;
+	private String application = null;
+	private String language = null;
 
-	public String getId() {
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		if (application != null) {
+			sb.append(application + ":");
+		}
+		sb.append(title + "(ID:" + id + ", Rev. ID:" + revision + "),");
+		if (text.length() > 20) {
+			sb.append(text.substring(0, 19) + "...");
+		} else {
+			sb.append(text);
+		}
+		return sb.toString();
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -42,6 +60,30 @@ public class WikiArticle {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public void setRevision(long revision) {
+		this.revision = revision;
+	}
+
+	public long getRevision() {
+		return revision;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setApplication(String application) {
+		this.application = application;
+	}
+
+	public String getApplication() {
+		return application;
 	}
 
 }

@@ -1,19 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
-    Copyright 2012 Tamas Farkas, MTA SZTAKI, Hungary
-   
-       Licensed under the Apache License, Version 2.0 (the "License");
-       you may not use this file except in compliance with the License.
-       You may obtain a copy of the License at
-   
-           http://www.apache.org/licenses/LICENSE-2.0
-   
-       Unless required by applicable law or agreed to in writing, software
-       distributed under the License is distributed on an "AS IS" BASIS,
-       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-       See the License for the specific language governing permissions and
-       limitations under the License.
- -->
-
+<?xml version="1.0" encoding="UTF-8"?>
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>typeSystemDescriptor</name>
   <description/>
@@ -124,7 +109,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.WikiTemplate</name>
+      <name>org.apache.uima.WikiTemplateAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -136,7 +121,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.Link</name>
+      <name>org.apache.uima.WikiLinkAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -145,15 +130,52 @@
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
+        <featureDescription>
+          <name>title</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.ArticleId</name>
+      <name>org.apache.uima.WikiArticleAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
-          <name>Id</name>
+          <name>id</name>
+          <description/>
+          <rangeTypeName>uima.cas.Long</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>application</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>lang</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>title</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>revision</name>
+          <description/>
+          <rangeTypeName>uima.cas.Long</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>org.apache.uima.WikiCategoryAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>name</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>

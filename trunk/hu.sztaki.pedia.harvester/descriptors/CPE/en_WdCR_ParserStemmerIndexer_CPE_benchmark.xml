@@ -39,6 +39,12 @@
           				<string>rawwiki</string>
         			</value>
       			</nameValuePair>
+      			<nameValuePair>
+        			<name>ApplicationName</name>
+        			<value>
+          				<string>en.wikipedia.org</string>
+        			</value>
+      			</nameValuePair>
             </configurationParameterSettings>
             
         </collectionIterator>
