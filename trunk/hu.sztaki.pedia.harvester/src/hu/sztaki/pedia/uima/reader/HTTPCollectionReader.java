@@ -47,6 +47,13 @@ public class HTTPCollectionReader extends CollectionReader_ImplBase {
 			Server server = new Server(port);
 			server.setHandler(new HTTPReadHandler());
 			servers.put(port, server);
+			try {
+				server.start();
+				// server.join();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

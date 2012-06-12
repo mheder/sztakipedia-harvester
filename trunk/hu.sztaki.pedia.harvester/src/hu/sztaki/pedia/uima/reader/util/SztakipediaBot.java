@@ -16,6 +16,7 @@
 package hu.sztaki.pedia.uima.reader.util;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -31,7 +32,9 @@ public class SztakipediaBot extends PircBot {
 	public static Logger logger = Logger.getLogger(SztakipediaBot.class);
 	private Wiki wikiAPI;
 	private String ircChannel;
+	private String language;
 	private String applicationName;
+	private HTTPWriter httpWriter;
 	protected ArrayBlockingQueue<WikiArticle> queue;
 	private WikiDumpArticleFilter articleFilter = null;
 
@@ -43,23 +46,38 @@ public class SztakipediaBot extends PircBot {
 	 * @param articleFilter
 	 */
 	public SztakipediaBot(String ircChannel, String domainUrl, WikiDumpArticleFilter articleFilter,
-			String applicationName) {
+			String applicationName, String language) {
 		outputMode = ReaderOutputModes.LOG;
 		this.articleFilter = articleFilter;
 		this.ircChannel = ircChannel;
 		this.applicationName = applicationName;
+		this.language = language;
 		initializeBot(domainUrl);
 	}
 
 	public SztakipediaBot(String ircChannel, String domainUrl,
 			ArrayBlockingQueue<WikiArticle> queue, WikiDumpArticleFilter articleFilter,
-			String applicationName) {
+			String applicationName, String language) {
 		// setVerbose(true);
 		outputMode = ReaderOutputModes.QUEUE;
 		this.queue = queue;
 		this.articleFilter = articleFilter;
 		this.ircChannel = ircChannel;
 		this.applicationName = applicationName;
+		this.language = language;
+		initializeBot(domainUrl);
+	}
+
+	public SztakipediaBot(String ircChannel, String domainUrl, String destinationHost,
+			Integer destinationPort, WikiDumpArticleFilter articleFilter, String applicationName,
+			String language) throws MalformedURLException {
+		// setVerbose(true);
+		outputMode = ReaderOutputModes.HTTP;
+		this.httpWriter = new HTTPWriter(destinationHost, destinationPort);
+		this.articleFilter = articleFilter;
+		this.ircChannel = ircChannel;
+		this.applicationName = applicationName;
+		this.language = language;
 		initializeBot(domainUrl);
 	}
 
@@ -120,6 +138,8 @@ public class SztakipediaBot extends PircBot {
 					Long id = (Long) pageinfo.get("pageid");
 					Long lastRevId = (Long) pageinfo.get("pageid");
 					article.setId(id);
+					article.setApplication(applicationName);
+					article.setLanguage(language);
 					article.setRevision(lastRevId);
 					writeOut(article);
 					logger.info("ACCEPTED: " + article.getTitle() + "(ID:" + article.getId() + ")");
@@ -192,6 +212,7 @@ public class SztakipediaBot extends PircBot {
 			logger.info(article);
 			break;
 		case HTTP:
+			httpWriter.writeArticle(article);
 			break;
 		default:
 			break;
@@ -201,7 +222,8 @@ public class SztakipediaBot extends PircBot {
 	public static void main(String[] args) throws Exception {
 
 		// Now start our bot up.
-		SztakipediaBot bot = new SztakipediaBot("#en.wikipedia", "en.wikipedia.org", null, "TEST");
+		SztakipediaBot bot = new SztakipediaBot("#en.wikipedia", "en.wikipedia.org", null, "TEST",
+				"en");
 		bot.start();
 	}
 }
