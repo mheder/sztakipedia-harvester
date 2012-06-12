@@ -30,7 +30,7 @@
         <jar destfile="${dest.dir}/pedia.uima.harvester.jar">
             <manifest>
                 <attribute name="Main-Class" value="hu.sztaki.pedia.uima.RunCPE"/>
- 				<attribute name="Class-Path" value=". ${dest.lib}/pircbot.jar ${dest.lib}/textcat-1.0.1.jar ${dest.lib}/commons-codec-1.4.jar ${dest.lib}/uima-an-tagger.jar ${dest.lib}/google-collections-0.9.jar ${dest.lib}/log4j-1.2.14.jar ${dest.lib}/morphadorner.jar ${dest.lib}/hunposchain0.6_mod.jar ${dest.lib}/lucene-core-3.4.0.jar ${dest.lib}/uima-tools.jar ${dest.lib}/uima-cpe.jar ${dest.lib}/uima-core.jar ${dest.lib}/uimaj-bootstrap.jar ${dest.lib}/uima-pear-ant-task.jar ${dest.lib}/uima-document-annotation.jar ${dest.lib}/lucene-analyzers-3.4.0.jar ${dest.lib}/sztakipedia-parser-0.1.1b.jar ${dest.lib}/lucene-queries-3.4.0.jar"/>
+ 				<attribute name="Class-Path" value=". ${dest.lib}/jetty-all-7.6.4.v20120524.jar  ${dest.lib}/servlet-api-2.5.jar ${dest.lib}/pircbot.jar ${dest.lib}/textcat-1.0.1.jar ${dest.lib}/commons-codec-1.4.jar ${dest.lib}/uima-an-tagger.jar ${dest.lib}/google-collections-0.9.jar ${dest.lib}/log4j-1.2.14.jar ${dest.lib}/morphadorner.jar ${dest.lib}/hunposchain0.6_mod.jar ${dest.lib}/lucene-core-3.4.0.jar ${dest.lib}/uima-tools.jar ${dest.lib}/uima-cpe.jar ${dest.lib}/uima-core.jar ${dest.lib}/uimaj-bootstrap.jar ${dest.lib}/uima-pear-ant-task.jar ${dest.lib}/uima-document-annotation.jar ${dest.lib}/lucene-analyzers-3.4.0.jar ${dest.lib}/sztakipedia-parser-0.1.1b.jar ${dest.lib}/lucene-queries-3.4.0.jar"/>
             </manifest>
             <fileset dir="bin"/>
         	<fileset file="log4j.properties"></fileset>
@@ -62,6 +62,8 @@
         <copy file="lib/uima/uima-tools.jar" todir="${dest.libdir}"/>
         <copy file="lib/uima/uima-cpe.jar" todir="${dest.libdir}"/>
         <copy file="lib/uima/uima-core.jar" todir="${dest.libdir}"/>
+    	<copy file="lib/jetty-all-7.6.4.v20120524.jar" todir="${dest.libdir}"/>
+    	<copy file="lib/servlet-api-2.5.jar" todir="${dest.libdir}"/>
     	<copy file="lib/pircbot-1.5.0/pircbot.jar" todir="${dest.libdir}"/>
         <copy file="lib/uima/uimaj-bootstrap.jar" todir="${dest.libdir}"/>
         <copy file="lib/uima/uima-pear-ant-task.jar" todir="${dest.libdir}"/>

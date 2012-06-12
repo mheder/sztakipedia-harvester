@@ -21,14 +21,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class SaxWikiHandler extends DefaultHandler {
+	Logger logger = Logger.getLogger(SaxWikiHandler.class);
 	private ReaderOutputModes outputMode;
 	protected int sleep = 50;
 	protected boolean showStatus = true;
@@ -40,6 +43,7 @@ public class SaxWikiHandler extends DefaultHandler {
 	protected String currentTitle;
 	protected String currentRevision;
 	protected String destinationDirectory = "pages";
+	protected HTTPWriter httpWriter = null;
 
 	private String applicationName;
 	private String language;
@@ -64,14 +68,23 @@ public class SaxWikiHandler extends DefaultHandler {
 	}
 
 	/**
-	 * Creates a SaxWikiHandler object, using a folder named "pages" as an
-	 * output source.
+	 * 
 	 */
 	public SaxWikiHandler(String destinationDirectory, String applicationName, String language) {
 		this.destinationDirectory = destinationDirectory;
 		this.applicationName = applicationName;
 		this.language = language;
 		outputMode = ReaderOutputModes.FILE;
+
+		// usingQueue = false;
+	}
+
+	public SaxWikiHandler(String destinationHostname, Integer destinationPort,
+			String applicationName, String language) throws MalformedURLException {
+		this.httpWriter = new HTTPWriter(destinationHostname, destinationPort);
+		this.applicationName = applicationName;
+		this.language = language;
+		outputMode = ReaderOutputModes.HTTP;
 
 		// usingQueue = false;
 	}
@@ -119,6 +132,15 @@ public class SaxWikiHandler extends DefaultHandler {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void dumpArticleToHTTP() {
+		WikiArticle article = assembleArticle();
+		if (article != null) {
+			if (httpWriter != null) {
+				httpWriter.writeArticle(article);
+			}
+		}
 	}
 
 	protected void dumpArticleToFile() {
@@ -269,6 +291,9 @@ public class SaxWikiHandler extends DefaultHandler {
 			case FILE:
 				dumpArticleToFile();
 				break;
+			case HTTP:
+				dumpArticleToHTTP();
+				break;
 			default:
 				break;
 			}
@@ -306,4 +331,5 @@ public class SaxWikiHandler extends DefaultHandler {
 	public void setShowStatus(boolean statusOnConsole) {
 		this.showStatus = statusOnConsole;
 	}
+
 }

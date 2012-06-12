@@ -93,7 +93,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 			@Override
 			public void run() {
 				sztakipediaBot = new SztakipediaBot(ircChannel, domainUrl, articlesQueue,
-						articleFilter, applicationName);
+						articleFilter, applicationName, mLanguage);
 				sztakipediaBot.start();
 			}
 		});
