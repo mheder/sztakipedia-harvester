@@ -41,6 +41,7 @@ public class DumpReader {
 					fis = new FileInputStream(inputFile);
 					isr = new InputStreamReader(fis, "UTF-8");
 					XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+					// Construct a SaxWikiHandler with HTTP output mode
 					SaxWikiHandler saxWikiHandler = new SaxWikiHandler(destinationHostname,
 							destinationPort, applicationName, language);
 					xmlReader.setContentHandler(saxWikiHandler);

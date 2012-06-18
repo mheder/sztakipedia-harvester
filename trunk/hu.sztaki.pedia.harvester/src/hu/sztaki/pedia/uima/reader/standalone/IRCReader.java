@@ -14,7 +14,7 @@ public class IRCReader {
 		if (args.length < 5) {
 			System.out
 					.println("Too few arguments! \n "
-							+ "Usage: java IRCReader <en.wikipedia> <destinationHostname> <destinationPort> <applicationName> <language> ");
+							+ "Usage: java hu.sztaki.pedia.uima.reader.standalone.IRCReader <en.wikipedia> <destinationHostname> <destinationPort> <applicationName> <language> ");
 			System.exit(0);
 		}
 		String domain = args[0];
@@ -31,6 +31,7 @@ public class IRCReader {
 			public void run() {
 				SztakipediaBot sztakipediaBot;
 				try {
+					// Construct a SztakipdeiaBot with HTTP output mode
 					sztakipediaBot = new SztakipediaBot(ircChannel, domainUrl, destinationHostname,
 							destinationPort, null, applicationName, language);
 					sztakipediaBot.start();
