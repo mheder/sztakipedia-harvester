@@ -56,6 +56,8 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 	public static final String PARAM_REDIRECT = "RedirectPage";
 	public static final String PARAM_NONARTICLETITLES = "NonArticleTitles";
 	public static final String PARAM_APPNAME = "ApplicationName";
+	public static final String PARAM_APIUSERNAME = "WikiAPIUser";
+	public static final String PARAM_APIPASSNAME = "WikiAPIPassword";
 
 	public static Logger logger = Logger.getLogger(WikiIRCCollectionReader.class);
 
@@ -63,6 +65,9 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 	private final int queueDepth = 500;
 
 	private String mLanguage;
+
+	private String wikiAPIUserName;
+	private String wikiAPIPassword;
 
 	private String applicationName;
 
@@ -77,6 +82,8 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		mLanguage = (String) getConfigParameterValue(PARAM_LANGUAGE);
+		wikiAPIUserName = (String) getConfigParameterValue(PARAM_APIUSERNAME);
+		wikiAPIPassword = (String) getConfigParameterValue(PARAM_APIPASSNAME);
 		mSofaName = (String) getConfigParameterValue(PARAM_OUTPUTSOFA);
 		applicationName = (String) getConfigParameterValue(PARAM_APPNAME);
 		String redirectPage = (String) getConfigParameterValue(PARAM_REDIRECT);
@@ -93,7 +100,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 			@Override
 			public void run() {
 				sztakipediaBot = new SztakipediaBot(ircChannel, domainUrl, articlesQueue,
-						articleFilter, applicationName, mLanguage);
+						articleFilter, applicationName, mLanguage, wikiAPIUserName, wikiAPIPassword);
 				sztakipediaBot.start();
 			}
 		});

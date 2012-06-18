@@ -14,7 +14,7 @@ public class IRCReader {
 		if (args.length < 5) {
 			System.out
 					.println("Too few arguments! \n "
-							+ "Usage: java hu.sztaki.pedia.uima.reader.standalone.IRCReader <en.wikipedia> <destinationHostname> <destinationPort> <applicationName> <language> ");
+							+ "Usage: java hu.sztaki.pedia.uima.reader.standalone.IRCReader <en.wikipedia> <destinationHostname> <destinationPort> <applicationName> <language> [<API user>] [<API password>] ");
 			System.exit(0);
 		}
 		String domain = args[0];
@@ -25,7 +25,15 @@ public class IRCReader {
 
 		final String domainUrl = domain + ".org";
 		final String ircChannel = "#" + domain;
-
+		final String apiUser;
+		final String apiPassword;
+		if (args.length == 7) {
+			apiUser = args[5];
+			apiPassword = args[6];
+		} else {
+			apiUser = null;
+			apiPassword = null;
+		}
 		Thread botThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -33,7 +41,7 @@ public class IRCReader {
 				try {
 					// Construct a SztakipdeiaBot with HTTP output mode
 					sztakipediaBot = new SztakipediaBot(ircChannel, domainUrl, destinationHostname,
-							destinationPort, null, applicationName, language);
+							destinationPort, null, applicationName, language, apiUser, apiPassword);
 					sztakipediaBot.start();
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
