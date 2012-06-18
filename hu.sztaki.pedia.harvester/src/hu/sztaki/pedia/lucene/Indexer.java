@@ -15,6 +15,8 @@
  *******************************************************************************/
 package hu.sztaki.pedia.lucene;
 
+import hu.sztaki.pedia.lucene.exceptions.IndexWriterNotInitializedException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
