@@ -39,25 +39,43 @@ public class SztakipediaBot extends PircBot {
 	private WikiDumpArticleFilter articleFilter = null;
 
 	/**
-	 * Constructor for usage with LOG output
 	 * 
 	 * @param ircChannel
 	 * @param domainUrl
 	 * @param articleFilter
+	 * @param applicationName
+	 * @param language
+	 * @param apiUser
+	 *            MediaWiki API username (can be null)
+	 * @param apiPassword
+	 *            MediaWiki API password (can be null)
 	 */
 	public SztakipediaBot(String ircChannel, String domainUrl, WikiDumpArticleFilter articleFilter,
-			String applicationName, String language) {
+			String applicationName, String language, String apiUser, String apiPassword) {
 		outputMode = ReaderOutputModes.LOG;
 		this.articleFilter = articleFilter;
 		this.ircChannel = ircChannel;
 		this.applicationName = applicationName;
 		this.language = language;
-		initializeBot(domainUrl);
+		initializeBot(domainUrl, apiUser, apiPassword);
 	}
 
+	/**
+	 * 
+	 * @param ircChannel
+	 * @param domainUrl
+	 * @param queue
+	 * @param articleFilter
+	 * @param applicationName
+	 * @param language
+	 * @param apiUser
+	 *            MediaWiki API username (can be null)
+	 * @param apiPassword
+	 *            MediaWiki API password (can be null)
+	 */
 	public SztakipediaBot(String ircChannel, String domainUrl,
 			ArrayBlockingQueue<WikiArticle> queue, WikiDumpArticleFilter articleFilter,
-			String applicationName, String language) {
+			String applicationName, String language, String apiUser, String apiPassword) {
 		// setVerbose(true);
 		outputMode = ReaderOutputModes.QUEUE;
 		this.queue = queue;
@@ -65,12 +83,27 @@ public class SztakipediaBot extends PircBot {
 		this.ircChannel = ircChannel;
 		this.applicationName = applicationName;
 		this.language = language;
-		initializeBot(domainUrl);
+		initializeBot(domainUrl, apiUser, apiPassword);
 	}
 
+	/**
+	 * 
+	 * @param ircChannel
+	 * @param domainUrl
+	 * @param destinationHost
+	 * @param destinationPort
+	 * @param articleFilter
+	 * @param applicationName
+	 * @param language
+	 * @param apiUser
+	 *            MediaWiki API username (can be null)
+	 * @param apiPassword
+	 *            MediaWiki API password (can be null)
+	 * @throws MalformedURLException
+	 */
 	public SztakipediaBot(String ircChannel, String domainUrl, String destinationHost,
 			Integer destinationPort, WikiDumpArticleFilter articleFilter, String applicationName,
-			String language) throws MalformedURLException {
+			String language, String apiUser, String apiPassword) throws MalformedURLException {
 		// setVerbose(true);
 		outputMode = ReaderOutputModes.HTTP;
 		this.httpWriter = new HTTPWriter(destinationHost, destinationPort);
@@ -78,20 +111,21 @@ public class SztakipediaBot extends PircBot {
 		this.ircChannel = ircChannel;
 		this.applicationName = applicationName;
 		this.language = language;
-		initializeBot(domainUrl);
+		initializeBot(domainUrl, apiUser, apiPassword);
 	}
 
 	@SuppressWarnings("deprecation")
-	private void initializeBot(String domainUrl) {
-		setLogin("sztakipediabot2");
+	private void initializeBot(String domainUrl, String apiUser, String apiPassword) {
+		setLogin(apiUser + applicationName);
 		wikiAPI = new Wiki(domainUrl);
 		wikiAPI.setLogLevel(java.util.logging.Level.WARNING);
 		// setVerbose(true);
 		setName("sztakipediabot" + applicationName);
 		try {
 			connect("irc.wikimedia.org");
-			char[] password = "CasToLucene".toCharArray();
-			wikiAPI.login("sztakipediabot", password);
+			if (apiUser != null && apiPassword != null) {
+				wikiAPI.login(apiUser, apiPassword.toCharArray());
+			}
 		} catch (NickAlreadyInUseException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -223,7 +257,7 @@ public class SztakipediaBot extends PircBot {
 
 		// Now start our bot up.
 		SztakipediaBot bot = new SztakipediaBot("#en.wikipedia", "en.wikipedia.org", null, "TEST",
-				"en");
+				"en", "ExampleWikiAPIUser", "ExampleWikiAPIPassword");
 		bot.start();
 	}
 }
