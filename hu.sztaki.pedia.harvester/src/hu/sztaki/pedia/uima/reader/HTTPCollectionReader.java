@@ -28,10 +28,12 @@ public class HTTPCollectionReader extends CollectionReader_ImplBase {
 	 */
 	public static final String PARAM_OUTPUTSOFA = "OutputSofa";
 	public static final String PARAM_PORTS = "Ports";
+	public static final String PARAM_MAXFORMSIZE = "MaxRequestSize";
 	private ArrayBlockingQueue<WikiArticle> articlesQueue;
 	private final int queueDepth = 500;
 	private String mSofaName;
 	private Integer[] ports;
+	private Integer maxFormSize;
 	private Map<Integer, Server> servers = new HashMap<Integer, Server>();
 	public static Logger logger = Logger.getLogger(HTTPCollectionReader.class);
 
@@ -43,9 +45,11 @@ public class HTTPCollectionReader extends CollectionReader_ImplBase {
 		mSofaName = (String) getConfigParameterValue(PARAM_OUTPUTSOFA);
 		articlesQueue = new ArrayBlockingQueue<WikiArticle>(queueDepth);
 		ports = (Integer[]) getConfigParameterValue(PARAM_PORTS);
+		maxFormSize = (Integer) getConfigParameterValue(PARAM_MAXFORMSIZE);
 		for (Integer port : ports) {
 			Server server = new Server(port);
-			server.setHandler(new HTTPReadHandler());
+			server.setHandler(new HTTPReadHandler(articlesQueue));
+			server.setAttribute("org.eclipse.jetty.Request.maxFormContentSize", maxFormSize);
 			servers.put(port, server);
 			try {
 				server.start();
@@ -134,7 +138,7 @@ public class HTTPCollectionReader extends CollectionReader_ImplBase {
 
 	@Override
 	public boolean hasNext() throws IOException, CollectionException {
-		// always true, this is endless processing :)
+		// always true, this is for endless processing :)
 		return true;
 	}
 
