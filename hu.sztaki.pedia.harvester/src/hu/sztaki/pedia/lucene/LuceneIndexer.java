@@ -1,12 +1,13 @@
 package hu.sztaki.pedia.lucene;
 
+import hu.sztaki.pedia.lucene.util.IChainIndexerUtil;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
 
@@ -19,15 +20,17 @@ public class LuceneIndexer {
 	private IndexWriter writer;
 	private Searcher searcher;
 	private Directory indexDirectory;
+	private IChainIndexerUtil chainIndexerUtil;
 	private Logger logger = Logger.getLogger(LuceneIndexer.class);
 
 	public static LuceneIndexer getInstance() {
 		return indexerInstance;
 	}
 
-	public synchronized void initialize(String indexDirPath, IndexWriterConfig iwc)
+	public synchronized void initialize(String indexDirPath, IChainIndexerUtil chainIndexerUtil)
 			throws IOException {
 		// directory
+		this.chainIndexerUtil = chainIndexerUtil;
 		File indexDirFile = new File(indexDirPath);
 		if (!indexDirFile.exists()) {
 			indexDirFile.mkdirs();
@@ -37,8 +40,8 @@ public class LuceneIndexer {
 			close();
 		}
 
-		writer = new IndexWriter(indexDirectory, iwc);
-		searcher = new Searcher(indexDirPath, iwc.getAnalyzer());
+		writer = new IndexWriter(indexDirectory, chainIndexerUtil.getIndexWriterConfig());
+		searcher = new Searcher(indexDirPath, chainIndexerUtil.getIndexWriterConfig().getAnalyzer());
 		setWriterInitialized(true);
 	}
 
