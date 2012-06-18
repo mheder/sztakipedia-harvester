@@ -20,6 +20,12 @@
         <multiValued>true</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>MaxRequestSize</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -34,6 +40,12 @@
           <array>
             <integer>8080</integer>
           </array>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>MaxRequestSize</name>
+        <value>
+          <integer>10000000</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

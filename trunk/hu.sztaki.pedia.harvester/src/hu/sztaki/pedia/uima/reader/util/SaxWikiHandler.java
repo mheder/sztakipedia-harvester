@@ -127,7 +127,13 @@ public class SaxWikiHandler extends DefaultHandler {
 	private void sendEOF() {
 		EndOfFileToken eofToken = new EndOfFileToken();
 		try {
-			queue.put(eofToken);
+			switch (outputMode) {
+			case QUEUE:
+				queue.put(eofToken);
+				break;
+			default:
+				break;
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

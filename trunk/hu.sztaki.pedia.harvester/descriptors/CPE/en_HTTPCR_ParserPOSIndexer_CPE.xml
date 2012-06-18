@@ -28,6 +28,12 @@
 						</array>
 					</value>
 				</nameValuePair>
+				<nameValuePair>
+					<name>MaxRequestSize</name>
+					<value>
+						<integer>10000000</integer>
+					</value>
+				</nameValuePair>
 			</configurationParameterSettings>
 		</collectionIterator>
 	</collectionReader>
