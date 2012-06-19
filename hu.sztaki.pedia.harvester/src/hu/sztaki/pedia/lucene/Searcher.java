@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -74,5 +76,18 @@ public class Searcher {
 			IOException {
 		Query q = createQuery(fieldName, text);
 		return searcher.search(q, n);
+	}
+
+	public Document getDocument(int doc) {
+		Document toReturn;
+		try {
+			toReturn = searcher.doc(doc);
+		} catch (CorruptIndexException e) {
+			toReturn = null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			toReturn = null;
+		}
+		return toReturn;
 	}
 }
