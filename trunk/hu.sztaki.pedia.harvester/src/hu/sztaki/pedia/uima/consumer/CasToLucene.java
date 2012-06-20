@@ -122,17 +122,6 @@ public class CasToLucene extends AbstractMultiSofaAnnotator {
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		SourceDocumentInformation sdocInfo = null;
-		// try {
-		// JCas docInfo = jCas.getView(docinfoSofaName);
-		// AnnotationIndex<Annotation> sdiIndex =
-		// jCas.getAnnotationIndex(SourceDocumentInformation.type);
-		// for (Annotation annotation : sdiIndex) {
-		// sdocInfo = (SourceDocumentInformation) annotation;
-		// }
-		// } catch (CASException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
 
 		ArrayList<JCas> casList = getJCasList(jCas);
 		for (JCas doc : casList) {
@@ -179,10 +168,10 @@ public class CasToLucene extends AbstractMultiSofaAnnotator {
 				indexer.index(LuceneUtil.getIdFromURI(sdocInfo.getUri()), sentencesList,
 						uniqLemmas, linkList, templateList);
 			} catch (CorruptIndexException e) {
-				// TODO Auto-generated catch block
+				logger.error("Couldn't save to indexes doc:" + sdocInfo.getUri(), e);
 				e.printStackTrace();
 			} catch (IOException e) {
-				logger.error("Couldnt save to indexes doc:" + sdocInfo.getUri(), e);
+				logger.error("Couldn't save to indexes doc:" + sdocInfo.getUri(), e);
 				e.printStackTrace();
 			}
 		}

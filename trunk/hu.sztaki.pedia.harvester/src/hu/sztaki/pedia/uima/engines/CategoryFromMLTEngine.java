@@ -16,7 +16,7 @@
 package hu.sztaki.pedia.uima.engines;
 
 import hu.sztaki.pedia.lucene.Indexer;
-import hu.sztaki.pedia.lucene.MoreLikeThisWrapper;
+import hu.sztaki.pedia.lucene.Searcher;
 import hu.sztaki.pedia.lucene.util.EngPosChainIndexerUtil;
 import hu.sztaki.pedia.lucene.util.HunPosChainIndexerUtil;
 import hu.sztaki.pedia.lucene.util.HunStemChainIndexerUtil;
@@ -50,7 +50,7 @@ public class CategoryFromMLTEngine extends AbstractMultiSofaAnnotator {
 	public static final String ENGPOSCHAIN_ID = "eng_pos";
 
 	private IChainIndexerUtil indexerUtil;
-	private MoreLikeThisWrapper mltw;
+	private Searcher searcher;
 
 	@Override
 	public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -72,7 +72,7 @@ public class CategoryFromMLTEngine extends AbstractMultiSofaAnnotator {
 		} else
 			throw new RuntimeException("Invalid indexer util name!");
 		try {
-			mltw = new MoreLikeThisWrapper(indexDir, indexerUtil.getSentenceAnalyzer(),
+			searcher = new Searcher(indexDir, indexerUtil.getSentenceAnalyzer(),
 					minTermFreq.intValue(), minWordLen.intValue());
 		} catch (IOException e) {
 			throw new ResourceInitializationException(e.getMessage(), null);
@@ -105,7 +105,7 @@ public class CategoryFromMLTEngine extends AbstractMultiSofaAnnotator {
 			List<Document> docs;
 			try {
 				System.out.println("Article:" + sb.toString());
-				docs = mltw.getMLTDocuments(sb.toString(), Indexer.SENTENCES_FIELD_NAME, 5);
+				docs = searcher.searchMLTDocuments(sb.toString(), Indexer.SENTENCES_FIELD_NAME, 5);
 				for (Document document : docs) {
 					// if
 					// (articleId.equals(document.get(Indexer.ID_FIELD_NAME))){
