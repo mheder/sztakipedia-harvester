@@ -37,6 +37,7 @@ import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.uima.SentenceAnnotation;
 import org.apache.uima.TokenAnnotation;
 import org.apache.uima.WikiArticleAnnotation;
+import org.apache.uima.WikiCategoryAnnotation;
 import org.apache.uima.WikiLinkAnnotation;
 import org.apache.uima.WikiTemplateAnnotation;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -72,8 +73,10 @@ public class LuceneIndexer {
 		}
 
 		writer = new IndexWriter(indexDirectory, chainIndexerUtil.getIndexWriterConfig());
+		commit();
 		searcher = new Searcher(indexDirPath, chainIndexerUtil.getIndexWriterConfig().getAnalyzer());
 		setWriterInitialized(true);
+		System.out.println("LiceneIndexer initialized!");
 	}
 
 	/**
@@ -140,10 +143,10 @@ public class LuceneIndexer {
 		indexLemmas(annotationIndexMap.get(TokenAnnotation.type), doc);
 		indexLinks(annotationIndexMap.get(WikiLinkAnnotation.type), doc);
 		indexTemplates(annotationIndexMap.get(WikiTemplateAnnotation.type), doc);
+		indexCategories(annotationIndexMap.get(WikiCategoryAnnotation.type), doc);
 		try {
-			writer.updateDocument(
-					new Term(IndexFieldNames.ID_FIELD_NAME, Long.toString(wikiArticleAnnotation
-							.getId())), doc);
+			writer.updateDocument(new Term(IndexFieldNames.ID_FIELD_NAME,
+					getArticleID(wikiArticleAnnotation)), doc);
 
 			countToCommit++;
 			if (countToCommit == COMMIT_THRESHOLD) {
@@ -187,6 +190,20 @@ public class LuceneIndexer {
 	}
 
 	/**
+	 * Writes the LINKS fields of the stored document.
+	 * 
+	 * @param categoryIndex
+	 * @param doc
+	 */
+	private void indexCategories(AnnotationIndex<Annotation> categoryIndex, Document doc) {
+		for (Annotation annotation : categoryIndex) {
+			WikiCategoryAnnotation wikiCategory = (WikiCategoryAnnotation) annotation;
+			doc.add(new Field(IndexFieldNames.CATEGORY_FIELD_NAME, wikiCategory.getName(),
+					Field.Store.YES, Field.Index.ANALYZED));
+		}
+	}
+
+	/**
 	 * Writes the SENTENCES fields of the stored document.
 	 * 
 	 * @param sentenceIndex
@@ -195,7 +212,7 @@ public class LuceneIndexer {
 	 */
 	private void indexSentences(AnnotationIndex<Annotation> sentenceIndex,
 			AnnotationIndex<Annotation> tokenIndex, Document doc) {
-		List<String> sentences = chainIndexerUtil.getSentences(sentenceIndex, sentenceIndex);
+		List<String> sentences = chainIndexerUtil.getSentences(sentenceIndex, tokenIndex);
 		for (String sentence : sentences) {
 			// doc.add(new Field(SENTENCES_FIELD_NAME, sentence, Field.Store.NO,
 			// Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));

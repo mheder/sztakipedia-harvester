@@ -50,6 +50,7 @@ public class Searcher {
 	private Map<String, QueryParser> parsers = new HashMap<String, QueryParser>();
 	private MoreLikeThis moreLikeThis;
 	private IndexReader indexReader;
+	private File indexDirFile;
 
 	private int minTermFreq = 2;
 	private int minWordLength = 4;
@@ -93,7 +94,7 @@ public class Searcher {
 	 * @throws IOException
 	 */
 	public Searcher(String indexDirPath, Analyzer analyzer) throws IOException {
-		File indexDirFile = new File(indexDirPath);
+		indexDirFile = new File(indexDirPath);
 		if (!indexDirFile.exists()) {
 			indexDirFile.mkdirs();
 		}

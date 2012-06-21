@@ -6,6 +6,9 @@
     <delegateAnalysisEngine key="hmmtaggerAE">
       <import location="../AE/hmmtaggerAE.xml"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="categoryExtractorAE">
+      <import location="../AE/categoryExtractorAE.xml"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="szpparserAE">
       <import location="../AE/szpparserAE.xml"/>
     </delegateAnalysisEngine>
@@ -28,6 +31,7 @@
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
         <overrides>
+          <parameter>categoryExtractorAE/SofaNames</parameter>
           <parameter>wstAE/SofaNames</parameter>
         </overrides>
       </configurationParameter>
@@ -109,6 +113,7 @@
     <flowConstraints>
       <fixedFlow>
         <node>szpparserAE</node>
+        <node>categoryExtractorAE</node>
         <node>wstAE</node>
         <node>hmmtaggerAE</node>
       </fixedFlow>

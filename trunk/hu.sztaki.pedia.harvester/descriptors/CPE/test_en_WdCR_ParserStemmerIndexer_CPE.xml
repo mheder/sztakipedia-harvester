@@ -24,7 +24,7 @@
                 <nameValuePair>
                     <name>InputFile</name>
                     <value>
-                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.harvester.run/input/dump/enwikitest2.xml</string>
+                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.harvester.run/input/dump/enwikitest3.xml</string>
 <!--                              <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.uima/input/test1/330.xml</string> -->
                    
                     </value>
@@ -71,9 +71,10 @@
       			</nameValuePair>
             </configurationParameterSettings>
         </casProcessor>
-        <casProcessor deployment="integrated" name="CasToLuceneAE">
+        <casProcessor deployment="integrated" name="LuceneConsumer">
             <descriptor>
-                <import location="../CAS/CasToLuceneAE.xml"/>
+                <import location="../CAS/LuceneConsumerAE.xml"/>
+<!-- 					<import location="../CAS/CasToLuceneAE.xml"/> -->
             </descriptor>
             <deploymentParameters/>
             <errorHandling>

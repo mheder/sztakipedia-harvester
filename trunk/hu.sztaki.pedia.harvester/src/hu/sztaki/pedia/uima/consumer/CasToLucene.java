@@ -103,7 +103,7 @@ public class CasToLucene extends AbstractMultiSofaAnnotator {
 				throw new ResourceInitializationException();
 			IndexWriterConfig iwc = chainIndexerUtil.getIndexWriterConfig();
 			indexer = Indexer.getInstance();
-			if (Indexer.isWriterInitialized()) {
+			if (!Indexer.isWriterInitialized()) {
 				indexer.initialize(indexDir, iwc);
 			}
 		} catch (IOException e) {

@@ -16,9 +16,11 @@
 package hu.sztaki.pedia.uima.parser;
 
 import hu.sztaki.sztakipediaparser.wiki.tags.AnchorTag;
+import hu.sztaki.sztakipediaparser.wiki.tags.ParagraphTag;
 import hu.sztaki.sztakipediaparser.wiki.tags.TemplateTag;
 import hu.sztaki.sztakipediaparser.wiki.visitor.html.PlainTextContentWriter;
 
+import org.apache.uima.ParagraphAnnotation;
 import org.apache.uima.WikiLinkAnnotation;
 import org.apache.uima.WikiTemplateAnnotation;
 import org.apache.uima.jcas.JCas;
@@ -26,18 +28,6 @@ import org.apache.uima.jcas.JCas;
 public class UimaTagVisitor extends PlainTextContentWriter {
 
 	private JCas doc;
-
-	public UimaTagVisitor() {
-		out = new StringBuilder();
-	}
-
-	/**
-	 * 
-	 * @return the string representing the articles text
-	 */
-	public String getContent() {
-		return out.toString();
-	}
 
 	public void setDoc(JCas doc) {
 		this.doc = doc;
@@ -56,12 +46,31 @@ public class UimaTagVisitor extends PlainTextContentWriter {
 
 	@Override
 	public void visit(AnchorTag tag) {
+		int beginPos = out.length() - 1;
+		super.visit(tag);
+		int endPos = out.length() - 1;
 		if (tag.getAttributes().containsKey("href")) {
+			String href = tag.getAttributes().get("href");
+			String title = tag.getAttributes().get("title");
 			WikiLinkAnnotation link = new WikiLinkAnnotation(doc);
-			link.setHref(tag.getAttributes().get("href"));
-			link.setTitle(tag.getAttributes().get("title"));
+			link.setHref(href);
+			link.setTitle(title);
+			link.setBegin(beginPos);
+			link.setEnd(endPos);
 			link.addToIndexes();
 		}
-		super.visit(tag);
+
 	}
+
+	@Override
+	public void visit(ParagraphTag tag) {
+		out.append("\n");
+		int beginPos = out.length() - 1;
+		visitChildren(tag);
+		int endPos = out.length() - 1;
+		ParagraphAnnotation paragraph = new ParagraphAnnotation(doc);
+		paragraph.setBegin(beginPos);
+		paragraph.setEnd(endPos);
+		paragraph.addToIndexes();
+	};
 }

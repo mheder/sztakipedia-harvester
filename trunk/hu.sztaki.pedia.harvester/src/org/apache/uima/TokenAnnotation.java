@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** Single token annotation
- * Updated by JCasGen Tue Jun 05 14:39:05 CEST 2012
+ * Updated by JCasGen Thu Jun 21 10:37:39 CEST 2012
  * XML source: /home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.harvester/descriptors/typeSystemDescriptor.xml
  * @generated */
 public class TokenAnnotation extends Annotation {

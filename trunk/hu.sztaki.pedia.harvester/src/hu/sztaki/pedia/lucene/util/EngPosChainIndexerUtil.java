@@ -20,6 +20,10 @@ import hu.sztaki.pedia.uima.util.PennTags;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.uima.TokenAnnotation;
+import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.jcas.tcas.Annotation;
+
 public class EngPosChainIndexerUtil extends HunPosChainIndexerUtil {
 
 	private Set<String> unimportantPOSTags;
@@ -40,6 +44,20 @@ public class EngPosChainIndexerUtil extends HunPosChainIndexerUtil {
 			result = false;
 		}
 		return result;
+	}
+
+	@Override
+	public Set<String> getUniqLemmas(AnnotationIndex<Annotation> tokenIndex) {
+		Set<String> uniqLemmas = new HashSet<String>();
+		for (Annotation annotation : tokenIndex) {
+			TokenAnnotation ta = (TokenAnnotation) annotation;
+			// for collecting unique lemmas
+			if (isValidWordToken(ta.getPosTag())) {
+				uniqLemmas.add(ta.getCoveredText());
+			}
+		}
+		return uniqLemmas;
+
 	}
 
 	// @Override
@@ -106,7 +124,8 @@ public class EngPosChainIndexerUtil extends HunPosChainIndexerUtil {
 		boolean result = false;
 		if (posTag != null) {
 			for (PennTags penncat : PennTags.values()) {
-				if (!result && posTag.startsWith(penncat.abbreviation())) {
+				if (!result
+						&& posTag.toLowerCase().startsWith(penncat.abbreviation().toLowerCase())) {
 					result = true;
 				}
 			}
