@@ -181,5 +181,10 @@
         </featureDescription>
       </features>
     </typeDescription>
+    <typeDescription>
+      <name>org.apache.uima.ParagraphAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
   </types>
 </typeSystemDescription>

@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Jun 05 14:39:06 CEST 2012
+ * Updated by JCasGen Thu Jun 21 10:37:39 CEST 2012
  * @generated */
 public class WikiLinkAnnotation_Type extends Annotation_Type {
   /** @generated */

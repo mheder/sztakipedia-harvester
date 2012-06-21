@@ -15,7 +15,6 @@
  *******************************************************************************/
 package hu.sztaki.pedia.uima.consumer;
 
-import hu.sztaki.pedia.lucene.Indexer;
 import hu.sztaki.pedia.lucene.LuceneIndexer;
 import hu.sztaki.pedia.lucene.exceptions.NewerVersionStoredException;
 import hu.sztaki.pedia.lucene.util.EngPosChainIndexerUtil;
@@ -88,7 +87,7 @@ public class LuceneConsumer extends AbstractMultiSofaAnnotator {
 			} else
 				throw new ResourceInitializationException();
 			indexer = LuceneIndexer.getInstance();
-			if (!Indexer.isWriterInitialized()) {
+			if (!LuceneIndexer.isWriterInitialized()) {
 				indexer.initialize(indexDir, chainIndexerUtil);
 			}
 		} catch (IOException e) {
@@ -104,8 +103,9 @@ public class LuceneConsumer extends AbstractMultiSofaAnnotator {
 			for (JCas doc : casList) {
 				// put all annotation indexes into a map
 				Map<Integer, AnnotationIndex<Annotation>> annotationIndexMap = new HashMap<Integer, AnnotationIndex<Annotation>>();
-				annotationIndexMap.put(WikiArticleAnnotation.type,
-						doc.getAnnotationIndex(WikiArticleAnnotation.type));
+				AnnotationIndex<Annotation> articleIndex = doc
+						.getAnnotationIndex(WikiArticleAnnotation.type);
+				annotationIndexMap.put(WikiArticleAnnotation.type, articleIndex);
 				annotationIndexMap.put(SourceDocumentInformation.type,
 						doc.getAnnotationIndex(SourceDocumentInformation.type));
 				annotationIndexMap.put(TokenAnnotation.type,
@@ -124,7 +124,9 @@ public class LuceneConsumer extends AbstractMultiSofaAnnotator {
 			}
 		} catch (NewerVersionStoredException e) {
 			logger.info(e.getMessage());
+			System.out.println(e.getMessage());
 			aJCas.release();
+
 		}
 
 	}

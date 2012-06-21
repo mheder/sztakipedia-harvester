@@ -15,7 +15,7 @@
  *******************************************************************************/
 package hu.sztaki.pedia.lucene.util;
 
-import hu.sztaki.pedia.lucene.Indexer;
+import hu.sztaki.pedia.lucene.IndexFieldNames;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,29 +36,27 @@ import org.apache.uima.jcas.tcas.Annotation;
 public class HunStemChainIndexerUtil implements IChainIndexerUtil {
 	private PerFieldAnalyzerWrapper pfaWrapper;
 	private Analyzer sentenceAnalyzer;
-	
+
 	public HunStemChainIndexerUtil() {
 		// per field different analyzer, the default is Keyword
-		pfaWrapper = new PerFieldAnalyzerWrapper(
-				new KeywordAnalyzer());
+		pfaWrapper = new PerFieldAnalyzerWrapper(new KeywordAnalyzer());
 		sentenceAnalyzer = new HungarianAnalyzer(Version.LUCENE_34);
-		pfaWrapper.addAnalyzer(Indexer.SENTENCES_FIELD_NAME, sentenceAnalyzer);
+		pfaWrapper.addAnalyzer(IndexFieldNames.SENTENCES_FIELD_NAME, sentenceAnalyzer);
 	}
 
 	@Override
 	public IndexWriterConfig getIndexWriterConfig() {
-		return new IndexWriterConfig(Version.LUCENE_34,
-				pfaWrapper);
+		return new IndexWriterConfig(Version.LUCENE_34, pfaWrapper);
 	}
 
 	@Override
 	public Set<String> getUniqLemmas(AnnotationIndex<Annotation> tokenIndex) {
 		Set<String> uniqLemmas = new HashSet<String>();
 		for (Annotation annotation : tokenIndex) {
-				TokenAnnotation ta = (TokenAnnotation) annotation;
-				// for collecting unique lemmas
-					uniqLemmas.add(ta.getLemma());
-			}
+			TokenAnnotation ta = (TokenAnnotation) annotation;
+			// for collecting unique lemmas
+			uniqLemmas.add(ta.getLemma());
+		}
 		return uniqLemmas;
 	}
 

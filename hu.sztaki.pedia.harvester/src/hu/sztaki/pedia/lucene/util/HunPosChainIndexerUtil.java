@@ -15,7 +15,7 @@
  *******************************************************************************/
 package hu.sztaki.pedia.lucene.util;
 
-import hu.sztaki.pedia.lucene.Indexer;
+import hu.sztaki.pedia.lucene.IndexFieldNames;
 import hu.sztaki.pedia.uima.util.MSDCategory;
 
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ public class HunPosChainIndexerUtil implements IChainIndexerUtil {
 	public static String STOP_DELIMITER = "skippedworddelimitertoken";
 	public static final String SPACE = " ";
 
-	private PerFieldAnalyzerWrapper pfaWrapper;
-	private Analyzer sentenceAnalyzer;
+	protected PerFieldAnalyzerWrapper pfaWrapper;
+	protected Analyzer sentenceAnalyzer;
 
 	public HunPosChainIndexerUtil(String delimiter) {
 		if (delimiter != null) {
@@ -53,7 +53,7 @@ public class HunPosChainIndexerUtil implements IChainIndexerUtil {
 		// per field different analyzer, the default is Keyword
 		pfaWrapper = new PerFieldAnalyzerWrapper(new KeywordAnalyzer());
 		sentenceAnalyzer = new StopAnalyzer(Version.LUCENE_34, stopDelimiters);
-		pfaWrapper.addAnalyzer(Indexer.SENTENCES_FIELD_NAME, sentenceAnalyzer);
+		pfaWrapper.addAnalyzer(IndexFieldNames.SENTENCES_FIELD_NAME, sentenceAnalyzer);
 	}
 
 	@Override

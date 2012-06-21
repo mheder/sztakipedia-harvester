@@ -34,13 +34,13 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.NIOFSDirectory;
 
 public class Indexer {
-	public static final String SENTENCES_FIELD_NAME = "SENTENCES";
-	public static final String TOKENS_FIELD_NAME = "TOKENS";
-	public static final String LINKS_FIELD_NAME = "LINKS";
-	public static final String CATEGORY_FIELD_NAME = "CATEGORIES";
-	public static final String TEMPLATES_FIELD_NAME = "TEMPLATES";
-	public static final String REVISION_FIELD_NAME = "REVISION_ID";
-	public static final String ID_FIELD_NAME = "ARTICLE_ID";
+	// public static final String SENTENCES_FIELD_NAME = "SENTENCES";
+	// public static final String TOKENS_FIELD_NAME = "TOKENS";
+	// public static final String LINKS_FIELD_NAME = "LINKS";
+	// public static final String CATEGORY_FIELD_NAME = "CATEGORIES";
+	// public static final String TEMPLATES_FIELD_NAME = "TEMPLATES";
+	// public static final String REVISION_FIELD_NAME = "REVISION_ID";
+	// public static final String ID_FIELD_NAME = "ARTICLE_ID";
 
 	private static final int COMMIT_THRESHOLD = 1000;
 	private static int countToCommit = 0;
@@ -70,6 +70,7 @@ public class Indexer {
 		}
 
 		writer = new IndexWriter(indexDirectory, iwc);
+		commit();
 		searcher = new Searcher(indexDirPath, iwc.getAnalyzer());
 		setWriterInitialized(true);
 	}
@@ -135,7 +136,7 @@ public class Indexer {
 		for (String sentence : sentences) {
 			// doc.add(new Field(SENTENCES_FIELD_NAME, sentence, Field.Store.NO,
 			// Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-			doc.add(new Field(SENTENCES_FIELD_NAME, sentence, Field.Store.YES,
+			doc.add(new Field(IndexFieldNames.SENTENCES_FIELD_NAME, sentence, Field.Store.YES,
 					Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
 		}
 	}
@@ -147,7 +148,8 @@ public class Indexer {
 			if (lemma != null) {
 				// doc.add(new Field(TOKENS_FIELD_NAME, lemma, Field.Store.NO,
 				// Field.Index.ANALYZED));
-				doc.add(new Field(TOKENS_FIELD_NAME, lemma, Field.Store.YES, Field.Index.ANALYZED));
+				doc.add(new Field(IndexFieldNames.TOKENS_FIELD_NAME, lemma, Field.Store.YES,
+						Field.Index.ANALYZED));
 			}
 		}
 	}
@@ -156,10 +158,11 @@ public class Indexer {
 			throws CorruptIndexException, IOException, IndexWriterNotInitializedException {
 		if (isWriterInitialized()) {
 			Document doc = new Document();
-			doc.add(new Field(ID_FIELD_NAME, articleID, Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.add(new Field(IndexFieldNames.ID_FIELD_NAME, articleID, Field.Store.YES,
+					Field.Index.NOT_ANALYZED));
 			indexSentences(sentences, doc);
 			indexLemmas(tokens, doc);
-			writer.updateDocument(new Term(ID_FIELD_NAME, articleID), doc);
+			writer.updateDocument(new Term(IndexFieldNames.ID_FIELD_NAME, articleID), doc);
 			countToCommit++;
 			if (countToCommit == COMMIT_THRESHOLD) {
 				countToCommit = 0;
@@ -172,12 +175,13 @@ public class Indexer {
 	public void index(String articleID, List<String> sentences, Set<String> tokens,
 			Set<String> links, Set<String> templates) throws CorruptIndexException, IOException {
 		Document doc = new Document();
-		doc.add(new Field(ID_FIELD_NAME, articleID, Field.Store.YES, Field.Index.NOT_ANALYZED));
+		doc.add(new Field(IndexFieldNames.ID_FIELD_NAME, articleID, Field.Store.YES,
+				Field.Index.NOT_ANALYZED));
 		indexSentences(sentences, doc);
 		indexLemmas(tokens, doc);
 		indexLinks(links, doc);
 		indexTemplates(templates, doc);
-		writer.updateDocument(new Term(ID_FIELD_NAME, articleID), doc);
+		writer.updateDocument(new Term(IndexFieldNames.ID_FIELD_NAME, articleID), doc);
 		countToCommit++;
 		if (countToCommit == COMMIT_THRESHOLD) {
 			countToCommit = 0;
@@ -187,13 +191,15 @@ public class Indexer {
 
 	private void indexTemplates(Set<String> templates, Document doc) {
 		for (String template : templates) {
-			doc.add(new Field(TEMPLATES_FIELD_NAME, template, Field.Store.YES, Field.Index.ANALYZED));
+			doc.add(new Field(IndexFieldNames.TEMPLATES_FIELD_NAME, template, Field.Store.YES,
+					Field.Index.ANALYZED));
 		}
 	}
 
 	private void indexLinks(Set<String> links, Document doc) {
 		for (String link : links) {
-			doc.add(new Field(LINKS_FIELD_NAME, link, Field.Store.YES, Field.Index.ANALYZED));
+			doc.add(new Field(IndexFieldNames.LINKS_FIELD_NAME, link, Field.Store.YES,
+					Field.Index.ANALYZED));
 		}
 	}
 

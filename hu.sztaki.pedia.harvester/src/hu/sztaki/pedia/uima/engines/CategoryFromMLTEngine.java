@@ -15,7 +15,7 @@
  *******************************************************************************/
 package hu.sztaki.pedia.uima.engines;
 
-import hu.sztaki.pedia.lucene.Indexer;
+import hu.sztaki.pedia.lucene.IndexFieldNames;
 import hu.sztaki.pedia.lucene.Searcher;
 import hu.sztaki.pedia.lucene.util.EngPosChainIndexerUtil;
 import hu.sztaki.pedia.lucene.util.HunPosChainIndexerUtil;
@@ -105,13 +105,14 @@ public class CategoryFromMLTEngine extends AbstractMultiSofaAnnotator {
 			List<Document> docs;
 			try {
 				System.out.println("Article:" + sb.toString());
-				docs = searcher.searchMLTDocuments(sb.toString(), Indexer.SENTENCES_FIELD_NAME, 5);
+				docs = searcher.searchMLTDocuments(sb.toString(),
+						IndexFieldNames.SENTENCES_FIELD_NAME, 5);
 				for (Document document : docs) {
 					// if
 					// (articleId.equals(document.get(Indexer.ID_FIELD_NAME))){
 					// continue;
 					// }
-					System.out.println(document.get(Indexer.ID_FIELD_NAME));
+					System.out.println(document.get(IndexFieldNames.ID_FIELD_NAME));
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
