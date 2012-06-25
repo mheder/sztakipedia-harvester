@@ -69,9 +69,9 @@
       			</nameValuePair>
             </configurationParameterSettings>
         </casProcessor>
-        <casProcessor deployment="integrated" name="CasToLuceneAE">
+        <casProcessor deployment="integrated" name="LuceneConsumerAE">
             <descriptor>
-                <import location="../CAS/CasToLuceneAE.xml"/>
+                <import location="../CAS/LuceneConsumerAE.xml"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>

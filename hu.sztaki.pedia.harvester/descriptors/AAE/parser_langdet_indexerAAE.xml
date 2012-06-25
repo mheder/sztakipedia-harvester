@@ -1,31 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
-    Copyright 2012 Tamas Farkas, MTA SZTAKI, Hungary
-   
-       Licensed under the Apache License, Version 2.0 (the "License");
-       you may not use this file except in compliance with the License.
-       You may obtain a copy of the License at
-   
-           http://www.apache.org/licenses/LICENSE-2.0
-   
-       Unless required by applicable law or agreed to in writing, software
-       distributed under the License is distributed on an "AS IS" BASIS,
-       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-       See the License for the specific language governing permissions and
-       limitations under the License.
- -->
-
+<?xml version="1.0" encoding="UTF-8"?>
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="articleIdExtractorAE">
-      <import location="../AE/articleIdExtractorAE.xml"/>
+    <delegateAnalysisEngine key="LuceneConsumerAE">
+      <import location="../CAS/LuceneConsumerAE.xml"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="langrecogAE">
       <import location="../AE/langrecogAE.xml"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="CasToLuceneAE">
-      <import location="../CAS/CasToLuceneAE.xml"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="szpparserAE">
       <import location="../AE/szpparserAE.xml"/>
@@ -51,8 +33,7 @@
         <overrides>
           <parameter>wstAE/SofaNames</parameter>
           <parameter>langrecogAE/SofaNames</parameter>
-          <parameter>CasToLuceneAE/SofaNames</parameter>
-          <parameter>articleIdExtractorAE/SofaNames</parameter>
+          <parameter>LuceneConsumerAE/SofaNames</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -79,7 +60,7 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>CasToLuceneAE/LangChainID</parameter>
+          <parameter>LuceneConsumerAE/LangChainID</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -88,7 +69,7 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>CasToLuceneAE/LuceneIndexDir</parameter>
+          <parameter>LuceneConsumerAE/LuceneIndexDir</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -145,10 +126,9 @@
     <flowConstraints>
       <fixedFlow>
         <node>szpparserAE</node>
-        <node>articleIdExtractorAE</node>
         <node>wstAE</node>
         <node>langrecogAE</node>
-        <node>CasToLuceneAE</node>
+        <node>LuceneConsumerAE</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
