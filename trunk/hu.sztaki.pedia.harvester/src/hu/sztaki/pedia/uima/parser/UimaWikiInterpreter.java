@@ -25,9 +25,8 @@ import java.util.Locale;
 
 import org.apache.uima.jcas.JCas;
 
-public class UimaWikiInterpreter extends DefaultWikiInterpreter implements
-		IUimaWikiInterpreter {
-	
+public class UimaWikiInterpreter extends DefaultWikiInterpreter implements IUimaWikiInterpreter {
+
 	JCas doc;
 
 	public UimaWikiInterpreter() throws MalformedURLException, IOException,
@@ -35,20 +34,19 @@ public class UimaWikiInterpreter extends DefaultWikiInterpreter implements
 		super();
 	}
 
-	public UimaWikiInterpreter(Locale locale) throws MalformedURLException,
-			IOException, NoSuchAlgorithmException {
+	public UimaWikiInterpreter(Locale locale) throws MalformedURLException, IOException,
+			NoSuchAlgorithmException {
 		super(locale);
 	}
 
-	public UimaWikiInterpreter(Locale locale, String rootURL, String apiURL,
-			String mediaUrl) throws MalformedURLException, IOException,
-			NoSuchAlgorithmException {
+	public UimaWikiInterpreter(Locale locale, String rootURL, String apiURL, String mediaUrl)
+			throws MalformedURLException, IOException, NoSuchAlgorithmException {
 		super(locale, rootURL, apiURL, mediaUrl);
 	}
-	
+
 	@Override
 	public void render(StringBuilder b, boolean visitRoot) {
-		UimaTagVisitor v = new UimaTagVisitor();
+		UimaTagVisitor v = new UimaTagVisitor(b);
 		v.setDoc(doc);
 		if (visitRoot) {
 			v.dispatchVisit(tagtree.getTreeRoot());
@@ -57,19 +55,19 @@ public class UimaWikiInterpreter extends DefaultWikiInterpreter implements
 				v.dispatchVisit(c);
 			}
 		}
-		b.append(v.getContent());
+		// b.append(v.getContent());
 	}
 
 	@Override
 	public void setDocument(JCas doc) {
 		this.doc = doc;
-		
+
 	}
 
 	@Override
 	public JCas clearDocument() {
 		JCas ret = doc;
-		doc=null;
+		doc = null;
 		return ret;
 	}
 

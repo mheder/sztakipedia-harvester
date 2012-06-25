@@ -59,14 +59,12 @@ public class XCasWriterCasConsumer extends AbstractMultiSofaAnnotator {
 
 	private int subDirCount, subsubDirCount;
 
-	public void initialize(UimaContext aContext)
-			throws ResourceInitializationException {
+	public void initialize(UimaContext aContext) throws ResourceInitializationException {
 		super.initialize(aContext);
 		mDocNum = 0;
 		subDirCount = 0;
 		subsubDirCount = 0;
-		baseOutputDirName = (String) aContext
-				.getConfigParameterValue(PARAM_OUTPUTDIR);
+		baseOutputDirName = (String) aContext.getConfigParameterValue(PARAM_OUTPUTDIR);
 		File baseOutputDir = new File(baseOutputDirName);
 		if (!baseOutputDir.exists()) {
 			baseOutputDir.mkdirs();
@@ -99,24 +97,22 @@ public class XCasWriterCasConsumer extends AbstractMultiSofaAnnotator {
 		SourceDocumentInformation sdocInfo = null;
 		for (JCas jcas : casList) {
 			// retreive the filename of the input file from the CAS
-			FSIterator it = jcas.getAnnotationIndex(
-					SourceDocumentInformation.type).iterator();
+			FSIterator it = jcas.getAnnotationIndex(SourceDocumentInformation.type).iterator();
 			File outFile = null;
 			if (it.hasNext()) {
-				SourceDocumentInformation fileLoc = (SourceDocumentInformation) it
-						.next();
-				String outFileName =fileLoc.getUri();
-//				File inFile;
-//				try {
-//					inFile = new File(new URL(fileLoc.getUri()).getPath());
-//					String outFileName = inFile.getName();
-//					if (fileLoc.getOffsetInSource() > 0) {
-//						outFileName += fileLoc.getOffsetInSource();
-//					}
-					outFile = new File(getOutputDir(outFileName), outFileName);
-//				} catch (MalformedURLException e1) {
-//					// invalid URL, use default processing below
-//				}
+				SourceDocumentInformation fileLoc = (SourceDocumentInformation) it.next();
+				String outFileName = fileLoc.getUri();
+				// File inFile;
+				// try {
+				// inFile = new File(new URL(fileLoc.getUri()).getPath());
+				// String outFileName = inFile.getName();
+				// if (fileLoc.getOffsetInSource() > 0) {
+				// outFileName += fileLoc.getOffsetInSource();
+				// }
+				outFile = new File(getOutputDir(outFileName), outFileName);
+				// } catch (MalformedURLException e1) {
+				// // invalid URL, use default processing below
+				// }
 			}
 			if (outFile == null) {
 				outFile = new File(getOutputDir(), "doc" + mDocNum);
@@ -136,17 +132,17 @@ public class XCasWriterCasConsumer extends AbstractMultiSofaAnnotator {
 	private File getOutputDir(String outFileName) {
 		int suffixPos = outFileName.indexOf(".xml");
 		long id = Long.parseLong(outFileName.substring(0, suffixPos));
-		long subDir = id/ SUBLIMIT;
-		long subSubDir = (id/ SUBSUBLIMIT)%10;
+		long subDir = id / SUBLIMIT;
+		long subSubDir = (id / SUBSUBLIMIT) % 10;
 
-		File outdir = new File(baseOutputDirName + File.separator + subDir
-				+ File.separator + subSubDir);
+		File outdir = new File(baseOutputDirName + File.separator + subDir + File.separator
+				+ subSubDir);
 		if (!outdir.exists()) {
 			outdir.mkdirs();
 		}
 		return outdir;
 	}
-	
+
 	private File getOutputDir() {
 		if (mDocNum % SUBLIMIT == 0) {
 			subDirCount++;
@@ -155,8 +151,8 @@ public class XCasWriterCasConsumer extends AbstractMultiSofaAnnotator {
 		if (mDocNum % SUBSUBLIMIT == 0) {
 			subsubDirCount++;
 		}
-		File outdir = new File(baseOutputDirName + File.separator + subDirCount
-				+ File.separator + subsubDirCount);
+		File outdir = new File(baseOutputDirName + File.separator + subDirCount + File.separator
+				+ subsubDirCount);
 		if (!outdir.exists()) {
 			outdir.mkdirs();
 		}
@@ -176,14 +172,13 @@ public class XCasWriterCasConsumer extends AbstractMultiSofaAnnotator {
 	 * @throws SAXException
 	 *             if an error occurs generating the XML text
 	 */
-	private void writeXCas(CAS aCas, File name) throws IOException,
-			SAXException {
+	private void writeXCas(CAS aCas, File name) throws IOException, SAXException {
 		FileOutputStream out = null;
 
 		try {
 			out = new FileOutputStream(name);
 			XCASSerializer ser = new XCASSerializer(aCas.getTypeSystem());
-			XMLSerializer xmlSer = new XMLSerializer(out, false);
+			XMLSerializer xmlSer = new XMLSerializer(out, true);
 			ser.serialize(aCas, xmlSer.getContentHandler());
 		} finally {
 			if (out != null) {
