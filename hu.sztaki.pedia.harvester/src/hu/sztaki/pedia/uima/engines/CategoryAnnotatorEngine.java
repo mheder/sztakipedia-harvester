@@ -43,6 +43,10 @@ public class CategoryAnnotatorEngine extends AbstractMultiSofaAnnotator {
 			List<Annotation> toRemove = new ArrayList<Annotation>();
 			for (Annotation annotation : linkIndex) {
 				WikiLinkAnnotation link = (WikiLinkAnnotation) annotation;
+				// System.out
+				// .println("LinkDbg:" + link.getCoveredText() + ",Title:" +
+				// link.getTitle());
+
 				if (categoryPrefixes.containsKey(article.getLang()) && link.getTitle() != null) {
 					String catPrefix = categoryPrefixes.get(article.getLang());
 					if (link.getTitle().startsWith(catPrefix + ":")) {
