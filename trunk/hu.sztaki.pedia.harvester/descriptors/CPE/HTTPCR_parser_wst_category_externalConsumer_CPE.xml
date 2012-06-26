@@ -92,7 +92,7 @@
 				<nameValuePair>
 					<name>ExternalProcessorClassName</name>
 					<value>
-						<string>org.example.ExampleExternalProcessor.java</string>
+						<string>org.example.ExampleExternalProcessor</string>
 					</value>
 				</nameValuePair>
 			</configurationParameterSettings>

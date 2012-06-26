@@ -50,14 +50,14 @@ public class HTTPReadHandler extends AbstractHandler {
 
 	}
 
-	private WikiArticle assembleArticle(Map<String, String> parameters) {
+	private WikiArticle assembleArticle(Map<String, String[]> parameters) {
 		WikiArticle article = new WikiArticle();
-		article.setId(new Long(parameters.get("id")));
-		article.setApplication(parameters.get("applicationName"));
-		article.setText(parameters.get("text"));
-		article.setLanguage(parameters.get("language"));
-		article.setTitle(parameters.get("title"));
-		article.setRevision(new Long(parameters.get("revision")));
+		article.setId(new Long(parameters.get("articleid")[0]));
+		article.setApplication(parameters.get("applicationName")[0]);
+		article.setText(parameters.get("text")[0]);
+		article.setLanguage(parameters.get("language")[0]);
+		article.setTitle(parameters.get("title")[0]);
+		article.setRevision(new Long(parameters.get("revision")[0]));
 		return article;
 	}
 

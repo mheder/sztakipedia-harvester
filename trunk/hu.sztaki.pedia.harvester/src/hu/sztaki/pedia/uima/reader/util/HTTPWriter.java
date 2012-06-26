@@ -28,7 +28,7 @@ public class HTTPWriter {
 			// Construct data
 			String data = URLEncoder.encode("title", "UTF-8") + "="
 					+ URLEncoder.encode(article.getTitle(), "UTF-8");
-			data += "&" + URLEncoder.encode("id", "UTF-8") + "="
+			data += "&" + URLEncoder.encode("articleid", "UTF-8") + "="
 					+ URLEncoder.encode(article.getId().toString(), "UTF-8");
 			data += "&" + URLEncoder.encode("revision", "UTF-8") + "="
 					+ URLEncoder.encode(Long.toString(article.getRevision()), "UTF-8");
@@ -54,6 +54,7 @@ public class HTTPWriter {
 			while ((line = rd.readLine()) != null) {
 				responseBuffer.append(line);
 			}
+			System.out.println(responseBuffer.toString());
 
 			//
 			// // Create a socket to the host
