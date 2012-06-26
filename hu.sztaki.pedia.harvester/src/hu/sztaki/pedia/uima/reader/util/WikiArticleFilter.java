@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WikiDumpArticleFilter {
+public class WikiArticleFilter {
 	private List<String> invalidTitles;
 	private String redirect;
 
-	public WikiDumpArticleFilter(String[] invalidTitlesWords, String redirect) {
+	public WikiArticleFilter(String[] invalidTitlesWords, String redirect) {
 		this.redirect = redirect;
 		invalidTitles = new ArrayList<String>();
 		for (String title : invalidTitlesWords) {

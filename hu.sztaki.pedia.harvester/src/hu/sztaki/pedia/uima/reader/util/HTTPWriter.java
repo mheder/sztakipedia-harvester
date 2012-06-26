@@ -20,7 +20,7 @@ public class HTTPWriter {
 		url = new URL(destinationUrl);
 	}
 
-	public String writeArticle(WikiArticle article) {
+	public synchronized String writeArticle(WikiArticle article) {
 		StringBuffer responseBuffer = new StringBuffer();
 		OutputStreamWriter wr = null;
 		BufferedReader rd = null;
@@ -56,36 +56,6 @@ public class HTTPWriter {
 			}
 			System.out.println(responseBuffer.toString());
 
-			//
-			// // Create a socket to the host
-			// String hostname = "hostname.com";
-			// int port = 80;
-			// InetAddress addr = InetAddress.getByName(hostname);
-			// Socket socket = new Socket(addr, port);
-			//
-			// // Send header
-			// String path = "/servlet/SomeServlet";
-			// BufferedWriter wr = new BufferedWriter(new
-			// OutputStreamWriter(socket.getOutputStream(),
-			// "UTF8"));
-			// wr.write("POST " + path + " HTTP/1.0\r\n");
-			// wr.write("Content-Length: " + data.length() + "\r\n");
-			// wr.write("Content-Type: application/x-www-form-urlencoded\r\n");
-			// wr.write("\r\n");
-			//
-			// // Send data
-			// wr.write(data);
-			// wr.flush();
-			//
-			// // Get response
-			// BufferedReader rd = new BufferedReader(new
-			// InputStreamReader(socket.getInputStream()));
-			// String line;
-			// while ((line = rd.readLine()) != null) {
-			// // Process line...
-			// }
-			// wr.close();
-			// rd.close();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {

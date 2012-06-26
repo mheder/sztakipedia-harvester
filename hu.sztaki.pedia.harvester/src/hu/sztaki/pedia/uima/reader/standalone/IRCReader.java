@@ -1,6 +1,6 @@
 package hu.sztaki.pedia.uima.reader.standalone;
 
-import hu.sztaki.pedia.uima.reader.util.SztakipediaBot;
+import hu.sztaki.pedia.uima.reader.util.WikiIRCBot;
 
 import java.net.MalformedURLException;
 
@@ -37,12 +37,18 @@ public class IRCReader {
 		Thread botThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				SztakipediaBot sztakipediaBot;
+				WikiIRCBot ircBot;
+				// SztakipediaBot sztakipediaBot;
 				try {
 					// Construct a SztakipdeiaBot with HTTP output mode
-					sztakipediaBot = new SztakipediaBot(ircChannel, domainUrl, destinationHostname,
+					// sztakipediaBot = new SztakipediaBot(ircChannel,
+					// domainUrl, destinationHostname,
+					// destinationPort, null, applicationName, language,
+					// apiUser, apiPassword);
+					// sztakipediaBot.start();
+					ircBot = new WikiIRCBot(ircChannel, domainUrl, destinationHostname,
 							destinationPort, null, applicationName, language, apiUser, apiPassword);
-					sztakipediaBot.start();
+					ircBot.start();
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 					System.exit(-1);
