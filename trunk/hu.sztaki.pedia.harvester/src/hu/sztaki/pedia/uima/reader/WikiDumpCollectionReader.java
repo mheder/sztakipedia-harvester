@@ -18,7 +18,7 @@ package hu.sztaki.pedia.uima.reader;
 import hu.sztaki.pedia.uima.reader.util.EndOfFileToken;
 import hu.sztaki.pedia.uima.reader.util.SaxWikiHandler;
 import hu.sztaki.pedia.uima.reader.util.WikiArticle;
-import hu.sztaki.pedia.uima.reader.util.WikiDumpArticleFilter;
+import hu.sztaki.pedia.uima.reader.util.WikiArticleFilter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,7 +82,7 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 
 	private String applicationName;
 
-	private WikiDumpArticleFilter articleFilter;
+	private WikiArticleFilter articleFilter;
 
 	// private long totalArticleCount;
 	private long docsProcessed = 0;
@@ -95,7 +95,7 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 		applicationName = (String) getConfigParameterValue(PARAM_APPNAME);
 		String redirectPage = (String) getConfigParameterValue(PARAM_REDIRECT);
 		String[] nonArticleTitles = (String[]) getConfigParameterValue(PARAM_NONARTICLETITLES);
-		articleFilter = new WikiDumpArticleFilter(nonArticleTitles, redirectPage);
+		articleFilter = new WikiArticleFilter(nonArticleTitles, redirectPage);
 
 		// if input directory does not exist or is not a directory, throw
 		// exception

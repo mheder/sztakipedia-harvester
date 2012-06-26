@@ -15,9 +15,13 @@
  *******************************************************************************/
 package hu.sztaki.pedia.uima.reader.util;
 
+import hu.sztaki.pedia.uima.reader.worker.HTTPIRCBotBackgroundWorker;
+import hu.sztaki.pedia.uima.reader.worker.IRCBotBackgroundWorker;
+import hu.sztaki.pedia.uima.reader.worker.LogIRCBotBackgroundWorker;
+import hu.sztaki.pedia.uima.reader.worker.QueueIRCBotBackgroundWorker;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.security.auth.login.FailedLoginException;
@@ -27,7 +31,7 @@ import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
 
-public class SztakipediaBot extends PircBot {
+public class WikiIRCBot extends PircBot {
 	private ReaderOutputModes outputMode;
 	public static Logger logger = Logger.getLogger(SztakipediaBot.class);
 	private Wiki wikiAPI;
@@ -51,7 +55,7 @@ public class SztakipediaBot extends PircBot {
 	 * @param apiPassword
 	 *            MediaWiki API password (can be null)
 	 */
-	public SztakipediaBot(String ircChannel, String domainUrl, WikiArticleFilter articleFilter,
+	public WikiIRCBot(String ircChannel, String domainUrl, WikiArticleFilter articleFilter,
 			String applicationName, String language, String apiUser, String apiPassword) {
 		outputMode = ReaderOutputModes.LOG;
 		this.articleFilter = articleFilter;
@@ -75,9 +79,9 @@ public class SztakipediaBot extends PircBot {
 	 * @param apiPassword
 	 *            MediaWiki API password (can be null)
 	 */
-	public SztakipediaBot(String ircChannel, String domainUrl,
-			ArrayBlockingQueue<WikiArticle> queue, WikiArticleFilter articleFilter,
-			String applicationName, String language, String apiUser, String apiPassword) {
+	public WikiIRCBot(String ircChannel, String domainUrl, ArrayBlockingQueue<WikiArticle> queue,
+			WikiArticleFilter articleFilter, String applicationName, String language,
+			String apiUser, String apiPassword) {
 		// setVerbose(true);
 		outputMode = ReaderOutputModes.QUEUE;
 		this.queue = queue;
@@ -105,7 +109,7 @@ public class SztakipediaBot extends PircBot {
 	 *            MediaWiki API password (can be null)
 	 * @throws MalformedURLException
 	 */
-	public SztakipediaBot(String ircChannel, String domainUrl, String destinationHost,
+	public WikiIRCBot(String ircChannel, String domainUrl, String destinationHost,
 			Integer destinationPort, WikiArticleFilter articleFilter, String applicationName,
 			String language, String apiUser, String apiPassword) throws MalformedURLException {
 		// setVerbose(true);
@@ -155,45 +159,27 @@ public class SztakipediaBot extends PircBot {
 			String message) {
 		System.out.println(channel + ": " + message);
 		String title = parseTitleFromMessage(message);
-		try {
-			WikiArticle article = new WikiArticle();
-			article.setTitle(title);
-			article.setText("");
-			boolean validArticleByTitle = true;
-			if (articleFilter != null) {
-				validArticleByTitle = articleFilter.isValidArticle(article);
-			}
-			if (validArticleByTitle) {
-				// debug
-				String text = wikiAPI.getPageText(title);
-				article.setText(text);
-				boolean notRedirect = true;
-				if (articleFilter != null) {
-					notRedirect = articleFilter.isValidArticle(article);
-				}
-				if (notRedirect) {
-					HashMap<String, Object> pageinfo = wikiAPI.getPageInfo(title);
-					Long id = (Long) pageinfo.get("pageid");
-					Long lastRevId = (Long) pageinfo.get("pageid");
-					article.setId(id);
-					article.setApplication(applicationName);
-					article.setLanguage(language);
-					article.setRevision(lastRevId);
-					writeOut(article);
-					logger.info("ACCEPTED: " + article.getTitle() + "(ID:" + article.getId() + ")");
-				} else {
-					// debug
-					logger.info("DENIED: " + article.getTitle() + "(" + article.getId() + ")");
-				}
-			} else {
-				// debug
-				logger.info("DENIED: " + article.getTitle() + "(" + article.getId() + ")");
-			}
-			logger.debug("EDIT: " + article.getTitle() + " (" + article.getId() + ")");
-		} catch (IOException e) {
-			e.printStackTrace();
+		IRCBotBackgroundWorker backgroundWorker;
+		switch (outputMode) {
+		case QUEUE:
+			backgroundWorker = new QueueIRCBotBackgroundWorker(wikiAPI, articleFilter, title,
+					applicationName, language, queue);
+			break;
+		case LOG:
+			backgroundWorker = new LogIRCBotBackgroundWorker(wikiAPI, articleFilter, title,
+					applicationName, language);
+			break;
+		case HTTP:
+			backgroundWorker = new HTTPIRCBotBackgroundWorker(wikiAPI, articleFilter, title,
+					applicationName, language, httpWriter);
+			break;
+		default:
+			backgroundWorker = null;
+			break;
 		}
-
+		if (backgroundWorker != null) {
+			backgroundWorker.start();
+		}
 	}
 
 	/**
@@ -232,29 +218,6 @@ public class SztakipediaBot extends PircBot {
 		}
 		return titleB.toString();
 
-	}
-
-	private void writeOut(WikiArticle article) {
-		switch (outputMode) {
-		case QUEUE:
-			logger.debug("Queue util: " + queue.size() + " and " + queue.remainingCapacity()
-					+ " remaining");
-			try {
-				queue.put(article);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		case LOG:
-			logger.info(article);
-			break;
-		case HTTP:
-			httpWriter.writeArticle(article);
-			break;
-		default:
-			break;
-		}
 	}
 
 	public static void main(String[] args) throws Exception {

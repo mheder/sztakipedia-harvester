@@ -17,7 +17,7 @@ package hu.sztaki.pedia.uima.reader;
 
 import hu.sztaki.pedia.uima.reader.util.SztakipediaBot;
 import hu.sztaki.pedia.uima.reader.util.WikiArticle;
-import hu.sztaki.pedia.uima.reader.util.WikiDumpArticleFilter;
+import hu.sztaki.pedia.uima.reader.util.WikiArticleFilter;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -77,7 +77,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 
 	private SztakipediaBot sztakipediaBot;
 
-	private WikiDumpArticleFilter articleFilter;
+	private WikiArticleFilter articleFilter;
 
 	@Override
 	public void initialize() throws ResourceInitializationException {
@@ -88,7 +88,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 		applicationName = (String) getConfigParameterValue(PARAM_APPNAME);
 		String redirectPage = (String) getConfigParameterValue(PARAM_REDIRECT);
 		String[] nonArticleTitles = (String[]) getConfigParameterValue(PARAM_NONARTICLETITLES);
-		articleFilter = new WikiDumpArticleFilter(nonArticleTitles, redirectPage);
+		articleFilter = new WikiArticleFilter(nonArticleTitles, redirectPage);
 
 		String domain = ((String) getConfigParameterValue(PARAM_INPUTDOMAIN));
 		final String domainUrl = domain + ".org";
