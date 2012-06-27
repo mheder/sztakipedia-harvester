@@ -34,6 +34,12 @@
 						<integer>10000000</integer>
 					</value>
 				</nameValuePair>
+				<nameValuePair>
+					<name>QueueSize</name>
+					<value>
+						<integer>1000</integer>
+					</value>
+				</nameValuePair>
 			</configurationParameterSettings>
 		</collectionIterator>
 	</collectionReader>
@@ -103,7 +109,7 @@
 		<deployAs>immediate</deployAs>
 
 		<!-- <checkpoint batch="10000" time="300000ms"/> -->
-		<checkpoint batch="10000" />
+		<checkpoint batch="1000" />
 		<timerImpl />
 	</cpeConfig>
 </cpeDescription>

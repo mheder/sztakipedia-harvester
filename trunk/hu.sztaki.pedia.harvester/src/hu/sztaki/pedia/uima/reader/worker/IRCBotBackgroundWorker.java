@@ -15,6 +15,7 @@
  *******************************************************************************/
 package hu.sztaki.pedia.uima.reader.worker;
 
+import hu.sztaki.pedia.uima.reader.util.ReceiveSendCounter;
 import hu.sztaki.pedia.uima.reader.util.Wiki;
 import hu.sztaki.pedia.uima.reader.util.WikiArticle;
 import hu.sztaki.pedia.uima.reader.util.WikiArticleFilter;
@@ -41,6 +42,8 @@ public abstract class IRCBotBackgroundWorker extends Thread {
 
 	@Override
 	public void run() {
+		ReceiveSendCounter counter = ReceiveSendCounter.getInstance();
+		counter.threadStarted();
 		try {
 			WikiArticle article = new WikiArticle();
 			article.setTitle(title);
@@ -66,18 +69,22 @@ public abstract class IRCBotBackgroundWorker extends Thread {
 					article.setLanguage(language);
 					article.setRevision(lastRevId);
 					writeOut(article);
+					counter.countSent();
 					logger.info("ACCEPTED: " + article.getTitle() + "(ID:" + article.getId() + ")");
 				} else {
-					// debug
-					logger.info("DENIED: " + article.getTitle() + "(" + article.getId() + ")");
+					counter.countFiltered();
+					logger.info("FILTERED: " + article.getTitle() + "(" + article.getId() + ")");
 				}
 			} else {
-				// debug
-				logger.info("DENIED: " + article.getTitle() + "(" + article.getId() + ")");
+				counter.countFiltered();
+				logger.info("FILTERED: " + article.getTitle() + "(" + article.getId() + ")");
 			}
-			logger.debug("EDIT: " + article.getTitle() + " (" + article.getId() + ")");
+			// logger.debug("EDIT: " + article.getTitle() + " (" +
+			// article.getId() + ")");
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			counter.threadFinished();
 		}
 	}
 

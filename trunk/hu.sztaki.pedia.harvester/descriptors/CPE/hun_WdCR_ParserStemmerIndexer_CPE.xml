@@ -46,9 +46,12 @@
         			</value>
       			</nameValuePair>
       			     <nameValuePair>
-        <name>RedirectPage</name>
+        <name>RedirectPages</name>
         <value>
-          <string>#ÁTIRÁNYÍTÁS</string>
+          <array>
+            <string>#ÁTIRÁNYÍTÁS</string>
+            <string>#REDIRECT</string>
+          </array>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -62,6 +65,7 @@
             <string>Sablon:</string>
             <string>Sablonvita:</string>
             <string>Wikipédia:</string>
+            <string>Wikipédia vita:</string>
             <string>WP:</string>
             <string>WPM:</string>
             <string>Portal:</string>

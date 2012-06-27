@@ -65,7 +65,7 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 	 */
 	public static final String PARAM_OUTPUTSOFA = "OutputSofa";
 
-	public static final String PARAM_REDIRECT = "RedirectPage";
+	public static final String PARAM_REDIRECT = "RedirectPages";
 	public static final String PARAM_NONARTICLETITLES = "NonArticleTitles";
 	public static final String PARAM_APPNAME = "ApplicationName";
 
@@ -93,7 +93,7 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 		mLanguage = (String) getConfigParameterValue(PARAM_LANGUAGE);
 		mSofaName = (String) getConfigParameterValue(PARAM_OUTPUTSOFA);
 		applicationName = (String) getConfigParameterValue(PARAM_APPNAME);
-		String redirectPage = (String) getConfigParameterValue(PARAM_REDIRECT);
+		String[] redirectPage = (String[]) getConfigParameterValue(PARAM_REDIRECT);
 		String[] nonArticleTitles = (String[]) getConfigParameterValue(PARAM_NONARTICLETITLES);
 		articleFilter = new WikiArticleFilter(nonArticleTitles, redirectPage);
 

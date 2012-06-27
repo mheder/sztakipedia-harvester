@@ -29,9 +29,9 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>RedirectPage</name>
+        <name>RedirectPages</name>
         <type>String</type>
-        <multiValued>false</multiValued>
+        <multiValued>true</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
@@ -79,12 +79,6 @@
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>RedirectPage</name>
-        <value>
-          <string>#REDIRECT</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
         <name>NonArticleTitles</name>
         <value>
           <array>
@@ -95,6 +89,7 @@
             <string>Template:</string>
             <string>Template talk:</string>
             <string>Wikipedia:</string>
+            <string>Wikipedia talk:</string>
             <string>WP:</string>
             <string>WPM:</string>
             <string>Portal:</string>
@@ -128,6 +123,15 @@
         <name>WikiAPIUser</name>
         <value>
           <string>exampleuser</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>RedirectPages</name>
+        <value>
+          <array>
+            <string>#ÁTIRÁNYÍTÁS</string>
+            <string>#REDIRECT</string>
+          </array>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

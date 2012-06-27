@@ -26,6 +26,12 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>QueueSize</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -46,6 +52,12 @@
         <name>MaxRequestSize</name>
         <value>
           <integer>10000000</integer>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>QueueSize</name>
+        <value>
+          <integer>1000</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

@@ -15,9 +15,9 @@
  *******************************************************************************/
 package hu.sztaki.pedia.lucene;
 
-import hu.sztaki.pedia.lucene.exceptions.BadQueryException;
 import hu.sztaki.pedia.lucene.exceptions.NewerVersionStoredException;
 import hu.sztaki.pedia.lucene.util.IChainIndexerUtil;
+import hu.sztaki.pedia.lucene.util.IndexerHelperUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -133,7 +133,7 @@ public class LuceneIndexer {
 			throws NewerVersionStoredException {
 		WikiArticleAnnotation wikiArticleAnnotation = (WikiArticleAnnotation) annotationIndexMap
 				.get(WikiArticleAnnotation.type).iterator().get();
-		if (isNewerVersionStored(wikiArticleAnnotation)) {
+		if (IndexerHelperUtil.isNewerVersionStored(wikiArticleAnnotation, searcher)) {
 			throw new NewerVersionStoredException(wikiArticleAnnotation);
 		}
 		Document doc = new Document();
@@ -145,8 +145,9 @@ public class LuceneIndexer {
 		indexTemplates(annotationIndexMap.get(WikiTemplateAnnotation.type), doc);
 		indexCategories(annotationIndexMap.get(WikiCategoryAnnotation.type), doc);
 		try {
-			writer.updateDocument(new Term(IndexFieldNames.ID_FIELD_NAME,
-					getArticleID(wikiArticleAnnotation)), doc);
+			writer.updateDocument(
+					new Term(IndexFieldNames.ID_FIELD_NAME, IndexerHelperUtil
+							.getArticleID(wikiArticleAnnotation)), doc);
 
 			countToCommit++;
 			if (countToCommit == COMMIT_THRESHOLD) {
@@ -230,8 +231,8 @@ public class LuceneIndexer {
 	 * @param doc
 	 */
 	private void indexArticleMetadata(WikiArticleAnnotation wikiArticleAnnotation, Document doc) {
-		doc.add(new Field(IndexFieldNames.ID_FIELD_NAME, getArticleID(wikiArticleAnnotation),
-				Field.Store.YES, Field.Index.NOT_ANALYZED));
+		doc.add(new Field(IndexFieldNames.ID_FIELD_NAME, IndexerHelperUtil
+				.getArticleID(wikiArticleAnnotation), Field.Store.YES, Field.Index.NOT_ANALYZED));
 		doc.add(new Field(IndexFieldNames.REVISION_FIELD_NAME, Long.toString(wikiArticleAnnotation
 				.getRevision()), Field.Store.YES, Field.Index.NOT_ANALYZED));
 		doc.add(new Field(IndexFieldNames.APP_FIELD_NAME, wikiArticleAnnotation.getApplication(),
@@ -262,45 +263,37 @@ public class LuceneIndexer {
 		}
 	}
 
-	/**
-	 * Checks whether the given Article is stored, and if stored checks the
-	 * revision version to be newer then the stored.
-	 * 
-	 * @param id
-	 * @param revisionID
-	 * @return
-	 */
-	private boolean isNewerVersionStored(WikiArticleAnnotation wikiArticleAnnotation) {
-		boolean isStored = false;
-		try {
-			List<Document> result = searcher.simpleSearch(IndexFieldNames.ID_FIELD_NAME,
-					getArticleID(wikiArticleAnnotation), 1);
-			if (result.size() == 1) {
-				Document doc = result.get(0);
-				long revFound = Long.parseLong(doc.get(IndexFieldNames.REVISION_FIELD_NAME));
-				if (revFound >= wikiArticleAnnotation.getRevision()) {
-					isStored = true;
-				}
-			}
-		} catch (BadQueryException e) {
-			// e.printStackTrace();
-			logger.error(e.getMessage());
-		} catch (IOException e) {
-			// e.printStackTrace();
-			logger.error(e.getMessage());
-		}
-		return isStored;
-	}
-
-	/**
-	 * Creates a unique ID for articles by concatenating the article's DB id
-	 * from the Wiki with the application's name where it comes from
-	 * 
-	 * @param wikiArticleAnnotation
-	 * @return the generated ID for the current article
-	 */
-	private String getArticleID(WikiArticleAnnotation wikiArticleAnnotation) {
-		return "" + wikiArticleAnnotation.getApplication() + "_" + wikiArticleAnnotation.getId();
-	}
+	// /**
+	// * Checks whether the given Article is stored, and if stored checks the
+	// * revision version to be newer then the stored.
+	// *
+	// * @param id
+	// * @param revisionID
+	// * @return
+	// */
+	// private boolean isNewerVersionStored(WikiArticleAnnotation
+	// wikiArticleAnnotation) {
+	// boolean isStored = false;
+	// try {
+	// List<Document> result =
+	// searcher.simpleSearch(IndexFieldNames.ID_FIELD_NAME,
+	// IndexerHelperUtil.getArticleID(wikiArticleAnnotation), 1);
+	// if (result.size() == 1) {
+	// Document doc = result.get(0);
+	// long revFound =
+	// Long.parseLong(doc.get(IndexFieldNames.REVISION_FIELD_NAME));
+	// if (revFound >= wikiArticleAnnotation.getRevision()) {
+	// isStored = true;
+	// }
+	// }
+	// } catch (BadQueryException e) {
+	// // e.printStackTrace();
+	// logger.error(e.getMessage());
+	// } catch (IOException e) {
+	// // e.printStackTrace();
+	// logger.error(e.getMessage());
+	// }
+	// return isStored;
+	// }
 
 }

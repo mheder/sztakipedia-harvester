@@ -53,7 +53,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 	 * read content
 	 */
 	public static final String PARAM_OUTPUTSOFA = "OutputSofa";
-	public static final String PARAM_REDIRECT = "RedirectPage";
+	public static final String PARAM_REDIRECT = "RedirectPages";
 	public static final String PARAM_NONARTICLETITLES = "NonArticleTitles";
 	public static final String PARAM_APPNAME = "ApplicationName";
 	public static final String PARAM_APIUSERNAME = "WikiAPIUser";
@@ -86,9 +86,9 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 		wikiAPIPassword = (String) getConfigParameterValue(PARAM_APIPASSNAME);
 		mSofaName = (String) getConfigParameterValue(PARAM_OUTPUTSOFA);
 		applicationName = (String) getConfigParameterValue(PARAM_APPNAME);
-		String redirectPage = (String) getConfigParameterValue(PARAM_REDIRECT);
+		String[] redirectPages = (String[]) getConfigParameterValue(PARAM_REDIRECT);
 		String[] nonArticleTitles = (String[]) getConfigParameterValue(PARAM_NONARTICLETITLES);
-		articleFilter = new WikiArticleFilter(nonArticleTitles, redirectPage);
+		articleFilter = new WikiArticleFilter(nonArticleTitles, redirectPages);
 
 		String domain = ((String) getConfigParameterValue(PARAM_INPUTDOMAIN));
 		final String domainUrl = domain + ".org";
