@@ -20,6 +20,7 @@ import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
 
 public class HTTPCollectionReader extends CollectionReader_ImplBase {
 	/**
@@ -29,8 +30,10 @@ public class HTTPCollectionReader extends CollectionReader_ImplBase {
 	public static final String PARAM_OUTPUTSOFA = "OutputSofa";
 	public static final String PARAM_PORTS = "Ports";
 	public static final String PARAM_MAXFORMSIZE = "MaxRequestSize";
+	public static final String PARAM_QUEUESIZE = "QueueSize";
+
 	private ArrayBlockingQueue<WikiArticle> articlesQueue;
-	private final int queueDepth = 500;
+	private Integer queueSize;
 	private String mSofaName;
 	private Integer[] ports;
 	private Integer maxFormSize;
@@ -43,15 +46,27 @@ public class HTTPCollectionReader extends CollectionReader_ImplBase {
 	@Override
 	public void initialize() throws ResourceInitializationException {
 		mSofaName = (String) getConfigParameterValue(PARAM_OUTPUTSOFA);
-		articlesQueue = new ArrayBlockingQueue<WikiArticle>(queueDepth);
 		ports = (Integer[]) getConfigParameterValue(PARAM_PORTS);
 		maxFormSize = (Integer) getConfigParameterValue(PARAM_MAXFORMSIZE);
+		queueSize = (Integer) getConfigParameterValue(PARAM_QUEUESIZE);
+		articlesQueue = new ArrayBlockingQueue<WikiArticle>(queueSize);
 		for (Integer port : ports) {
 			Server server = new Server(port);
-			server.setHandler(new HTTPReadHandler(articlesQueue));
-			server.setAttribute("org.eclipse.jetty.Request.maxFormContentSize", maxFormSize);
+			ContextHandler context = new ContextHandler();
+			context.setContextPath("/");
+			context.setResourceBase(".");
+			if (maxFormSize != null) {
+				context.setMaxFormContentSize(maxFormSize);
+			}
+			context.setClassLoader(Thread.currentThread().getContextClassLoader());
+			context.setHandler(new HTTPReadHandler(articlesQueue));
+			server.setHandler(context);
+			// server.setAttribute("org.eclipse.jetty.Request.maxFormContentSize",
+			// maxFormSize);
 			servers.put(port, server);
 			try {
+				logger.info("Jetty server is about to start on port: " + port + ", maxFormSize: "
+						+ maxFormSize);
 				server.start();
 				// server.join();
 			} catch (Exception e) {

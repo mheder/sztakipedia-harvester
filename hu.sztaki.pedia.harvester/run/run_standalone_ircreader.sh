@@ -1,0 +1,2 @@
+#!/bin/bash
+java -cp pedia.uima.harvester.jar hu.sztaki.pedia.uima.reader.standalone.IRCReader en.wikipedia localhost 8080 enwikipediaorgtest en resources/articlefilter/redirects.list resources/articlefilter/nonarticle_titles_prefixes.list sztakipediabot CasToLucene

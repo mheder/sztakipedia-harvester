@@ -157,8 +157,8 @@ public class WikiIRCBot extends PircBot {
 	@Override
 	protected void onMessage(String channel, String sender, String login, String hostname,
 			String message) {
-		System.out.println(channel + ": " + message);
 		String title = parseTitleFromMessage(message);
+		ReceiveSendCounter.getInstance().countReceived();
 		IRCBotBackgroundWorker backgroundWorker;
 		switch (outputMode) {
 		case QUEUE:
@@ -180,6 +180,7 @@ public class WikiIRCBot extends PircBot {
 		if (backgroundWorker != null) {
 			backgroundWorker.start();
 		}
+		logger.info(ReceiveSendCounter.getInstance().printState());
 	}
 
 	/**
