@@ -24,7 +24,7 @@
                 <nameValuePair>
                     <name>InputFile</name>
                     <value>
-                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.harvester.run/input/dump/enwikitest.xml</string>
+                        <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.harvester.run/input/dump/enwikitest3.xml</string>
 <!--                              <string>/home/tfarkas/Dev/workspaces/workspace_uima/hu.sztaki.pedia.uima/input/test1/330.xml</string> -->
                    
                     </value>

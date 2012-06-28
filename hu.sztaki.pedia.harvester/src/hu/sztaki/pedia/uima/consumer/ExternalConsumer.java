@@ -75,11 +75,12 @@ public class ExternalConsumer extends AbstractMultiSofaAnnotator {
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
 		ArrayList<JCas> casList = getJCasList(aJCas);
-		Map<String, String> sofaNamesToText = new HashMap<String, String>();
+		Map<String, String> sofaTextToName = new HashMap<String, String>();
 		Map<Integer, AnnotationIndex<Annotation>> annotationIndexMap = new HashMap<Integer, AnnotationIndex<Annotation>>();
 		for (JCas doc : casList) {
 			// put texts to a map accessed by the view names (SOFA)
-			sofaNamesToText.put(doc.getViewName(), doc.getSofaDataString());
+			logger.debug("Sofaname:" + doc.getViewName());
+			sofaTextToName.put(doc.getViewName(), doc.getSofaDataString());
 		}
 		try {
 			JCas annotationCAS = aJCas.getView(annotatedSofaName);
@@ -100,7 +101,7 @@ public class ExternalConsumer extends AbstractMultiSofaAnnotator {
 			annotationIndexMap.put(WikiCategoryAnnotation.type,
 					annotationCAS.getAnnotationIndex(WikiCategoryAnnotation.type));
 			// process the annotations
-			externalProcessor.processAnnotations(annotationIndexMap, sofaNamesToText);
+			externalProcessor.processAnnotations(annotationIndexMap, sofaTextToName);
 		} catch (CASException e) {
 			logger.error("Error loading view:" + annotatedSofaName, e);
 		}

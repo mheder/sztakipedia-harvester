@@ -174,7 +174,7 @@ public class SztakipediaBot extends PircBot {
 				if (notRedirect) {
 					HashMap<String, Object> pageinfo = wikiAPI.getPageInfo(title);
 					Long id = (Long) pageinfo.get("pageid");
-					Long lastRevId = (Long) pageinfo.get("pageid");
+					Long lastRevId = (Long) pageinfo.get("lastrevid");
 					article.setId(id);
 					article.setApplication(applicationName);
 					article.setLanguage(language);

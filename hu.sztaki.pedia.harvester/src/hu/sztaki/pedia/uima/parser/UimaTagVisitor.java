@@ -51,8 +51,17 @@ public class UimaTagVisitor extends PlainTextContentWriter {
 	@Override
 	public void visit(AnchorTag tag) {
 		int beginPos = out.length() - 2;
+		if (beginPos < 0) {
+			beginPos = 0;
+		}
 		super.visit(tag);
 		int endPos = out.length() - 2;
+		if (endPos < 0) {
+			endPos = 1;
+		}
+		if (beginPos == endPos) {
+			endPos++;
+		}
 		if (tag.getAttributes().containsKey("href")) {
 			String href = tag.getAttributes().get("href");
 			String title = tag.getAttributes().get("title");
@@ -70,8 +79,17 @@ public class UimaTagVisitor extends PlainTextContentWriter {
 	public void visit(ParagraphTag tag) {
 		out.append("\n");
 		int beginPos = out.length() - 2;
+		if (beginPos < 0) {
+			beginPos = 0;
+		}
 		visitChildren(tag);
 		int endPos = out.length() - 2;
+		if (endPos < 0) {
+			endPos = 1;
+		}
+		if (beginPos == endPos) {
+			endPos++;
+		}
 		ParagraphAnnotation paragraph = new ParagraphAnnotation(doc);
 		paragraph.setBegin(beginPos);
 		paragraph.setEnd(endPos);

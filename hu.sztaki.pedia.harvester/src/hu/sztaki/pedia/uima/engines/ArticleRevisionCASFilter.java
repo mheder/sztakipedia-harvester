@@ -32,21 +32,28 @@ import org.apache.uima.resource.ResourceInitializationException;
 public class ArticleRevisionCASFilter extends AbstractMultiSofaAnnotator {
 	public static Logger logger = Logger.getLogger(ArticleRevisionCASFilter.class);
 	public static final String LUCENE_INDEX_DIR_PARAM = "LuceneIndexDir";
-	private Searcher searcher;
+	private Searcher searcher = null;
+	private String indexDir;
 
 	@Override
 	public void initialize(UimaContext aContext) throws ResourceInitializationException {
 		super.initialize(aContext);
-		String indexDir = (String) aContext.getConfigParameterValue(LUCENE_INDEX_DIR_PARAM);
-		try {
-			searcher = new Searcher(indexDir, new KeywordAnalyzer());
-		} catch (IOException e) {
-			logger.error("Searcher could not been initialized!", e);
-		}
+		indexDir = (String) aContext.getConfigParameterValue(LUCENE_INDEX_DIR_PARAM);
+
 	}
 
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
+		// initialize the searcher here, because index has to be initialized by
+		// the writer first
+		if (searcher == null) {
+			try {
+				searcher = new Searcher(indexDir, new KeywordAnalyzer());
+			} catch (IOException e) {
+				logger.error("Searcher could not been initialized!", e);
+				throw new AnalysisEngineProcessException(e);
+			}
+		}
 		ArrayList<JCas> casList = getJCasList(aJCas);
 		boolean isAlreadyStored = false;
 
