@@ -1,0 +1,23 @@
+#summary Parameters for Wiki IRC bot standalone
+usage:
+{{{
+java hu.sztaki.pedia.uima.reader.standalone.IRCReader <en.wikipedia> <destinationHostname> <destinationPort> <applicationName> <language> <redirectsFilePath> <nonArticleTitlesFilePath> [<API user>] [<API password>] 
+}}}
+where
+ * en.wikipedia : the wiki channel name
+ * destionationHostname, destinationPort : where the httpcollectionreader is listening
+ * applicationName: a string tag you can specify
+ * language: for wiki article metadata
+ * redirectsFilePath: patterns to recognize redirects
+ * nonArticleTitlesFilePath: prefixes to filter out
+ * API user, password: a registered wikipedia user's name and password 
+
+Add your content here.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
