@@ -30,6 +30,7 @@ In this description we distinguish between your developer machine (e.g. your lap
  * configure queueSize
  * LocalAbbrev: parameter for the parser
  * ExternalProcessorClassName: the class name of your external processor
+ * ExternalProcessorParams: parameters passed to your external processor
  * Configure API user
  * Choose your descriptor
  * Modify filters (optional)
