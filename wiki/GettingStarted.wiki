@@ -8,7 +8,16 @@
   * What do you want to do with the articles you downloaded? For example, if you are harvesting the English Wikipedia, and use the (rather verbose) sztakipedia indexes, you will need more, than 50G for the indexes. However, you can write your own External Processor and do whatever you want with the pre-processed articles. 
  * About 4G of RAM and at least 2 cores dedicated for the harvester. Again, largely depends on the mode of usage
 
-= Download =
+= Download and Install =
+ * Download sztakipedia-harvester
+ * Install UIMA
+{{{
+deploy/deployAS.sh
+}}}
+  * The Deploy Script 
+   * installs a full UIMA (CPE, Asynchron Scaleout) 
+   * UIMA home 
+
 
 = Configure =
 
