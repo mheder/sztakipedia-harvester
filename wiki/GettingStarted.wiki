@@ -19,15 +19,9 @@ In this description we distinguish between your developer machine (e.g. your lap
   * Install SVN
  * Check out the sztakipedia-harvester project
   * for details, see: http://code.google.com/p/sztakipedia-harvester/source/checkout (check out trunk)
- * Download sztakipedia-harvester
- * Install UIMA
-{{{
-deploy/deployAS.sh
-}}}
-  * The Deploy Script 
-   * installs a full UIMA (CPE, Asynchron Scaleout) 
-   * UIMA home 
-
+ * Modify build.xml dest.root property where you can give where the package is to be created.
+ * right-click on build.xml Run As ... ant build
+ * run deployAS script. This will upload the software to the server you will be using 
 
 = Configure =
 
@@ -38,6 +32,9 @@ deploy/deployAS.sh
 
 = Start =
  * Starting the UIMA Aggregate Analysis Engine
+  {{{ 
+   run_httpcr_pwstcat_extproc.sh
+  }}}
  * Starting the IRC bot
 
 = Inspect the logs to see if everything is ok =
