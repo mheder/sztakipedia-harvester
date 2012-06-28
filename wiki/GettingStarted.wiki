@@ -1,0 +1,18 @@
+#summary Getting started with sztakipedia-harvester
+
+= System Requirements =
+
+= Download =
+
+= Configure =
+
+* Configure API user
+* Choose your descriptor
+* Modify filters (optional)
+* Write your own External Processor (optional)
+
+= Start =
+* Starting the UIMA Aggregate Analysis Engine
+* Starting the IRC bot
+
+= Inspect the logs to see if everything is ok =
