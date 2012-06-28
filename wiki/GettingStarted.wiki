@@ -42,5 +42,8 @@ In this description we distinguish between your developer machine (e.g. your lap
    run_httpcr_pwstcat_extproc.sh
   }}}
  * Starting the IRC bot
+  {{{
+   java -cp pedia.uima.harvester.jar hu.sztaki.pedia.uima.reader.standalone.IRCReader
+}}}
 
 = Inspect the logs to see if everything is ok =
