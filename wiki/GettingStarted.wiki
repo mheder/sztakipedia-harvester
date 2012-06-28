@@ -39,7 +39,7 @@ In this description we distinguish between your developer machine (e.g. your lap
 = Start =
  * Starting the UIMA Aggregate Analysis Engine
   {{{ 
-   run_httpcr_pwstcat_extproc.sh
+   run_httpcr_pwstcat_extproc.sh (TODO: modifications)
   }}}
  * Starting the IRC bot
   {{{
@@ -47,3 +47,8 @@ In this description we distinguish between your developer machine (e.g. your lap
 }}}
 
 = Inspect the logs to see if everything is ok =
+
+= Shutting down =
+{{{
+abort
+}}}
