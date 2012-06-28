@@ -9,6 +9,14 @@
  * About 4G of RAM and at least 2 cores dedicated for the harvester. Again, largely depends on the mode of usage
 
 = Download and Install =
+In this description we distinguish between your developer machine (e.g. your laptop or desktop) and the server that will run the deployed sztakipedia-harvester. These might be the same, of course. 
+
+== Things to do on your developer machine ==
+ * Download and install
+  * Eclipse (we recommend the latest release for Java EE developers)
+  * Install the UIMA 2.3.1. plugin following the guide  http://uima.apache.org/d/uimaj-.3.1/overview_and_setup.html#ugr.ovv.eclipse_setup. 
+  * You will need both UIMA and UIMA AS (async scaleout). From AS the latest version is only 2.3.1. Because of that you can install 2.3.1 from the standard UIMA as well, although there is a 2.4 version. Un-check "Show only the latest versions of available software" (or similar) checkbox on the Eclipse installation page
+  * Install SVN
  * Download sztakipedia-harvester
  * Install UIMA
 {{{
