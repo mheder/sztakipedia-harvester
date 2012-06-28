@@ -18,7 +18,7 @@ In this description we distinguish between your developer machine (e.g. your lap
   * You will need both UIMA and UIMA AS (async scaleout). From AS the latest version is only 2.3.1. Because of that you can install 2.3.1 from the standard UIMA as well, although there is a 2.4 version. Un-check "Show only the latest versions of available software" (or similar) checkbox on the Eclipse installation page
   * Install SVN
  * Check out the sztakipedia-harvester project
-
+  * for details, see: http://code.google.com/p/sztakipedia-harvester/source/checkout (check out trunk)
  * Download sztakipedia-harvester
  * Install UIMA
 {{{
