@@ -47,7 +47,9 @@ In this description we distinguish between your developer machine (e.g. your lap
 }}}
 
 = Inspect the logs to see if everything is ok =
-
+{{{
+24406 [class org.jibble.pircbot.InputThread-Thread] INFO  hu.sztaki.pedia.uima.reader.util.SztakipediaBot  - Articles received:40, sent:27, filtered:11 Articles in progress:2 Curr. running threads:1
+}}}
 = Shutting down =
 {{{
 abort
