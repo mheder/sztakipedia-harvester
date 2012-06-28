@@ -37,6 +37,6 @@ public interface IExternalProcessor {
 	 *            raw text is mapped by the Sofa name
 	 */
 	public void processAnnotations(Map<Integer, AnnotationIndex<Annotation>> annotationIndexMap,
-			Map<String, String> sofaNamesToText);
+			Map<String, String> sofaTextToName);
 
 }
