@@ -1,5 +1,4 @@
 #summary Getting started with sztakipedia-harvester
-#labels Featured
 
 = System Requirements =
  * You will need a Sun Java 6 JRE
