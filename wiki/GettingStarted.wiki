@@ -1,7 +1,7 @@
 #summary Getting started with sztakipedia-harvester
 
 = System Requirements =
- * You will need a Sun Java 6 JRE
+ * You will need a Sun (Oracle) Java 6 JRE
  * approx. 100 MB for the sztakipedia-harvester software
  * storage space for the data. The amount you need largely depends on the following
   * Which Wikipedias you plan to harvest?
