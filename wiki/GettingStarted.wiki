@@ -25,6 +25,10 @@ In this description we distinguish between your developer machine (e.g. your lap
 
 = Configure =
 
+ * configure port
+ * configure requestSize
+ * configure queueSize
+
  * Configure API user
  * Choose your descriptor
  * Modify filters (optional)
