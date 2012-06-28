@@ -28,6 +28,7 @@ In this description we distinguish between your developer machine (e.g. your lap
  * configure port
  * configure requestSize
  * configure queueSize
+ * LocalAbbrev: parameter for the parser
 
  * Configure API user
  * Choose your descriptor
