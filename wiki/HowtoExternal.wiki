@@ -20,12 +20,16 @@ This Page describes how to get your own External Processor solution running
 
 = Steps =
 == Download Stuff ==
- * '''pedia_uima_harvester_rel-X.tar.gz'''
- * '''uima-as-2.3.1-bin.tar.gz'''
+ * ''pedia_uima_harvester_rel-X.tar.gz'' (from this project, see downloads section)
+ * ''example.external.proc.tar.gz'' (from this project, see downloads section)
+ * ''uima-as-2.3.1-bin.tar.gz'' (http://uima.apache.org/ , Downloads section, look for: UIMA AS Asynchronous Scaleout)
+
 
 == Writing your External Processor == 
- * check out the example project from svn
- * add lib to the 
+ * extract '''example.external.proc.tar.gz''' which is an eclipse project. It contains one example java file you can customize
+ * In order to compile, you will need ''pedia.uima.harvester.jar'' which is in ''pedia_uima_harvester_rel-X.tar.gz'' (other common jars might be necessary)
+ * In the example code you will see what kind of annotations you can work with. These are coming from simple pre-processing and the sztakipedia-parser. 
+ * produce a jar file for your code. It will go into the ''pedia_uima_harvester'' directory (see below) so that the starter script puts it on the classpath (also see below)
 
 == Start the UIMA part ==
  * Create a directory where uima and the harvester software will be deployed. In this tutorial this will be '''/tmp/uimahome'''
