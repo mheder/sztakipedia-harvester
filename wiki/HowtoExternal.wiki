@@ -26,13 +26,13 @@ This Page describes how to get your own External Processor solution running
 
 
 == Writing your External Processor == 
- * extract '''example.external.proc.tar.gz''' which is an eclipse project. It contains one example java file you can customize
+ * extract ''example.external.proc.tar.gz'' which is an eclipse project. It contains one example java file you can customize
  * In order to compile, you will need ''pedia.uima.harvester.jar'' which is in ''pedia_uima_harvester_rel-X.tar.gz'' (other common jars might be necessary)
  * In the example code you will see what kind of annotations you can work with. These are coming from simple pre-processing and the sztakipedia-parser. 
  * produce a jar file for your code. It will go into the ''pedia_uima_harvester'' directory (see below) so that the starter script puts it on the classpath (also see below)
 
 == Start the UIMA part ==
- * Create a directory where uima and the harvester software will be deployed. In this tutorial this will be '''/tmp/uimahome'''
+ * Create a directory where uima and the harvester software will be deployed. In this tutorial this will be ''/tmp/uimahome''
  * extract the contents of ''pedia_uima_harvester_rel-X.tar.gz'' and ''uima-as-2.3.1-bin.tar.gz'' so you will have ''apache-uima-as-2.3.1'' and ''pedia_uima_harvester'' directories under uimahome 
  * put your jar your jar with your external processor to the ''pedia_uima_harvester'' directory
  * export UIMA_HOME variable 
@@ -48,7 +48,7 @@ username@hostname:/tmp/uimahome$export UIMA_HOME=/tmp/uimahome
  This is about your custom External processor. You should change '''externalProcessorClassname''' and '''externalProcessorParams'''
  * additionally, if you look around in this XML you will find the configuration for the consumer queue size, max. request size and the port where the consumer's built-in jetty listens
 
-=== Start the system ===
+=== Start the UIMA Part ===
 {{{
 ./run_httpcr_pwstcat_extproc.sh /tmp/harvest 1
 }}}
@@ -97,6 +97,8 @@ Where
  * resources/articlefilter/redirects.list : redirect tag names
  * resources/articlefilter/nonarticle_titles_prefixes.list : prefixes to filter out
  * YourWikiUser, YourWikiPassword : wiki user and password 
+
+'' Note : you can start multiple IRC readers that push to the same UIMA consumer''
 
 === Monitor what is going on ===
 
