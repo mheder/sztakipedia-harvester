@@ -12,13 +12,20 @@ This Page describes how to get your own External Processor solution running
 
 = Steps =
 == Download Stuff ==
-* pedia_uima_harvester_rel-X.tar.gz
-* uima-as-2.3.1-bin.tar.gz
+ * '''pedia_uima_harvester_rel-X.tar.gz'''
+ * '''uima-as-2.3.1-bin.tar.gz'''
 
 == Writing your External Processor == 
  * check out the example project from svn
  * add lib to the 
 == Configure your External Processor ==
+ * Edit '''descriptors/CPE/HTTPCR_parser_wst_category_externalConsumer_CPE.xml''' which is the UIMA descriptor for the Engine we will be using. 
+ * Locate this element 
+{{{
+ <casProcessor deployment="integrated" name="ExternalConsumerAE">
+}}}
+ This is about your custom External processor. You should change '''externalProcessorClassname''' and '''externalProcessorParams'''
+ * additionally, if you look around in this XML you will find the configuration for the consumer queue size, max. request size and the port where the consumer's built-in jetty listens
 == Start the UIMA part ==
  * Create a directory where uima and the harvester software will be deployed. In this tutorial this will be '''/tmp/uimahome'''
  * extract the contents of ''pedia_uima_harvester_rel-X.tar.gz'' and ''uima-as-2.3.1-bin.tar.gz'' so you will have ''apache-uima-as-2.3.1'' and ''pedia_uima_harvester'' directories under uimahome 
