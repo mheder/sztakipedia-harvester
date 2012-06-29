@@ -11,11 +11,23 @@ Sztakipedia harvester has two main components.
 This Page describes how to get your own External Processor solution running
 
 = Steps =
-== Download the harvester tar.gz ==
+== Download Stuff ==
+* pedia_uima_harvester_rel-X.tar.gz
+* uima-as-2.3.1-bin.tar.gz
+
 == Writing your External Processor == 
+ * check out the example project from svn
+ * add lib to the 
 == Configure your External Processor ==
 == Start the UIMA part ==
-
+ * Create a directory where uima and the harvester software will be deployed. In this tutorial this will be '''/tmp/uimahome'''
+ * extract the contents of ''pedia_uima_harvester_rel-X.tar.gz'' and ''uima-as-2.3.1-bin.tar.gz'' so you will have ''apache-uima-as-2.3.1'' and ''pedia_uima_harvester'' directories under uimahome 
+ * put your jar your jar with your external processor to the ''pedia_uima_harvester'' directory
+ * export UIMA_HOME variable 
+{{{
+username@hostname:/tmp/uimahome$export UIMA_HOME=/tmp/uimahome
+}}} 
+ * Start 
 This is what you should see on the console
 {{{
 2012-06-29 11:13:08.134:INFO:oejs.Server:jetty-7.6.4.v20120524
