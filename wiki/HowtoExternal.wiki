@@ -10,6 +10,14 @@ Sztakipedia harvester has two main components.
 
 This Page describes how to get your own External Processor solution running
 
+= System Requirements =
+ * You will need a Sun (Oracle) Java 6 JRE
+ * approx. 100 MB for the sztakipedia-harvester software
+ * storage space for the data. The amount you need largely depends on the following
+  * Which Wikipedias you plan to harvest?
+  * What do you want to do with the articles you downloaded? For example, if you are harvesting the English Wikipedia, and use the (rather verbose) sztakipedia indexes, you will need more, than 50G for the indexes. However, you can write your own External Processor and do whatever you want with the pre-processed articles. 
+ * About 4G of RAM and at least 2 cores dedicated for the harvester. Again, largely depends on the mode of usage
+
 = Steps =
 == Download Stuff ==
  * '''pedia_uima_harvester_rel-X.tar.gz'''
