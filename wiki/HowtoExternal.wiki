@@ -27,3 +27,11 @@ The UIMA part is now waiting for the articles
 == Configure the irc reader ==
 == Start the IRC reader ==
 == Monitor what is going on ==
+
+{{{
+21608 [Thread-57] INFO  BackgroundWorkerThread  - ACCEPTED: Kirk Wong(ID:13955960)
+Article Vagbhatananda Gurudevar(Rev:499883711), accepted. Queue util:1 items, 999 remaining.
+22035 [Thread-58] INFO  BackgroundWorkerThread  - ACCEPTED: Vagbhatananda Gurudevar(ID:13227099)
+22374 [class org.jibble.pircbot.InputThread-Thread] INFO  hu.sztaki.pedia.uima.reader.util.SztakipediaBot  - Articles received:56, sent:40, filtered:15 Articles in progress:1 Curr. running threads:0
+22693 [Thread-59] INFO  BackgroundWorkerThread  - FILTERED: Sri Lanka civil war(null)
+}}}
