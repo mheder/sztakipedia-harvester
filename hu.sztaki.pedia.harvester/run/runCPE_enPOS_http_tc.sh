@@ -5,34 +5,27 @@ then
   exit 1
 fi
 
-if [ $# -lt 1 ]
-  then echo " Usage: $0 <thread count>"
+if [ $# -lt 2 ]
+  then echo " Usage: $0 <workroot> <thread count>"
        exit 1;
 fi;
-THREADCOUNT=$1
+WORKROOT=$1
+THREADCOUNT=$2
 
 WD=$UIMA_HOME/pedia_uima_harvester 
-CLASSPATH=$WD/pedia.uima.harvester_lib:$WD
+CLASSPATH=$WD/*:$WD/pedia.uima.harvester_lib/*
 #export CLASSPATH
+echo $CLASSPATH
 
 JAVA=java
-WORKROOT=/wikidata-niif/uimacpe
-INPUTDIR=$WORKROOT/input
-#INPUTFILE=enwiki-20120403-pages-articles.xml
-INPUTFILE=enwikitest2.xml
-LUCENEINDEXDIR=$WORKROOT/indexes/en_POS-HTTP-$INPUTFILE-tc$THREADCOUNT
-XCASOUTPUTDIR=$WORKROOT/output/en_xcas-HTTP-$INPUTFILE-tc$THREADCOUNT
-LOGFILE=cpe-enPOS-HTTP-$INPUTFILE-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
+
+LOGFILE=cpe-HTTP-External-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
 LOGDIR=$WORKROOT/logs/cpe/en
 
-mkdir -p $LUCENEINDEXDIR;
-mkdir -p $XCASOUTPUTDIR;
 mkdir -p $LOGDIR
-sed "s#__INPUTFILE#$INPUTDIR/$INPUTFILE#; s#__LUCENEINDEXDIR#$LUCENEINDEXDIR#; s#__XCASOUTPUTDIR#$XCASOUTPUTDIR#" $WD/descriptors/CPE/en_HTTPCR_ParserPOSIndexer_CPE.xml  > $WD/descriptors/CPE/cpe_current.xml
 
+cp $WD/descriptors/CPE/HTTPCR_parser_wst_category_externalConsumer_CPE.xml $WD/descriptors/CPE/cpe_current.xml
 sed -i "s/<casProcessors casPoolSize=\"[0-9]*\" processingUnitThreadCount=\"[0-9]*\">/<casProcessors casPoolSize=\"$THREADCOUNT\" processingUnitThreadCount=\"$THREADCOUNT\">/" $WD/descriptors/CPE/cpe_current.xml
 
-#sed -i "s/processingUnitThreadCount=\"[0-9]*\"/processingUnitThreadCount=\"$THREADCOUNT\"/" $WD/descriptors/CPE/cpe_current.xml
 
-$JAVA -Xmx16g -cp $CLASSPATH -jar pedia.uima.harvester.jar $WD/descriptors/CPE/cpe_current.xml 2>&1 > $LOGDIR/$LOGFILE
-
+$JAVA -Xmx16g -cp $CLASSPATH hu.sztaki.pedia.uima.RunCPE $WD/descriptors/CPE/cpe_current.xml 2>&1 > $LOGDIR/$LOGFILE
