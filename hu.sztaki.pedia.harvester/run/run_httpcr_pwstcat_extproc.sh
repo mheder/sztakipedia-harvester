@@ -5,18 +5,20 @@ then
   exit 1
 fi
 
-if [ $# -lt 1 ]
-  then echo " Usage: $0 <thread count>"
+if [ $# -lt 2 ]
+  then echo " Usage: $0 <workroot> <thread count>"
        exit 1;
 fi;
-THREADCOUNT=$1
+
+WORKROOT=$1
+THREADCOUNT=$2
 
 WD=$UIMA_HOME/pedia_uima_harvester 
 CLASSPATH=$WD/*:$WD/pedia.uima.harvester_lib/*
-#export CLASSPATH
+echo $CLASSPATH
 
 JAVA=java
-WORKROOT=/wikidata-niif/uimacpe
+
 
 LOGFILE=cpe-HTTP-External-`date +%d.%m.%y-%H%M`_tc$THREADCOUNT.log
 LOGDIR=$WORKROOT/logs/cpe/en
