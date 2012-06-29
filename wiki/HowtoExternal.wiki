@@ -26,6 +26,7 @@ This Page describes how to get your own External Processor solution running
 == Writing your External Processor == 
  * check out the example project from svn
  * add lib to the 
+
 == Configure your External Processor ==
  * Edit '''descriptors/CPE/HTTPCR_parser_wst_category_externalConsumer_CPE.xml''' which is the UIMA descriptor for the Engine we will be using. 
  * Locate this element 
@@ -34,6 +35,7 @@ This Page describes how to get your own External Processor solution running
 }}}
  This is about your custom External processor. You should change '''externalProcessorClassname''' and '''externalProcessorParams'''
  * additionally, if you look around in this XML you will find the configuration for the consumer queue size, max. request size and the port where the consumer's built-in jetty listens
+
 == Start the UIMA part ==
  * Create a directory where uima and the harvester software will be deployed. In this tutorial this will be '''/tmp/uimahome'''
  * extract the contents of ''pedia_uima_harvester_rel-X.tar.gz'' and ''uima-as-2.3.1-bin.tar.gz'' so you will have ''apache-uima-as-2.3.1'' and ''pedia_uima_harvester'' directories under uimahome 
@@ -52,8 +54,25 @@ This is what you should see on the console
 The UIMA part is now waiting for the articles
 
 == Configure the irc reader ==
+ * Review and modify '''resources/articlefilter/redirects.list''' which contains how the redirects are called
+ * Review and modify '''resources/articlefilter/nonarticle_titles_prefixes.list''' that specifies which prefixes are to be filtered out
+ * Create a user in the Wikipedia you want to harvest in order to get access to the API
+ * Think about a string identifier that is assigned to this IRC bot
+
 == Start the IRC reader ==
-== Monitor what is going on ==
+{{{
+java -cp pedia.uima.harvester.jar hu.sztaki.pedia.uima.reader.standalone.IRCReader en.wikipedia localhost 8080 enwikipediaorgtest en resources/articlefilter/redirects.list resources/articlefilter/nonarticle_titles_prefixes.list YourWikiUser YourWikiPassword
+}}}
+Where
+ * en.wikipedia : the name of the wiki IRC channel this bot will be monitoring
+ * localhost : server name where the downloaded articles will be sent
+ * 8080 : server port
+ * en : language tag
+ * resources/articlefilter/redirects.list : redirect tag names
+ * resources/articlefilter/nonarticle_titles_prefixes.list : prefixes to filter out
+ * YourWikiUser, YourWikiPassword : wiki user and password 
+
+=== Monitor what is going on ===
 
 {{{
 21608 [Thread-57] INFO  BackgroundWorkerThread  - ACCEPTED: Kirk Wong(ID:13955960)
@@ -62,3 +81,9 @@ Article Vagbhatananda Gurudevar(Rev:499883711), accepted. Queue util:1 items, 99
 22374 [class org.jibble.pircbot.InputThread-Thread] INFO  hu.sztaki.pedia.uima.reader.util.SztakipediaBot  - Articles received:56, sent:40, filtered:15 Articles in progress:1 Curr. running threads:0
 22693 [Thread-59] INFO  BackgroundWorkerThread  - FILTERED: Sri Lanka civil war(null)
 }}}
+ * Articles can be ACCEPTED or FILTERED
+ * '''Queue util''' means queue utilization
+ * Articles received: how many articles were designated as modified on the IRC
+ * Articles sent: articles sent for processing
+ * Articles filtered: articles filtered out
+ * Articles in progress: articles that are being donwloaded or are unprocessed otherwise. 
