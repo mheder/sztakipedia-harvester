@@ -18,7 +18,7 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required 
                                            -->
-	<property name="dest.root" value="/home/tfarkas/Dev/workspaces/releases"/>
+	<property name="dest.root" value="/opt/szp-harvester-releases"/>
 	<property name="dest.dir" value="${dest.root}/pedia_uima_harvester"/>
 	<property name="dest.lib" value="pedia.uima.harvester_lib"/>
 	<property name="dest.libdir" value="${dest.dir}/${dest.lib}"/>
