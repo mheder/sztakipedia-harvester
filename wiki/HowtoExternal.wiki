@@ -15,7 +15,15 @@ This Page describes how to get your own External Processor solution running
 == Writing your External Processor == 
 == Configure your External Processor ==
 == Start the UIMA part ==
+
+This is what you should see on the console
+{{{
+2012-06-29 11:13:08.134:INFO:oejs.Server:jetty-7.6.4.v20120524
+2012-06-29 11:13:08.165:INFO:oejsh.ContextHandler:started o.e.j.s.h.ContextHandler{/,file:/tmp/uimahome/pedia_uima_harvester/}
+2012-06-29 11:13:08.215:INFO:oejs.AbstractConnector:Started SelectChannelConnector@0.0.0.0:8080
+}}}
+The UIMA part is now waiting for the articles
+
 == Configure the irc reader ==
 == Start the IRC reader ==
 == Monitor what is going on ==
-
