@@ -1,0 +1,21 @@
+#summary How to write and deploy your custom processor
+
+== Introduction ==
+
+Sztakipedia harvester has two main components.
+ * a standalone IRC reader that listens on wikipedia channels and downloads the modified articles from the Wikipedia API and posts it (HTTP POST) to a configured server+port. 
+ * An UIMA Consumer + Aggregate Analysis Engine. The Consumer listens on a HTTP port, waiting for the articles and the the Analysis Engine Processes the articles. However, with the Analysis Engine you have two options
+   * Use Sztakipedia's AAE, that builds a Lucene index
+   * Use the so-called "External Processor" Chain, in which the articles are pre-processed (links, sentences, categories, etc are recognized)and you provide your own java class that deals with the result - sends it somewhere or stores it your own way. 
+
+This Page describes how to get your own External Processor solution running
+
+= Steps =
+== Download the harvester tar.gz ==
+== Writing your External Processor == 
+== Configure your External Processor ==
+== Start the UIMA part ==
+== Configure the irc reader ==
+== Start the IRC reader ==
+== Monitor what is going on ==
+
