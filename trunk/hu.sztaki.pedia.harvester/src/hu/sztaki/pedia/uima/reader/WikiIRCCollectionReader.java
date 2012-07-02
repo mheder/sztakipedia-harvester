@@ -15,9 +15,9 @@
  *******************************************************************************/
 package hu.sztaki.pedia.uima.reader;
 
-import hu.sztaki.pedia.uima.reader.util.SztakipediaBot;
 import hu.sztaki.pedia.uima.reader.util.WikiArticle;
 import hu.sztaki.pedia.uima.reader.util.WikiArticleFilter;
+import hu.sztaki.pedia.uima.reader.util.WikiIRCBot;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -75,7 +75,7 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 
 	private Thread botThread;
 
-	private SztakipediaBot sztakipediaBot;
+	private WikiIRCBot wikiIRCBot;
 
 	private WikiArticleFilter articleFilter;
 
@@ -99,9 +99,9 @@ public class WikiIRCCollectionReader extends CollectionReader_ImplBase {
 		botThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				sztakipediaBot = new SztakipediaBot(ircChannel, domainUrl, articlesQueue,
+				wikiIRCBot = new WikiIRCBot(ircChannel, domainUrl, articlesQueue,
 						articleFilter, applicationName, mLanguage, wikiAPIUserName, wikiAPIPassword);
-				sztakipediaBot.start();
+				wikiIRCBot.start();
 			}
 		});
 
