@@ -129,7 +129,7 @@ public class WikiIRCBot extends PircBot {
 
 		// we go aggressive
 		// See: http://www.mediawiki.org/wiki/Manual:Maxlag_parameter
-		wikiAPI.setMaxLag(0);
+		wikiAPI.setMaxLag(-1);
 
 		wikiAPI.setLogLevel(java.util.logging.Level.WARNING);
 		// setVerbose(true);
