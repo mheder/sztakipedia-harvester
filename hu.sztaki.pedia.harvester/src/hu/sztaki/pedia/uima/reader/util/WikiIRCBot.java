@@ -33,7 +33,7 @@ import org.jibble.pircbot.PircBot;
 
 public class WikiIRCBot extends PircBot {
 	private ReaderOutputModes outputMode;
-	public static Logger logger = Logger.getLogger(SztakipediaBot.class);
+	public static Logger logger = Logger.getLogger(WikiIRCBot.class);
 	private Wiki wikiAPI;
 	private String ircChannel;
 	private String language;
@@ -126,6 +126,11 @@ public class WikiIRCBot extends PircBot {
 	private void initializeBot(String domainUrl, String apiUser, String apiPassword) {
 		setLogin(apiUser + applicationName);
 		wikiAPI = new Wiki(domainUrl);
+
+		// we go aggressive
+		// See: http://www.mediawiki.org/wiki/Manual:Maxlag_parameter
+		wikiAPI.setMaxLag(0);
+
 		wikiAPI.setLogLevel(java.util.logging.Level.WARNING);
 		// setVerbose(true);
 		setName("sztakipediabot" + applicationName);
@@ -224,8 +229,8 @@ public class WikiIRCBot extends PircBot {
 	public static void main(String[] args) throws Exception {
 
 		// Now start our bot up.
-		SztakipediaBot bot = new SztakipediaBot("#en.wikipedia", "en.wikipedia.org", null, "TEST",
-				"en", "ExampleWikiAPIUser", "ExampleWikiAPIPassword");
+		WikiIRCBot bot = new WikiIRCBot("#en.wikipedia", "en.wikipedia.org", null, "TEST", "en",
+				"ExampleWikiAPIUser", "ExampleWikiAPIPassword");
 		bot.start();
 	}
 }
