@@ -63,16 +63,15 @@ public class ExternalConsumer extends AbstractMultiSofaAnnotator {
 			if (externalProcessorParams != null) {
 				externalProcessor.initialize(externalProcessorParams);
 			}
-			if (externalProcessor == null) {
-				logger.error("Instantiating ExternalProcessor class: "+externalProcessorClassName+"failed");
-				System.exit(1);
-			}
 		} catch (ClassNotFoundException e) {
 			logger.error("Error while intantiating class:" + externalProcessorClassName, e);
+			throw new ResourceInitializationException(e);
 		} catch (InstantiationException e) {
 			logger.error("Error while intantiating class:" + externalProcessorClassName, e);
+			throw new ResourceInitializationException(e);
 		} catch (IllegalAccessException e) {
 			logger.error("Error while intantiating class:" + externalProcessorClassName, e);
+			throw new ResourceInitializationException(e);
 		}
 	}
 
