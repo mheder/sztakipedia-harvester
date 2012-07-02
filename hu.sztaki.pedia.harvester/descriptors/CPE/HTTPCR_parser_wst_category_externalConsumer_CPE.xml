@@ -90,6 +90,15 @@
 					</value>
 				</nameValuePair>
 				<nameValuePair>
+					<name>SofaNames</name>
+					<value>
+						<array>
+							<string>parsed</string>
+							<string>rawwiki</string>
+						</array>
+					</value>
+				</nameValuePair>
+				<nameValuePair>
 					<name>AnnotationSofaName</name>
 					<value>
 						<string>parsed</string>

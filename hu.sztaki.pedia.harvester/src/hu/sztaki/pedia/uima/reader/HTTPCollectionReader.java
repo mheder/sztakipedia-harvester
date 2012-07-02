@@ -93,13 +93,13 @@ public class HTTPCollectionReader extends CollectionReader_ImplBase {
 		} catch (CASException e) {
 			throw new CollectionException(e);
 		}
-
+		String text = article.getText();
 		if (mSofaName == null) {
 			jcas.setDocumentText(article.getText());
 		} else {
 			try {
 				doc2 = jcas.createView(mSofaName);
-				doc2.setSofaDataString(article.getText(), "text/plain");
+				doc2.setSofaDataString(text, "text/plain");
 			} catch (CASException e) {
 				e.printStackTrace();
 			}

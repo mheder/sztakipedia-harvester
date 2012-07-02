@@ -44,13 +44,12 @@ public class SaxWikiHandler extends DefaultHandler {
 	protected String currentRevision;
 	protected String destinationDirectory = "pages";
 	protected HTTPWriter httpWriter = null;
+	protected WikiArticleFilter articleFilter;
 
 	private String applicationName;
 	private String language;
 
 	protected ArrayBlockingQueue<WikiArticle> queue;
-
-	// public boolean usingQueue = true;
 
 	/**
 	 * Creates a SaxWikiHandler object, using the provided
@@ -58,32 +57,54 @@ public class SaxWikiHandler extends DefaultHandler {
 	 * 
 	 * @param queue
 	 *            ArrayBlockingQueue with WikiArticles for output
+	 * @param applicationName
+	 * @param language
+	 * @param articleFilter
 	 */
 	public SaxWikiHandler(ArrayBlockingQueue<WikiArticle> queue, String applicationName,
-			String language) {
+			String language, WikiArticleFilter articleFilter) {
 		this.queue = queue;
 		this.applicationName = applicationName;
 		this.language = language;
+		this.articleFilter = articleFilter;
 		outputMode = ReaderOutputModes.QUEUE;
 	}
 
 	/**
+	 * Constructs a SAX wiki reader, output is written to a HTTP server.
 	 * 
+	 * @param destinationDirectory
+	 * @param applicationName
+	 * @param language
+	 * @param articleFilter
 	 */
-	public SaxWikiHandler(String destinationDirectory, String applicationName, String language) {
+	public SaxWikiHandler(String destinationDirectory, String applicationName, String language,
+			WikiArticleFilter articleFilter) {
 		this.destinationDirectory = destinationDirectory;
 		this.applicationName = applicationName;
 		this.language = language;
+		this.articleFilter = articleFilter;
 		outputMode = ReaderOutputModes.FILE;
 
-		// usingQueue = false;
 	}
 
+	/**
+	 * Constructs a SAX wiki reader, output is written to a HTTP server.
+	 * 
+	 * @param destinationHostname
+	 * @param destinationPort
+	 * @param applicationName
+	 * @param language
+	 * @param articleFilter
+	 * @throws MalformedURLException
+	 */
 	public SaxWikiHandler(String destinationHostname, Integer destinationPort,
-			String applicationName, String language) throws MalformedURLException {
+			String applicationName, String language, WikiArticleFilter articleFilter)
+			throws MalformedURLException {
 		this.httpWriter = new HTTPWriter(destinationHostname, destinationPort);
 		this.applicationName = applicationName;
 		this.language = language;
+		this.articleFilter = articleFilter;
 		outputMode = ReaderOutputModes.HTTP;
 
 		// usingQueue = false;
@@ -108,6 +129,14 @@ public class SaxWikiHandler extends DefaultHandler {
 			article.setRevision(Long.parseLong(currentRevision.trim()));
 		} catch (NumberFormatException e) {
 			return null;
+		}
+		if (articleFilter != null) {
+			if (articleFilter.isValidArticle(article)) {
+				logger.info("ACCEPTED: " + article.getTitle() + "(ID:" + article.getId() + ")");
+			} else {
+				logger.info("FILTERED: " + article.getTitle() + "(" + article.getId() + ")");
+				article = null;
+			}
 		}
 		return article;
 	}
@@ -140,7 +169,7 @@ public class SaxWikiHandler extends DefaultHandler {
 
 	}
 
-	private void dumpArticleToHTTP() {
+	protected void dumpArticleToHTTP() {
 		WikiArticle article = assembleArticle();
 		if (article != null) {
 			if (httpWriter != null) {

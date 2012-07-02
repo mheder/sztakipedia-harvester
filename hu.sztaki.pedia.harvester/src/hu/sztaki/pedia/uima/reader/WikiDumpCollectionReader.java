@@ -150,7 +150,7 @@ public class WikiDumpCollectionReader extends CollectionReader_ImplBase {
 					isr = new InputStreamReader(fis, "UTF-8");
 					XMLReader xmlReader = XMLReaderFactory.createXMLReader();
 					SaxWikiHandler saxWikiHandler = new SaxWikiHandler(articlesQueue,
-							applicationName, mLanguage);
+							applicationName, mLanguage, null);
 					xmlReader.setContentHandler(saxWikiHandler);
 					xmlReader.setErrorHandler(saxWikiHandler);
 					// start the parsing
