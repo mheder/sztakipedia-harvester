@@ -56,7 +56,7 @@ public class IRCReader {
 									redirectsFile);
 						} catch (IOException e) {
 							articleFilter = null;
-							e.printStackTrace();
+							logger.error("Error creating WikiArticleFilter", e);
 						}
 
 						ircBot = new WikiIRCBot(ircChannel, domainUrl, destinationHostname,

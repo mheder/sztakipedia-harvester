@@ -27,6 +27,12 @@
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>SofaNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -47,6 +53,15 @@
         <name>ExternalProcessorClassName</name>
         <value>
           <string>org.example.ExampleExternalProcessor.java</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>SofaNames</name>
+        <value>
+          <array>
+            <string>parsed</string>
+            <string>rawwiki</string>
+          </array>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

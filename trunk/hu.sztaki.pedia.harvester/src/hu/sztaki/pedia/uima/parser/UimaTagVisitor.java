@@ -50,15 +50,11 @@ public class UimaTagVisitor extends PlainTextContentWriter {
 
 	@Override
 	public void visit(AnchorTag tag) {
-		int beginPos = out.length() - 2;
-		if (beginPos < 0) {
-			beginPos = 0;
-		}
+		int beginPos = out.length();
+
 		super.visit(tag);
-		int endPos = out.length() - 2;
-		if (endPos < 0) {
-			endPos = 1;
-		}
+		int endPos = out.length();
+
 		if (beginPos == endPos) {
 			endPos++;
 		}
@@ -78,12 +74,12 @@ public class UimaTagVisitor extends PlainTextContentWriter {
 	@Override
 	public void visit(ParagraphTag tag) {
 		out.append("\n");
-		int beginPos = out.length() - 2;
+		int beginPos = out.length();
 		if (beginPos < 0) {
 			beginPos = 0;
 		}
 		visitChildren(tag);
-		int endPos = out.length() - 2;
+		int endPos = out.length();
 		if (endPos < 0) {
 			endPos = 1;
 		}
