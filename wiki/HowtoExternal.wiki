@@ -102,7 +102,7 @@ Where
 
 === Monitor what is going on ===
 
-'''IRC reader'''
+''IRC reader''
 
 {{{
 21608 [Thread-57] INFO  BackgroundWorkerThread  - ACCEPTED: Kirk Wong(ID:13955960)
@@ -118,7 +118,7 @@ Article Vagbhatananda Gurudevar(Rev:499883711), accepted. Queue util:1 items, 99
  * Articles filtered: articles filtered out
  * Articles in progress: articles that are being donwloaded or are unprocessed otherwise. 
 
-'''UIMA Part'''
+''UIMA Part''
 {{{
 Processed article:3112247, Radical Entertainment, 499893417, enwikipediaorgtest, en
 Annotations-> Links:93 categories:9 sentences:61 unique tokens:1928
