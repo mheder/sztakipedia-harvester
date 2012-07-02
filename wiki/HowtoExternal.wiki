@@ -118,6 +118,14 @@ Article Vagbhatananda Gurudevar(Rev:499883711), accepted. Queue util:1 items, 99
  * Articles filtered: articles filtered out
  * Articles in progress: articles that are being donwloaded or are unprocessed otherwise.
 
+===== Errors =====
+{{{
+WARNING: [en.wikipedia.org] Current database lag 1650 s exceeds 5 s, waiting 5 s..
+Jul 2, 2012 4:38:17 PM Wiki login()
+}}}
+
+This means that the Wiki server serving you is overloaded. 
+
 ==== UIMA Part ====
 {{{
 Processed article:3112247, Radical Entertainment, 499893417, enwikipediaorgtest, en
@@ -127,3 +135,9 @@ Annotations-> Links:93 categories:9 sentences:61 unique tokens:1928
 This is the output of the exampe external processor provided in this example when processing an article
 
 ===== Errors =====
+{{{
+2012-07-02 16:33:39.310:WARN:oejs.AbstractHttpConnection:http://www.baidu.com/
+java.lang.NullPointerException
+}}}
+
+This means that your server has a public ip address some web crawler script has found your open port and made a request. Firewalling/nat is required. 
