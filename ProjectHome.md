@@ -1,0 +1,1 @@
+A UIMA Collection Processing Engine that continuously updates a Lucene index with the wikipedia articles people modify
